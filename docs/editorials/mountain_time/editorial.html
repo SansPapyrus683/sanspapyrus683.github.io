@@ -33,6 +33,7 @@
     code.open("GET", "sol.cpp");
     code.send(null);
 
+    setTimeout(() => {console.log("done");}, 1000);
     let script = document.createElement("script");
     script.type = "text/javascript";
     script.src = "../../lib/prism/prism.js";
