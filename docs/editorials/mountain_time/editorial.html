@@ -29,15 +29,14 @@
             allText = code.responseText;
         }
         document.getElementById("code").innerHTML = escapeHtml(allText);
+
+        let script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "../../lib/prism/prism.js";
+        document.getElementsByTagName("head")[0].appendChild(script);
     }
     code.open("GET", "sol.cpp");
     code.send(null);
-
-    setTimeout(() => {console.log("done");}, 1000);
-    let script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = "../../lib/prism/prism.js";
-    document.getElementsByTagName("head")[0].appendChild(script);
 </script>
 
 <pre><code class="language-cpp" id="code"></code></pre>
