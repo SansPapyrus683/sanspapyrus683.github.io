@@ -9,37 +9,13 @@
 
 <body>
 
+<script src="../init.js"></script>
 <script>
-    function escapeHtml(text) {
-        let map = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            "'": "&quot;",
-            "\"": "&#039;"
-        };
-        return text.replace(/[&<>'"]/g, function(m) { return map[m]; });
-    }
-
-    // sauce: https://stackoverflow.com/questions/6348207
-    let code = new XMLHttpRequest();
-    let allText = "file not found";
-    code.onreadystatechange = function () {
-        if (code.readyState === XMLHttpRequest.DONE && code.status === 200) {
-            allText = code.responseText;
-        }
-        document.getElementById("code").innerHTML = escapeHtml(allText);
-
-        let script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = "../../lib/prism/prism.js";
-        document.getElementsByTagName("head")[0].appendChild(script);
-    }
-    code.open("GET", "sol.cpp");
-    code.send(null);
+    ARGS.init({"file": "sol.cpp", "lang": "cpp"});
 </script>
+<script src="../load_code.js"></script>
 
-<pre><code class="language-cpp" id="code"></code></pre>
+<div id="code"></div>
 
 </body>
 </html>
