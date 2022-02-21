@@ -16,7 +16,7 @@ body {
 
     padding: 0 10px;
 
-    font-family: Comic Mono;
+        font-family: "Comic Mono", cursive;
     font-variant-ligatures: common-ligatures;
     font-size: 18px;
     color: #bebebe;
