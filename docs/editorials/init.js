@@ -4,6 +4,8 @@ let ARGS = (function() {
     return {
         init: function(args) {
             _args = args;
+            let dotInd = _args["file"].lastIndexOf("\.");
+            _args["lang"] = _args["file"].slice(dotInd + 1);
         },
         codeFile: function() {
             return _args["file"];

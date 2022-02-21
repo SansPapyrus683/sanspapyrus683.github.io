@@ -1,0 +1,27 @@
+@font-face {
+    font-family: comic-mono;
+    src: url("../fonts/comic-mono.ttf");
+}
+
+body {
+    background: black;
+    margin: 40px auto;
+    max-width: 650px;
+    line-height: 1.6;
+
+    padding: 0 10px;
+
+    font-family: comic-mono;
+    font-size: 18px;
+    color: #7f7d9c;
+
+    text-align: center;
+}
+
+a {
+    color: #551a8b;
+}
+
+h1, h2, h3 {
+    line-height: 1.2
+}
