@@ -1,25 +1,31 @@
 @font-face {
-    font-family: comic-mono;
+    font-family: Comic Mono;
     src: url("../fonts/comic-mono.ttf");
 }
 
+@font-face {
+    font-family: Skyhook Mono;
+    src: url("../fonts/skyhook-mono.ttf");
+}
+
 body {
-    background: black;
+    background: #1e272c;
     margin: 40px auto;
     max-width: 650px;
     line-height: 1.6;
 
     padding: 0 10px;
 
-    font-family: comic-mono;
+    font-family: Comic Mono;
+    font-variant-ligatures: common-ligatures;
     font-size: 18px;
-    color: #7f7d9c;
+    color: #bebebe;
 
     text-align: center;
 }
 
 a {
-    color: #551a8b;
+    color: #e288a2;
 }
 
 h1, h2, h3 {
