@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../css/default.css">
+    <link rel="stylesheet" href="../../css/editorial.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+
+    <title>balanced parenthesis</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<p><a href="https://www.codewars.com/kata/60790e04cc9178003077db43/train">problem link</a></p>
+
+<div id="title">
+    <h1>codewars balanced parenthesis solution</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        i'm back!!!11!!
+    </p>
+
+    <p>
+        and this time i'm not gonna do some cf problem, it's actually going to one from codewars
+    </p>
+
+    <p>
+        the problem itself is actually kinda simple
+        <br>
+        it gives you n, and asks you to find the element at the ith index in a sorted list of all balanced parenthesis
+        <br>
+        so like if n was 3, the list would be this:
+    </p>
+    <pre><code class="language-py">["((()))", "(()())", "(())()", "()(())", "()()()"]</code></pre>
+    <p>
+        and you have to find whatever element at whatever position it asks you to find
+    </p>
+
+    <p>
+        i was stuck on this problem for like 2 whole days then i realized it was way simpler than i thought
+    </p>
+
+    <p>
+        so let's build the parenthesis one by one, using
+        <code class="language-py">bal_parens(3, 2)</code> as an example
+        <br>
+        we start with an empty string with an opening parenthesis (since it has to start w/ one):
+    </p>
+
+    <pre><code class="language-py">'('</code></pre>
+
+    <p>
+        now, how do we know whether we should add a `)` or another `(`?
+    </p>
+    <p>
+        well, notice that if we add a `)`, we've limited ourselves to only being able to
+        make the last 2 elements of the list
+        <br>
+        (remember that the list is sorted in alphabetical order, so we can make this assumption)
+        <br>
+        we want the 3rd element, so it's obvious why we can't add a `)`- we have to add a `(`
+    </p>
+
+    <p>
+        <b>NOTE!</b> that if we had wanted the second half of the list, we'd have to subtract
+        3 (the size of the first half) from our target index to maintain the accuracy of the value
+    </p>
+
+    <p>
+        now onto the next choice- another `(` or a `)`?
+        <br>
+        we do the calculations again
+        <br>
+        do we want the first element, or the last 2 elements?
+        <br>
+        we def want the last 2, so let's go with those, subtracting 1 from our index
+    </p>
+
+    <p>
+        and continuing this calculation, we end up with `(()())`, which is the correct answer
+    </p>
+
+    <p>
+        now we just need a way to quickly compute how many ways there are to compute the # of ways to complete a set of
+        parenthesis given the # of opening parenthesis and the # of closing parenthesis
+        <br>
+        it's a good thing this can be doable with simple dp-
+        <br>
+        let `complete_ways[o][c]` be the # of ways to complete a par string given o opening & c closing parenthesis
+    </p>
+
+    <p>
+        this would be the table if the total # of parentheses was 3
+    </p>
+    <pre><code class="language-py">[[5, 0, 0, 0],
+ [5, 2, 0, 0],
+ [3, 2, 1, 0],
+ [1, 1, 1, 1]]</code></pre>
+
+    <p>
+        we have a base case of complete_ways[par_amt][par_amt] = 1, and the recursion relation is p simple as well:
+    </p>
+
+    <pre><code class="language-py">complete_ways[o][c] = complete_ways[o + 1][c] + complete_ways[o][c + 1]</code></pre>
+
+    <p>
+        (given that the previous indices are defined, of course)
+    </p>
+
+    <p>
+        but without further ado, here's my code:
+    </p>
+</div>
+
+<script src="../process_inline.js"></script>
+
+<!-- stuff like this is why i'm never going to do web dev ever again -->
+<script src="../init.js"></script>
+<script>
+    ARGS.init({"file": "sol.py"});
+</script>
+<script src="../load_code.js"></script>
+
+<div id="code"></div>
+
+</body>
+</html>

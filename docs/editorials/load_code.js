@@ -4,10 +4,10 @@ function escapeHtml(text) {
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
-        "'": "&quot;",
-        "\"": "&#039;"
+        // "'": "&quot;",  // these should't be needed in <pre> tags
+        // "\"": "&#039;"
     };
-    return text.replace(/[&<>'"]/g, function(m) { return map[m]; });
+    return text.replace(/[&<>]/g, function(m) { return map[m]; });
 }
 
 // sauce: https://stackoverflow.com/questions/6348207
