@@ -35,7 +35,10 @@
         <br>
         so like if n was 3, the list would be this:
     </p>
-    <pre><code class="language-py">["((()))", "(()())", "(())()", "()(())", "()()()"]</code></pre>
+    ```py
+    ["((()))", "(()())", "(())()", "()(())", "()()()"]
+    ```
+
     <p>
         and you have to find whatever element at whatever position it asks you to find
     </p>
@@ -51,7 +54,9 @@
         we start with an empty string with an opening parenthesis (since it has to start w/ one):
     </p>
 
-    <pre><code class="language-py">'('</code></pre>
+    ```py
+    '('
+    ```
 
     <p>
         now, how do we know whether we should add a `)` or another `(`?
@@ -96,10 +101,12 @@
     <p>
         this would be the table if the total # of parentheses was 3
     </p>
-    <pre><code class="language-py">[[5, 0, 0, 0],
- [5, 2, 0, 0],
- [3, 2, 1, 0],
- [1, 1, 1, 1]]</code></pre>
+    ```py
+    [[5, 0, 0, 0],
+     [5, 2, 0, 0],
+     [3, 2, 1, 0],
+     [1, 1, 1, 1]]
+    ```
 
     <p>
         we have a base case of complete_ways[par_amt][par_amt] = 1, and the recursion relation is p simple as well:
@@ -116,7 +123,7 @@
     </p>
 </div>
 
-<script src="../process_inline.js"></script>
+<script src="../inline_code.js"></script>
 
 <!-- stuff like this is why i'm never going to do web dev ever again -->
 <script src="../init.js"></script>
