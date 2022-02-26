@@ -31,6 +31,22 @@ h1, h2, h3 {
     line-height: 1.2
 }
 
+/* sauce: https://espadrine.github.io/blog/posts/markdown-quote-styling.html */
+blockquote {
+    margin: 0;
+    padding-left: 1.4rem;
+    position: relative;
+}
+blockquote::before {  /* this actually adds the rectangle on the left */
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #dadada;
+    border-radius: 2px / 4px;
+}
+
 /* woah, classes! */
 .inline {
     font-family: "Skyhook Mono", monospace;

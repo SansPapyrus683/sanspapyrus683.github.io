@@ -45,6 +45,8 @@ for (let i = 0; i < editorial.length; i++) {
                 lines[l] = lines[l].slice(spaceNum);
             }
 
+            console.log(lines);
+
             // don't worry if lang is empty- prism handles it just fine
             final += `<pre><code class="language-${lang}">`
             for (let l of lines) {

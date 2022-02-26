@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../css/default.css">
+    <link rel="stylesheet" href="../../css/editorial.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+
+    <title>fair cut</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<p><a href="https://www.hackerrank.com/challenges/fair-cut/problem">problem link</a></p>
+
+<div id="title">
+    <h1>hackerrank fair cut stuff</h1>
+</div>
+
+<div id="editorial">
+    <blockquote>
+        Man, it is <i>unfair</i> how good I am!
+    </blockquote>
+    <cite>Scout, TF2</cite>
+
+    <p>
+        man, usaco is this week<br>
+        i hope i get to plat
+    </p>
+
+    <p>
+        anyways, this problem!<br>
+        it's absolute cancer, and the crap editorials i've found don't help either<br>
+        so i'm writing this to help others suffer less
+    </p>
+
+    <p>
+        too lazy to describe the problem, just read the actual thing lol<br>
+        but the dp relation is seemingly obvious, right?<br>
+        just a lil
+    </p>
+    ```
+    dp[i][t] = min unfairness given that we only consider first i elements & take t of those
+    ```
+
+    <p>
+        and then we're done, right?<br>
+        <small>right?</small>
+    </p>
+    <p>
+        well the thing is, since all the elements depend on each other for the sum, we can't
+        just consider each element independently and go from there
+    </p>
+
+    <p>
+        the key is in this expression for the example input given at the bottom of the statement:
+        \[ |a_2-a_1|+|a_2-a_3|+|a_4-a_1|+|a_4-a_3|=1+2+2+1=6 \]
+    </p>
+    <p>
+        if we sort the example array to be `[1, 2, 3, 4]` (reorganizing the indices as needed),
+        note that the expression becomes:
+        \[ (a_4-a_3)+(a_3-a_1)+(a_4-a_2)+(a_3-a_2)=2a_4+a_3-2a_2-a_1 \]
+        i feel like just evaluating this expression is much easier than just having some arbitrary
+        definition of <i>unfairness</i>, no?
+    </p>
+
+    <hr>
+
+    <p>
+        so instead of directly considering the minimum unfairness, let's just add how much each index
+        contributes to that expression- that should be much easier than actually knowing what numbers
+        we have to get the distance to or whatever crap
+    </p>
+
+    <p>
+        ok so let's do two things:
+    </p>
+    <ol>
+        <li>sort our array so we don't have to worry about abs values (will explain later)</li>
+        <li>redefine our dp as something actually calculable:</li>
+    </ol>
+    ```
+    dp[i][t] = min VALUE OF THAT EXPRESSION THING ABOVE
+               given that we only consider the first i elements, taking t so far
+    ```
+
+    <hr>
+
+    <p>
+        now, when we actually fill out our array and we're at `i` and `t`, we have two choices:
+    </p>
+    <h3>1. add the element to our set</h3>
+    <p>
+        in this case, we know that we're going to add `i - t` and subtract
+        `(size - i) - (take_num - t)` of the current value<br>
+        the first is because there's `i - t` non-selected elements in the left part of the array,
+        and we know the current element is bigger than the entire left half so<br>
+        the second part is similar, it's because that's how many elements won't be selected in the later half
+    </p>
+    <h3>2. or we don't lmao</h3>
+    <p>
+        analogous to the first part<br>
+        we add `t` and subtract `take_num - t` of the current element<br>
+        that's because there's `t` selected elements to the left and `take_num - t` elements to the right
+    </p>
+
+    <p>
+        alright, we're done! the code naturally follows:
+    </p>
+</div>
+
+<script src="../inline_code.js"></script>
+
+<script src="../init.js"></script>
+<script>
+    ARGS.init({"file": "sol.py"});
+</script>
+<script src="../load_code.js"></script>
+
+<div id="code"></div>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
