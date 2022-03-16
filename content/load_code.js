@@ -23,7 +23,9 @@ code.onreadystatechange = function () {
     // add prism to the end of the script
     let script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = "../../lib/prism/prism.js";
+    script.src = "../../../lib/prism/prism.js";
+    console.log(ARGS.codeFile());
+    console.log(document.getElementsByTagName("head")[0]);
     document.getElementsByTagName("head")[0].appendChild(script);
 };
 

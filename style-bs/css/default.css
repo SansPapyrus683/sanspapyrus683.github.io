@@ -14,7 +14,7 @@ body {
     max-width: 800px;
     line-height: 1.6;
 
-    padding: 0 10px;  /* what does this even do */
+    padding: 0 10px; /* what does this even do */
 
     font-family: "Comic Mono", cursive;
     font-variant-ligatures: common-ligatures;
@@ -36,8 +36,10 @@ blockquote {
     margin: 0;
     padding-left: 1.4rem;
     position: relative;
+    font-style: italic;
 }
-blockquote::before {  /* this actually adds the rectangle on the left */
+
+blockquote::before { /* this actually adds the rectangle on the left */
     content: '';
     position: absolute;
     left: 0;
@@ -49,7 +51,55 @@ blockquote::before {  /* this actually adds the rectangle on the left */
 
 /* woah, classes! */
 .inline {
+    background-color: #51938f;
+    padding: 5px;
+    border-radius: 5px;
     font-family: "Skyhook Mono", monospace;
     font-weight: bold;
     color: #84fff2;
+}
+
+/* copied from some random website here: https://codepen.io/MoritzGiessmann/pen/PobErJB */
+details {
+    background: #282828;
+    margin: 0 auto .5rem;
+    box-shadow: 0 .1rem 1rem -.5rem rgba(0, 0, 0, .4);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+summary {
+    display: block;
+    background: #333;
+    padding: 1rem 1rem 1rem 2.2rem;
+    position: relative;
+    cursor: pointer;
+}
+
+summary:before {
+    content: '';
+    border-width: .4rem;
+    border-style: solid;
+    border-color: transparent transparent transparent #fff;
+    position: absolute;
+    top: 1.3rem;
+    left: 1rem;
+    transform: rotate(0);
+    transform-origin: .2rem 50%;
+    transition: .25s transform ease;
+}
+
+/* THE MAGIC 🧙‍♀️ */
+details[open] > summary:before {
+    transform: rotate(90deg);
+}
+
+
+details summary::-webkit-details-marker {
+    display: none;
+}
+
+details > ul {
+    padding-bottom: 1rem;
+    margin-bottom: 0;
 }

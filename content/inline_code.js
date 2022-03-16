@@ -60,9 +60,9 @@ for (let i = 0; i < editorial.length; i++) {
         i = j + BLOCK_LEN - 1;
     } else if (editorial.charAt(i) === "`") {
         if (inlineClosing) {
-            newEditorial += "</span>"
+            newEditorial += "</code>"
         } else {
-            newEditorial += "<span class=\"inline\">"
+            newEditorial += "<code class=\"inline\">"
         }
         inlineClosing = !inlineClosing;
     } else {

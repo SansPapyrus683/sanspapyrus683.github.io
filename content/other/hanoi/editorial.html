@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../../style-bs/css/default.css">
+    <link rel="stylesheet" href="../../../style-bs/css/editorial.css">
+    <link rel="stylesheet" href="../../../lib/prism/prism.css">
+
+    <title>hanoi!1!!</title>
+</head>
+
+<body>
+
+<p><a href="../../../index.html">back to home</a></p>
+
+<div id="title">
+    <h1>tower of hanoi (cs assignment stuff)</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        this isn't gonna be a normal editorial<br>
+        my cs teacher assigned us to write a blog post<br>
+        and in a pure coincendence, i've just been developing this blog site<br>
+        so might as well write it here
+    </p>
+
+    <p>
+        so.<br>
+        tower of hanoi.<br>
+        too lazy to explain it, so here's the description copied right from the
+        <a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi">wikipedia page</a>
+    </p>
+    <blockquote>
+        The Tower of Hanoi [...] is a mathematical game or puzzle consisting of three rods and a number of disks of
+        various diameters, which can slide onto any rod. The puzzle begins with the disks stacked on one rod in order
+        of decreasing size, the smallest at the top, thus approximating a conical shape.
+        The objective of the puzzle is to move the entire stack to the last rod, obeying the following rules:
+
+        <ol>
+            <li>Only one disk may be moved at a time.</li>
+            <li>
+                Each move consists of taking the upper disk from one of the stacks and
+                placing it on top of another stack or on an empty rod.
+            </li>
+            <li>No disk may be placed on top of a disk that is smaller than it.</li>
+        </ol>
+    </blockquote>
+
+    <p>
+        so yeah i just have to make a solver for this (in java bc it's ap cs)
+    </p>
+    <p>
+        it's a good thing my wonderful cs teacher mr. jan gave a really good hint<br>
+        first, let's just define the disks as A, B, and C (with all the disks starting on A)<br>
+        second, we just have a move be `X -> Y`, where we move a disk from X to Y<br>
+        now let's list out some simple solutions for 1 disk to 4 disks
+    </p>
+
+    <div id="smol-sols">
+        <details>
+            <summary>1 disk</summary>
+            ```
+            A -> C
+            ```
+        </details>
+        <details>
+            <summary>2 disks</summary>
+            ```
+            A -> B
+            A -> C
+            B -> C
+            ```
+        </details>
+        <details>
+            <summary>3 disks</summary>
+            ```
+            A -> C
+            A -> B
+            C -> B
+            A -> C
+            B -> A
+            B -> C
+            A -> C
+            ```
+        </details>
+        <details>
+            <summary>4 disks</summary>
+            ```
+            A -> B
+            A -> C
+            B -> C
+            A -> B
+            C -> A
+            C -> B
+            A -> B
+            A -> C
+            B -> C
+            B -> A
+            C -> A
+            B -> C
+            A -> B
+            A -> C
+            B -> C
+            ```
+        </details>
+    </div>
+
+    <p>
+        it's a bit hard to notice, but there are three key observations to make here:
+    </p>
+    <ol>
+        <li>for `n` disks, there's \(2^n-1\) moves ALWAYS.</li>
+        <li>the middle move is always `A -> C`</li>
+        <li>
+            this is the big one: the top half & bottom half of each solution is a transformation
+            of the previous solution
+        </li>
+    </ol>
+
+    <p>
+        what do i mean by the third point? well, if you squint real hard, you can see that the top
+        part of each solution (the part <i>before</i> the `A -> C`) is a sort of "mapping" of the previous solution
+    </p>
+    <p>
+        `A -> B` gets transformed to `A -> C`, `B -> C` gets transformed to `C -> B`, and there's a bunch
+        of other rules that i could go over
+        <br>
+        similar rules apply for the bottom part, it's just mixed around a bit
+    </p>
+
+    <p>
+        this basically solves the problem!<br>
+        we just have to recurse all the way to the problem with 1 disk, and then slowly transform our solutions
+        and go from there!
+    </p>
+
+    <p>
+        and without further ado, here's the code
+    </p>
+</div>
+
+<script src="../../inline_code.js"></script>
+
+<script src="../../init.js"></script>
+<script>
+    ARGS.init({"file": "Hanoi.java"});
+</script>
+<script src="../../load_code.js"></script>
+
+<div id="code"></div>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
