@@ -109,7 +109,8 @@
     ```
 
     <p>
-        we have a base case of complete_ways[par_amt][par_amt] = 1, and the recursion relation is p simple as well:
+        we have a base case of <code class="language-py">complete_ways[par_amt][par_amt] = 1</code>,
+        and the recursion relation is p simple as well:
     </p>
 
     <pre><code class="language-py">complete_ways[o][c] = complete_ways[o + 1][c] + complete_ways[o][c + 1]</code></pre>
