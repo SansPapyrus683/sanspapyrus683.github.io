@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../../lib/prism/prism.css">
+
+    <title>fair cut</title>
+</head>
+
+<body>
+
+<p><a href="../../../index.html">back to home</a></p>
+
+<p><a href="https://atcoder.jp/contests/abc215/tasks/abc215_e">problem link</a></p>
+
+<div id="title">
+    <h1>atcoder chain contestant</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        i should probably actually start porting my gists
+    </p>
+    <p>
+        anyways, new problem, new sussy official code, you know the drill by now
+    </p>
+    <p>
+        it asks for a string of max len 1000 and <b><i>max 10 char types</i></b> how many
+        subsequences of the string have all the same characters together
+    </p>
+    <p>
+        so right off the bat given that there's a really small bound we know that
+        this is bitwise dp<br>
+        (aka we have to solve a problem on all subsets of <i>something</i>)
+    </p>
+    <p>
+        i know what you're thinking
+        (probably, idk i'm not anya from spy x family
+        [btw watch it it's a good anime that's still airing rn omg she's so cute])
+    </p>
+    <blockquote>
+        sooo we just frickin define it as
+        ```
+        dp[subset] = # of valid subsequences given that we
+                     only think abt the characters in the subset?
+        ```
+    </blockquote>
+    <p>
+        ok buddy, i'll take you up on that offer<br>
+    </p>
+    <p>
+        but like if that's the case, why would they make the number of char types <i>10</i> instead of <i>20</i>?
+        and even more important is <b>how the everloving heck are we going to transition?</b>
+    </p>
+    <p>
+        (btw that was a rhetorical question i don't think there's a way)<br>
+        usually when you have problems transitioning a way to remedy it is to add another dimension
+        to your dp array
+    </p>
+    <p>
+        so lemme just add something to your dp real quick
+        ```
+        dp[subset][char_num] = # of valid subsequences given that:
+                                1. we only use the characters in the subset
+                                2. we only think about the first char_num characters
+        ```
+    </p>
+    <p>
+        there! that should make it much, much easier to transition<br>
+    </p>
+
+    <hr>
+
+    <p>
+        so if you forgot, with bitwise dp we remove each element from the current subset & see
+        how the previous subset without said element affects the current subset
+    </p>
+    <p>
+        so i hope it's evident enough that given this array, you know that to transition we do this:
+    </p>
+    <details>
+        <summary>click this for the idea, i'll let you think a little</summary>
+        <ol>
+            <li>iterate through all current elements in the subset</li>
+            <li>
+                see how many ways there are if we tack on the removed element to the end of all subsequences
+                of the <i>previous</i> subset
+            </li>
+        </ol>
+    </details>
+
+    <hr>
+
+    <p>
+        armed with this general idea, we now arrive at our main challenge:
+        we have an array like so:
+        ```
+        prev[i] = # of valid subsequences of a prev subset
+                  given that only the first i chars are considered
+        ```
+        and now we have to create a new array that we're going to add on to
+        our current subset array that i'll define like so:
+        ```
+        curr[i] = # of valid subsequences with that prev subset and our current character
+                  guaranteed to be at the end (or just not there at all, that's also an option)
+                  (also given that only the first i chars are considered)
+        ```
+    </p>
+    <p>
+        gonna be honest, it's kinda (well it was really hard for me) to come up with an
+        actual relation between these two arrays without actually coding up some examples
+        <br>
+        so now would be a good time to just code it up yourself<br>
+        or don't<br>
+        if you're here you've probably given up entirely tbh
+    </p>
+
+    <p>
+        but anyways, the structure of our array relation<br>
+        we iterate through all characters & there's 3 cases<br>
+        (btw i defined the current index to be `at` in the editorial, diff from in the code)
+    </p>
+    <ol>
+        <li>
+            isn't even <i>in</i> the subset we're processing, bruh<br>
+            in that case we just set `curr[at] = curr[at - 1]` and move on with our day
+        </li>
+        <li>
+            is the character that we plan to tack on to the end!<br>
+            this is a completely new character that `prev` has no goddamn clue about<br>
+            for this case, we do `curr[at] = 2 * curr[at - 1] + 1`- we either tack it onto the end
+            or we don't, and there's another choice where we start a completely new subsequence with
+            that current character
+        </li>
+        <li>
+            or it's just part of the previous subset we're processing<br>
+            in that case it's this thing:<br>
+            `curr[at] = curr[at - 1] + prev[at] - prev[at - 1]`<br>
+            tbh forgot why it is this way lmao, i think i figured this out just by looking
+            at some examples<br>
+            a plausible explanation is we add the previous ones and the ones the previous
+            subset has got figured out<br>
+            but we overcounted the ones the `prev` <b>AND</b> `curr` have figured out,
+            so we subtract `prev[at - 1]`
+        </li>
+    </ol>
+
+    <p>
+        so now we can just add `curr` onto our array and move on, right?<br>
+        yeah... turns out by doing that we overcount and have to subtract `prev` from
+        the array as well<br>
+        this is so that we count the ones that actually have the current character-
+        the others ones are handled by the other characters we've iterated or are going
+        to iterate through
+    </p>
+
+    <p>
+        phew, finally done! code here:
+    </p>
+</div>
+
+<script src="../../inline_code.js"></script>
+
+<script src="../../init.js"></script>
+<script>
+    ARGS.init({"file": "sol.cpp"});
+</script>
+<script src="../../load_code.js"></script>
+
+<div id="code"></div>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

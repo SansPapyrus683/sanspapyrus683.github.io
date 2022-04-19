@@ -67,6 +67,10 @@ details {
     box-shadow: 0 .1rem 1rem -.5rem rgba(0, 0, 0, .4);
     border-radius: 5px;
     overflow: hidden;
+
+    --pad-amt: 4%;
+    padding-left: var(--pad-amt);
+    padding-right: var(--pad-amt);
 }
 
 summary {
@@ -75,6 +79,8 @@ summary {
     padding: 1rem 1rem 1rem 2.2rem;
     position: relative;
     cursor: pointer;
+    margin-left: calc(-1 * var(--pad-amt));
+    margin-right: calc(-1 * var(--pad-amt));
 }
 
 summary:before {
