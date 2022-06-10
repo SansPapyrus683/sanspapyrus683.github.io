@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../../lib/prism/prism.css">
+
+    <title>mountain time</title>
+</head>
+
+<body>
+
+<p><a href="../../../index.html">back to home</a></p>
+
+<p><a href="https://judge.yosupo.jp/problem/maximum_independent_set">problem link</a></p>
+
+<div id="title">
+    <h1>max independent set</h1>
+</div>
+
+<div id="editorial">
+    <p>oh god <i>*shudders*</i></p>
+    <p>this problem was a debugging <b><i>nightmare</i></b></p>
+
+    <p>
+        so the first thing i did was go to the
+        <a href="https://en.wikipedia.org/wiki/Maximal_independent_set">wikipedia page</a>
+        for wth an independent set actually was, and it did not disappoint
+        <br/>
+        scrolling down a little we can see that this problem is equivalent to
+        the <a href="https://en.wikipedia.org/wiki/Clique_problem">clique problem</a>
+        on the <a href="https://en.wikipedia.org/wiki/Complement_graph">complement graph</a>
+    </p>
+
+    <p>
+        so from here on out i'll just be talking about the maximum clique problem instead,
+        it makes things a tad bit easier to explain
+    </p>
+
+    <p>
+        anyways, we have \( n \leq 40 \)! <br/>
+        this probably means that we have to split crap in 2 then merge somehow... <br/>
+        if you want some other problems that are like this you can go
+        <a href="https://usaco.guide/gold/meet-in-the-middle">here</a> btw
+        <br/>
+        (or it means \( \mathcal{O}(n^5) \) or something but the chance of
+        that is lesser than my dad coming home with milk)
+    </p>
+
+    <p>
+        so whatever, let's just go through all subsets in half of the total
+        graph and see what happens
+    </p>
+    <p>
+        so here's our halfway dp-
+        ```
+        dp[ss] = max clique if we can only use the nodes specified in ss (subset)
+        ```
+        note that another option would be
+        ```
+        dp[ss] = do all the nodes in the ss form a clique?
+        ```
+        but it can be seen later on that this definition sucks balls when we
+        try combining the 2 subsets
+    </p>
+    <p>
+        once we have the definition, we can fill it up with brute force-
+        i'll leave it to the code to explain how that works
+    </p>
+
+    <hr/>
+
+    <p>
+        so now we have 2 of these `dp` things <br/>
+        so how can we combine them? <br/>
+        for any subset, we need to know all the nodes in the other half
+        that could be "compatible", which in this case means
+        that they're connected to literally every node in our current subset
+    </p>
+    <p>
+        this might seem like a daunting task, but it actually isn't that
+        bad if you know how bitwise ops work<br/>
+        like the brute force, how this works is in the code
+    </p>
+
+    <p>
+        so we have a subset and another subset of all the nodes in the
+        other half that it's compatible with<br/>
+        we can then get a candidate for the max clique with
+        `dp1[ss1] + dp2[ss2]` and then go!
+    </p>
+</div>
+
+<script src="../../inline_code.js"></script>
+
+<script src="../../init.js"></script>
+<script>
+    ARGS.init({"file": "sol.cpp"});
+</script>
+<script src="../../load_code.js"></script>
+
+<div id="code"></div>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

@@ -29,9 +29,9 @@
 
     <p>
         the problem itself is actually kinda simple
-        <br>
+        <br/>
         it gives you n, and asks you to find the element at the ith index in a sorted list of all balanced parenthesis
-        <br>
+        <br/>
         so like if n was 3, the list would be this:
     </p>
     ```py
@@ -49,7 +49,7 @@
     <p>
         so let's build the parenthesis one by one, using
         <code class="language-py">bal_parens(3, 2)</code> as an example
-        <br>
+        <br/>
         we start with an empty string with an opening parenthesis (since it has to start w/ one):
     </p>
 
@@ -63,9 +63,9 @@
     <p>
         well, notice that if we add a `)`, we've limited ourselves to only being able to
         make the last 2 elements of the list
-        <br>
+        <br/>
         (remember that the list is sorted in alphabetical order, so we can make this assumption)
-        <br>
+        <br/>
         we want the 3rd element, so it's obvious why we can't add a `)`- we have to add a `(`
     </p>
 
@@ -76,11 +76,11 @@
 
     <p>
         now onto the next choice- another `(` or a `)`?
-        <br>
+        <br/>
         we do the calculations again
-        <br>
+        <br/>
         do we want the first element, or the last 2 elements?
-        <br>
+        <br/>
         we def want the last 2, so let's go with those, subtracting 1 from our index
     </p>
 
@@ -91,9 +91,9 @@
     <p>
         now we just need a way to quickly compute how many ways there are to compute the # of ways to complete a set of
         parenthesis given the # of opening parenthesis and the # of closing parenthesis
-        <br>
+        <br/>
         it's a good thing this can be doable with simple dp-
-        <br>
+        <br/>
         let <code class="language-py">complete_ways[o][c]</code> be the # of ways to complete a par string
         given `o` opening & `c` closing parenthesis
     </p>

@@ -31,7 +31,7 @@
     </p>
     <p>
         so right off the bat given that there's a really small bound we know that
-        this is bitwise dp<br>
+        this is bitwise dp<br/>
         (aka we have to solve a problem on all subsets of <i>something</i>)
     </p>
     <p>
@@ -47,14 +47,14 @@
         ```
     </blockquote>
     <p>
-        ok buddy, i'll take you up on that offer<br>
+        ok buddy, i'll take you up on that offer<br/>
     </p>
     <p>
         but like if that's the case, why would they make the number of char types <i>10</i> instead of <i>20</i>?
         and even more important is <b>how the everloving heck are we going to transition?</b>
     </p>
     <p>
-        (btw that was a rhetorical question i don't think there's a way)<br>
+        (btw that was a rhetorical question i don't think there's a way)<br/>
         usually when you have problems transitioning a way to remedy it is to add another dimension
         to your dp array
     </p>
@@ -67,10 +67,10 @@
         ```
     </p>
     <p>
-        there! that should make it much, much easier to transition<br>
+        there! that should make it much, much easier to transition<br/>
     </p>
 
-    <hr>
+    <hr/>
 
     <p>
         so if you forgot, with bitwise dp we remove each element from the current subset & see
@@ -90,7 +90,7 @@
         </ol>
     </details>
 
-    <hr>
+    <hr/>
 
     <p>
         armed with this general idea, we now arrive at our main challenge:
@@ -110,46 +110,46 @@
     <p>
         gonna be honest, it's kinda (well it was really hard for me) to come up with an
         actual relation between these two arrays without actually coding up some examples
-        <br>
-        so now would be a good time to just code it up yourself<br>
-        or don't<br>
+        <br/>
+        so now would be a good time to just code it up yourself<br/>
+        or don't<br/>
         if you're here you've probably given up entirely tbh
     </p>
 
     <p>
-        but anyways, the structure of our array relation<br>
-        we iterate through all characters & there's 3 cases<br>
+        but anyways, the structure of our array relation<br/>
+        we iterate through all characters & there's 3 cases<br/>
         (btw i defined the current index to be `at` in the editorial, diff from in the code)
     </p>
     <ol>
         <li>
-            isn't even <i>in</i> the subset we're processing, bruh<br>
+            isn't even <i>in</i> the subset we're processing, bruh<br/>
             in that case we just set `curr[at] = curr[at - 1]` and move on with our day
         </li>
         <li>
-            is the character that we plan to tack on to the end!<br>
-            this is a completely new character that `prev` has no goddamn clue about<br>
+            is the character that we plan to tack on to the end!<br/>
+            this is a completely new character that `prev` has no goddamn clue about<br/>
             for this case, we do `curr[at] = 2 * curr[at - 1] + 1`- we either tack it onto the end
             or we don't, and there's another choice where we start a completely new subsequence with
             that current character
         </li>
         <li>
-            or it's just part of the previous subset we're processing<br>
-            in that case it's this thing:<br>
-            `curr[at] = curr[at - 1] + prev[at] - prev[at - 1]`<br>
+            or it's just part of the previous subset we're processing<br/>
+            in that case it's this thing:<br/>
+            `curr[at] = curr[at - 1] + prev[at] - prev[at - 1]`<br/>
             tbh forgot why it is this way lmao, i think i figured this out just by looking
-            at some examples<br>
+            at some examples<br/>
             a plausible explanation is we add the previous ones and the ones the previous
-            subset has got figured out<br>
+            subset has got figured out<br/>
             but we overcounted the ones the `prev` <b>AND</b> `curr` have figured out,
             so we subtract `prev[at - 1]`
         </li>
     </ol>
 
     <p>
-        so now we can just add `curr` onto our array and move on, right?<br>
+        so now we can just add `curr` onto our array and move on, right?<br/>
         yeah... turns out by doing that we overcount and have to subtract `prev` from
-        the array as well<br>
+        the array as well<br/>
         this is so that we count the ones that actually have the current character-
         the others ones are handled by the other characters we've iterated or are going
         to iterate through
