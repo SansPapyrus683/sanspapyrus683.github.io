@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../../../style-bs/css/fancy.css">
+  <link rel="stylesheet" href="../../../lib/prism/prism.css">
+
+  <title>balanced parenthesis</title>
+</head>
+
+<body>
+
+<p><a href="../../../index.html">back to home</a></p>
+
+<p><a href="http://www.usaco.org/index.php?page=viewproblem2&cpid=1160">problem link</a></p>
+
+<div id="title">
+  <h1>usaco silver convoluted intervals</h1>
+</div>
+
+<div id="editorial">
+  just a port of <a href="https://gist.github.com/SansPapyrus683/8dd1272850bef002d239e65e2d49edc7">this</a>
+  editorial on gists, been ages since i've done some actual problems
+
+  <p>
+    my friends kept on asking me for help on this one silver problem, and to be fair, it is pretty hard
+    the fact that benq's editorial reads like some post-college math paper doesn't help either
+  </p>
+
+  <p>
+    (my solution requires knowledge of prefix sums tho)
+  </p>
+
+  <p>
+    but without further ado, here's my solution<br/>
+    we have a crap ton of intervals (between 0 and 5000, this will come in use later)<br/>
+    and for...each number in the range...0 to 10k, we want...the number of pairs of intervals whose
+    start values sum to at most that number and ends sum to at least that number? wth, benq?
+  </p>
+
+  <p>
+    now the pleb's method would be a standard brute force to iterate through each number and then legit
+    go through all pairs of intervals to see what the answer is- that's \(O(M \cdot N^2)\), which is def too slow
+    <b>ahahahah</b>
+  </p>
+
+  <p>
+    tbh the main reason this problem's so hard is bc it just... seems too abstract, yknow?<br/>
+    so let's try and make it, well, not so abstract.<br/>
+    let's first think about it from the interval pair's perspective<br/>
+    we'll use the sample input's `[1, 3]` and `[2, 5]` as our example<br/>
+  </p>
+
+  <p>
+    they sum to the interval `[3, 8]`<br/>
+    notice! that this pair contributes exactly 1 to every answer within `[3, 8]`<br/>
+    what this means is that <i>because this interval exists</i>,
+    every \(k\) value in `[3, 8]` is now 1 greater<br/>
+    and this is exactly the case for all the other interval pairs<br/>
+    try it yourself, i swear it works<br/>
+  </p>
+
+  <p>
+    now we can just iterate through all interval pairs and do a prefix sum thing at the end to
+    get all the numbers we need in one fell swoop in ...\(O(M + N^2)\)? that's kinda better? i guess?<br/>
+    look i swear this works, we just need to iterate through all pairs w/o iterating through all the pairs<br/>
+    i know it's hard, but there is a method to do it<br/>
+  </p>
+
+  <p>
+    this is where the intervals being less than 5000 comes into play<br/>
+    ok so first of all, we just need to increment the start & end (because it's prefix sums)<br/>
+    because of this, let's try processing multiple start-pairs and multiple end-pairs at the same time!<br/>
+    this code below has `startNum` and `endNum`- the first keeps track of the number
+    of intervals that start at a given location while the second does the same for the endings
+  </p>
+
+  <p>
+    now we can just iterate through all pairs of starting locations and all pairs of
+    ending locations and increment our prefix sums array accordingly<br/>
+    note that this does treat the start and end of each interval almost like completely separately,
+    but it still works<br/>
+    and now we have our final complexity of O(N + M^2)!
+  </p>
+
+  <p>
+    implementation here:
+  </p>
+</div>
+
+<script src="../../inline_code.js"></script>
+
+<script src="../../init.js"></script>
+<script>
+  ARGS.init({"file": "ConvIntervals.java"});
+</script>
+<script src="../../load_code.js"></script>
+
+<div id="code"></div>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
