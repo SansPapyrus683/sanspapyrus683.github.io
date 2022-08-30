@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+
+    <title>bruh</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<div id="title">
+    <h1>list maximum perf testing</h1>
+</div>
+
+<div id="editorial">
+    <p>
+    so i was watching this video
+    </p>
+
+    <p>
+        <iframe width="400" height="225" src="https://www.youtube.com/embed/0MhVkKHYUAY" title="New Python Coders Be Like..." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </p>
+
+    <p>
+        i was like "no way a for loop can be that much slower than `max()`"<br/>
+        so i decided to do some simple performance testing based on the file in the vid<br/>
+        <b>YES, I KNOW THIS VIDEO IS A JOKE, I'M JUST HYPERFIXATING ON IT FOR SOME TIME</b>
+    </p>
+
+    <p>
+        so the video gives a 5 kb file which magically turns into a 12.7 kb file, so i'm using 12.7 kb as the size<br/>
+        each number is about 22, 25 characters long, but i'll just use 20 chars to be generous
+    </p>
+
+    <p>
+        now a character is a single byte, so there's \(\frac{12.7 \cdot 10^3}{20 \cdot 1}=635\) numbers
+    </p>
+
+    <p>
+        and i'm already like "no goddamn way his code is this slow"<br/>
+        but i decided to test it anyway with ipython and see for myself
+    </p>
+
+    ```py
+    In [1]: import random
+
+    In [2]: SIZE = 635
+
+    In [3]: %%timeit
+    ...: arr = [random.uniform(0, 200) for _ in range(SIZE)]
+    ...: max_value = arr[0]
+    ...: for i in range(1, len(arr)):
+    ...:     if arr[i] > max_value:
+    ...:         max_value = arr[i]
+    ...:
+    138 µs ± 2.59 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+    ```
+
+    <p>
+        yeah, that's way faster than what's shown in the video<br/>
+        but the discord user "P Solver" advocates for using `max()`, so i wanted to see how much faster that actually
+        was just for the sake of it
+    </p>
+
+    ```py
+    In [4]: %%timeit
+    ...: arr = [random.uniform(0, 200) for _ in range(SIZE)]
+    ...: max_value = max(arr)
+    119 µs ± 536 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+    ```
+
+    <p>
+        hm, only faster by a couple of microseconds <br/>
+        but that's including the array generation (to simulate parsing the array, probably bad but) <br/>
+        ok let's just try raw maximum calculation
+    </p>
+
+    ```py
+    In [5]: %%timeit
+    ...: max_value = arr[0]
+    ...: for i in range(1, len(arr)):
+    ...:     if arr[i] > max_value:
+    ...:         max_value = arr[i]
+    ...:
+    25.5 µs ± 477 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+
+    In [6]: %timeit max_value = max(arr)
+    5.12 µs ± 11.4 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+    ```
+
+    <p>
+        ok yeah lmao i stand corrected <br/>
+        `max()` is goddamn <i><b>five times faster</b></i> than the pitiful loop
+    </p>
+
+    <p>
+        hate to admit it, but p solver was right <br/>
+        oh well, life isn't always fair
+    </p>
+
+    <p>
+        and yeah that's the whole post, nothing else lmfao
+    </p>
+</div>
+
+<script src="../inline_code.js"></script>
+<script src="../../lib/prism/prism.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

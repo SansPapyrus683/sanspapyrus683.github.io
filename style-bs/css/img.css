@@ -1,0 +1,5 @@
+/* sauce: https://teamtreehouse.com/community/how-to-display-image-at-half-the-size */
+img.half-img {
+    width: 50%;
+    height: 50%;
+}

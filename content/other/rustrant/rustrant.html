@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../../style-bs/css/img.css">
+    <link rel="stylesheet" href="../../../lib/prism/prism.css">
+
+    <title>rust...</title>
+</head>
+
+<body>
+
+<p><a href="../../../index.html">back to home</a></p>
+
+<div id="title">
+    <h1>rust is a language</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        obviously just my opinion, please don't dox me
+    </p>
+
+    <p>
+        over the summer i got into rust<br/>
+        not of my own volition, but because my friends said it was a great tool for building CLIs<br/>
+        and i was thinking of building a CLI for automatically running, checking, and diffing
+        usaco + cf solutions<br/>
+        so like an absolute buffoon, i went along with it for whatever reason<br/>
+    </p>
+
+    <p>
+        the very next day, they just disappeared and left me,
+        the only one without any prior rust experience, to rot in backlog hell<br/>
+    </p>
+
+    <p>
+        "well piss", i thought, "but frick it, i made a goddamned commitment and i'm going to do this"
+    </p>
+    <p>
+        what a mistake that was
+    </p>
+    <img src="img/crustymf.png" alt="the bane of my existence" class="half-img">
+    <p>
+        <i>god, i hate this cheeky little crab with a vengeance</i>
+    </p>
+
+    <p>
+        rust starts out pretty fine, actually<br/>
+        (btw if anyone's curious i learned it from <a href="https://doc.rust-lang.org/book">here</a>)
+    </p>
+    ```rust
+    fn main() {
+        println!("hello world!");
+    }
+    ```
+    <p>
+        alright, the exclamation mark seems a bit weird, but other than that it's just a standard language right?<br/>
+        <small>right?</small>
+    </p>
+
+    <p>
+        but anyways, rust does has some pretty neat qol stuff, like:
+    </p>
+    <ol>
+        <li>no parenthesis for control flow statements</li>
+        <li>builtin nice tuple support (ahem, c++, <i><b>ahem</b></i>)</li>
+        <li>sick range syntax with inclusivity/exclusivity</li>
+        <li>dynamic type inference with some exceptions,
+            but still it's really good for a statically typed langauge like rust</li>
+    </ol>
+    ```rust
+    for i in 1..=10 {
+        let nice_tuple = (1, 'c');
+        let x = nice_tuple.0;
+        let y = nice_tuple.1;
+    }
+    ```
+    <p>
+        yeah, pretty cool!
+    </p>
+
+    <p>
+        but <i>just</i> as you think it's all fine & dandy, and think you're ready
+        to take on functions:
+    </p>
+    ```rust
+    fn bruh_moment(x: String) {
+        let y = x;
+    }
+
+    fn main() {
+        let x = "bro...".to_string();  //  <- also very stupid
+        bruh_moment(x);
+        dbg!(x);
+    }
+    ```
+
+    <p>
+        rust just punches you in the face with THIS:
+    </p>
+    ```rust
+    error[E0382]: use of moved value: `x`
+    --> src/main.rs:8:10
+      |
+    6 |     let x = "bro...".to_string();
+      |         - move occurs because `x` has type `String`, which does not implement the `Copy` trait
+    7 |     bruh_moment(x);
+      |                 - value moved here
+    8 |     dbg!(x);
+      |          ^ value used here after move
+
+    For more information about this error, try `rustc --explain E0382`.
+    ```
+
+    <p>
+        <b><i>WHAT THE HECK??</i></b>
+    </p>
+
+    <p>
+        TURNS OUT, if you just define a raw type (other than primitives), the function TAKES OWNERSHIP
+        of the value and you just CAN'T USE IT AGAIN
+    </p>
+    <p>
+        but at least in this sample code snippet, you can fix it by doing this:
+    </p>
+    ```rust
+    fn bruh_moment(x: &String) {
+        let y = x;
+    }
+
+    fn main() {
+        let x = "bro...".to_string();
+        bruh_moment(&x);
+        dbg!(x);
+    }
+    ```
+
+    <p>
+        thus embodies the essence of rust:
+    </p>
+    <blockquote>
+        it's memory safe, but at what cost?
+    </blockquote>
+
+    <p>
+        anyways, i decided to practice rust by redoing advent of code 2015, which i'd previously done in python <br/>
+        (you can find the src
+        <a href="https://github.com/SansPapyrus683/advent-of-code/tree/main/y2015/src/bin">here</a>)
+    </p>
+
+    <p>
+        and thus began a series of interactions with the rust compiler which mostly went like this:
+    </p>
+    <img src="img/bateman.jpg" alt="american psycho" class="half-img">
+
+    <p>
+        and i feel like that took away half my sanity
+    </p>
+
+    <p>
+        it's not just the ownership system- even simple stuff like converting
+        to an integer is kinda convoluted
+    </p>
+    ```rust
+    let i = "1".parse::&lt;i32&gt;().unwrap();  // bruh just give us a global function or something
+    ```
+
+    <p>
+        in fact, i've had so many problems with rust's "i'm not like other languages" style
+        that i've compiled a list of grievances (very long!!!)
+    </p>
+    <ul>
+        <li>
+            sometimes you're casually chaining a function and then this happens
+            ```rust
+            error[E0716]: temporary value dropped while borrowed
+            --> src\bin\day1.rs:4:18
+            |
+            4 |     let digits = fs::read_to_string("input/day1.txt").expect("you done messed up").trim();
+            |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^       - temporary value is freed at the end of this statement
+            |                  |
+            |                  creates a temporary which is freed while still in use
+            ...
+            7 |     for d in digits.trim().chars() {
+            |              ------------- borrow later used here
+            |
+            = note: consider using a `let` binding to create a longer lived value
+            ```
+            for a language that does have a ton of functional programming features,
+            this is a problem, to say the least
+        </li>
+        <li>
+            this is where rust's "no implicit conversion EVER" gets you
+            ```rust
+            error[E0369]: cannot subtract `char` from `char`
+            --> src\bin\day1.rs:13:35
+            |
+            13 |             total += digit_vec[i] - '0';
+            |                      ------------ ^ --- char
+            |                      |
+            |                      char
+            ```
+            you could've just given an RTE for overflow, yknow? <br/>
+            <br/>
+            even worst is when you have to do stuff like this
+            ```rust
+            (n - 4 * k.pow(2) - 3 * k, k)
+            ```
+            in this segment, `n` and `k` are `u32`'s, and you have to return an `i32` <br/>
+            yeah.... you have to cast the numbers EVERY DAMN TIME YOU USE THEM
+        </li>
+        <li>
+            rust's string system by itself is loony as all frick <br/>
+            `String`, `&str`, `&String`, `OsStr`, why the PISS are there so many types <br/>
+            and especially indexing <br/>
+            they have an `.nth()` function, but that takes linear time <br/>
+            why is it that basically EVERY OTHER LANGUAGE can do constant time string indexing but rust????
+        </li>
+        <li>
+            sometimes rust's type inference system just has a stroke for no reason at all
+            ```rust
+            let nums: Vec&lt;i32&gt; = row.split_whitespace()
+                .map(|n| n.parse::&lt;i32&gt;().unwrap_or(0))
+                .collect();
+            ```
+            WHY ARE THE TYPE ANNOTATIONS NEEDED? <br/>
+            WHAT POSSIBLE AMBIGUITY COULD THERE BE?
+        </li>
+        <li>
+            ```rust
+            let ring = (SQUARE_ID as f32).sqrt() as u32;
+            ```
+            i can't believe you have to do this just to get the floor of a square root
+        </li>
+        <li>
+            why can arrays have `i32` or `usize` as indices BUT NOT `Vec`s?
+        </li>
+        <li>
+            this is where no good ternary expression and no conversion gets you.
+            ```rust
+            ring -= if ring % 2 == 0 { 1 } else { 0 };
+            ```
+            *slow clap*
+        </li>
+        <li>
+            why is there the `&` token AND the `.as_ref()` function?
+        </li>
+        <li>
+            ```rust
+            error[E0597]: `occs` does not live long enough
+            --> src\bin\day4.rs:30:21
+            |
+            27 |         if seen.contains(&occs) {
+            |            -------------------- borrow later used here
+            ...
+            30 |         seen.insert(&occs);
+            |                     ^^^^^ borrowed value does not live long enough
+            31 |     }
+            |     - `occs` dropped here while still borrowed
+            ```
+            then. <br/>
+            just. <br/>
+            have it live long enough? <br/>
+            idk rust, this seems like a you problem
+        </li>
+        <li>
+            for some godforsaken reason you can't use external variables/generic types
+            in sub functions even though all the other languages that have nested functions support it
+        </li>
+        <li>
+            <img src="img/bloat.png" alt="bloat" class="half-img"> <br/>
+            who on god's green earth thought these functions were a good idea
+        </li>
+    </ul>
+
+    <p>
+        anyways, my main problem with rust is the sheer anxiety it gives you through how many things
+        it makes you consider when writing your code
+    </p>
+    <p>
+        actually i wouldn't say <i>problem</i>, more like just it's different,
+        and it's gonna take a hell of a long time for me to get used to it.
+    </p>
+</div>
+
+<script src="../../inline_code.js"></script>
+<script src="../../../lib/prism/prism.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

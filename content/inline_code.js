@@ -1,15 +1,15 @@
-const BLOCK_LEN = 3;
+﻿const BLOCK_LEN = 3;
 
-let editorial = document.getElementById("editorial").innerHTML;
+let text = document.getElementById("editorial").innerHTML;
 
-let newEditorial = "";
+let newText = "";
 let inlineClosing = false;
-for (let i = 0; i < editorial.length; i++) {
-    if (editorial.slice(i, i + BLOCK_LEN) === "```") {
+for (let i = 0; i < text.length; i++) {
+    if (text.slice(i, i + BLOCK_LEN) === "```") {
         let block = "";
         let j = i + BLOCK_LEN;
-        for (; editorial.slice(j, j + BLOCK_LEN) !== "```"; j++) {
-            block += editorial.charAt(j);
+        for (; text.slice(j, j + BLOCK_LEN) !== "```"; j++) {
+            block += text.charAt(j);
         }
 
         let final = "";
@@ -18,7 +18,7 @@ for (let i = 0; i < editorial.length; i++) {
             let code = "";
             let langState = true;
             for (let k = i + BLOCK_LEN; k < j; k++) {
-                let c = editorial.charAt(k);
+                let c = text.charAt(k);
                 if (c.trim() === "" && langState) {  // checks for whitespace
                     langState = false;
                 } else if (langState) {
@@ -52,22 +52,22 @@ for (let i = 0; i < editorial.length; i++) {
             for (let l of lines) {
                 final += l + "\n";
             }
-            final += "</pre></code>"
+            final += "</code></pre>"
         } else {
             final += `<pre><code class="language-">${block}</code></pre>`
         }
-        newEditorial += final;
+        newText += final;
         i = j + BLOCK_LEN - 1;
-    } else if (editorial.charAt(i) === "`") {
+    } else if (text.charAt(i) === "`") {
         if (inlineClosing) {
-            newEditorial += "</code>"
+            newText += "</code>"
         } else {
-            newEditorial += "<code class=\"inline\">"
+            newText += "<code class=\"inline\">"
         }
         inlineClosing = !inlineClosing;
     } else {
-        newEditorial += editorial.charAt(i);
+        newText += text.charAt(i);
     }
 }
 
-document.getElementById("editorial").innerHTML = newEditorial;
+document.getElementById("editorial").innerHTML = newText;
