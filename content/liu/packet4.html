@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/img.css">
+
+    <meta charset="UTF-8">
+    <title>liu packet 4</title>
+</head>
+<body>
+
+<h1>hw packet 4</h1>
+
+<h2>\(s\) & \(r^2\)</h2>
+
+<p>
+    \(s\) is the SD about the LSRL<br/>
+    interpretation: "the actual [y-context] is typically about
+    \(s\) units away from the [y-context] predicted by the LSRL"
+</p>
+
+<p>
+    \(r^2\) is the coefficient of determination<br/>
+    interpretation: "about \(r^2\)% of the variability in the
+    y-context is accounted for by the <i>least squares regression line</i>"<br/>
+    <b>you have to write the entire goddamn thing because bestie bellamy said so</b>
+</p>
+
+<h2>outliers & the LSRL</h2>
+
+<p>
+    outliers = out of pattern (large residuals)<br/>
+    later i think he said outliers = weird x-value <i>and</i> a large residual<br/>
+    horizontal outliers tilt the line, changing slope & y-intercept<br/>
+    vertical outliers just shift the line up or down, changing just the y-intercept<br/>
+    high-leverage = very high or very small <b>x-values</b><br/>
+    influential = if removed, there's huge-ass changes to the y-intercept, slope, or r-value
+</p>
+
+<p>
+    a good LSRL has low \(s_e\) & high \(r^2\)<br/>
+    some formulas he put, not sure if we have to memorize them?
+    \[b=\frac{rS_y}{S_x}\]
+    \[\bar{y}=a+b\bar{x} \therefore a=\bar{y}-b\bar{x}\]
+    (the 3 dots mean "therefore" btw)
+</p>
+
+<h2>transforming nonlinear data</h2>
+
+<table style="margin: 0 auto;">
+    <tr>
+        <td>function</td>
+        <td>plot</td>
+    </tr>
+    <tr>
+        <td>linear</td>
+        <td>\(x\) vs. \(y\)</td>
+    </tr>
+    <tr>
+        <td>power</td>
+        <td>\(\log x\) vs. \(\log y\)</td>
+    </tr>
+    <tr>
+        <td>exponential</td>
+        <td>\(x\) vs. \(\log y\)</td>
+    </tr>
+</table>
+
+<h3>predictions</h3>
+
+<p>
+    plug in \(x\) & solve for \(\hat{y}\)<br/>
+    (may need to undo a root or a log to get \(y\))<br/>
+    ex: \(10^{\log y}=10^{a+bx}\)
+</p>
+
+<h3>derivation for the power regression thing</h3>
+
+<p>
+    \[y=ax^b\]
+    \[\begin{align}
+    \log y &= \log (ax^b) \\
+    &= \log a+\log x^b \\
+    &= \log a + b\log x
+    \end{align}\]
+</p>
+
+<h2>choosing the best regression</h2>
+
+<ol>
+    <li>check scatterplots</li>
+    <li>check residual plots</li>
+    <li>check \(r^2\)</li>
+</ol>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
