@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/classes.css">
+
+    <meta charset="UTF-8">
+    <title>liu packet 3</title>
+</head>
+<body>
+
+<a href="liu_index.html">back to all liu packets</a><br/>
+<a href="../../index.html">back to home</a>
+
+<h1>hw packet 3</h1>
+
+<h2>displaying relationships: scatterplots</h2>
+
+<h3>describing a relationship (cdofs)</h3>
+
+<ol>
+    <li>context</li>
+    <li>direction (+/-/none)</li>
+    <li>outliers</li>
+    <li>form (linear/nonlinear)</li>
+    <li>strength (weak/moderate/strong)</li>
+</ol>
+
+<h3>scatterplot format</h3>
+
+<img src="img/packet3/scatterplot_template.png" alt="scatterplot template" class="half-img">
+
+<h2>displaying relationships: correlation</h2>
+
+<p>
+    \[r=\frac{\Sigma z_x z_y}{n-1}\]
+    don't know why he wrote this, probably low priority
+</p>
+
+<h3>interpreting \(r\)</h3>
+
+<p>
+    direction: +/-<br/>
+    form: always linear you silly billy<br/>
+    strength:
+</p>
+<table class="centered-border">
+    <tr>
+        <td>-1</td>
+        <td>-.8</td>
+        <td>-.5</td>
+        <td>0</td>
+        <td>.5</td>
+        <td>.8</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>strong neg</td>
+        <td>fairly strong neg</td>
+        <td>moderate neg</td>
+        <td>weak af</td>
+        <td>moderate pos</td>
+        <td>fairly strong pos</td>
+        <td>strong pos</td>
+    </tr>
+</table>
+
+<h3>properties of \(r\)</h3>
+
+<ul>
+    <li>unitless</li>
+    <li>swapping x & y gives the same val</li>
+    <li>\(r \neq \text{slope}\)</li>
+</ul>
+
+<h3>outliers</h3>
+
+<ul>
+    <li>unusual values in pattern</li>
+    <li>can strengthen or weaken \(r\) depending on if they're along the line</li>
+</ul>
+
+<h4>correlation isn't causation btw</h4>
+
+<h2>prediction, residuals, interpreting a regression line</h2>
+
+<h3>prediction</h3>
+
+\[\hat{y}=ax+b\]
+
+<ul>
+    <li>\(\hat{y}\)=<i>predicted</i> response variable</li>
+    <li>\(a\)=y-intercept</li>
+    <li>\(b\)=slope</li>
+</ul>
+
+<p>
+    be careful of extrapolation, you should <b><i>never</i></b> use it!
+</p>
+
+<h3>residuals & other stuff</h3>
+
+\[\text{residual}=\text{actual}-\text{predicted}\]
+\[\]
+
+<h3>interpretation</h3>
+
+<ul>
+    <li>y-intercept: "when \([x]=0\), the predicted [y-context] is [y-int]"</li>
+    <li>slope: "w/ each additional [x-context] the predicted [y-context] [inc/dec] by [slope]"</li>
+    <li>resid: "the actual [y-context] was [resid] [above/below] the predicted value for [x]"</li>
+</ul>
+
+<h2>lsrl & residual plots</h2>
+
+<p>
+    lsrl = least squares regression line<br/>
+    it's the line w/ the smallest sum of \([residuals]^2\)
+</p>
+
+<h2>residual plots (run linreg first btw)</h2>
+
+<h3>linear association residual plot</h3>
+<img src="img/packet3/linear_resid.png" alt="scatterplot template" class="half-img">
+
+<h3>nonlinear association residual plot</h3>
+<img src="img/packet3/nonlinear_resid.png" alt="scatterplot template" class="half-img">
+
+<p>
+    random scatter &#8594; linear association
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

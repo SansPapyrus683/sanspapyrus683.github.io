@@ -1,0 +1,16 @@
+/* sauce: https://teamtreehouse.com/community/how-to-display-image-at-half-the-size */
+img.half-img {
+    width: 50%;
+    height: 50%;
+}
+
+table.centered-border {
+    margin: 0 auto;
+    border: 1px solid #84fff2;
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px solid #84fff2;
+    padding: 1%;
+}
