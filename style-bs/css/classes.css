@@ -14,3 +14,7 @@ td {
     border: 1px solid #84fff2;
     padding: 1%;
 }
+
+span.small {
+    font-size: smaller;
+}
