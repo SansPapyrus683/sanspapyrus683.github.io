@@ -4,6 +4,13 @@ img.half-img {
     height: 50%;
 }
 
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
 table.centered-border {
     margin: 0 auto;
     border: 1px solid #84fff2;
