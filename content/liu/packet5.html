@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="../../style-bs/css/fancy.css">
-  <link rel="stylesheet" href="../../style-bs/css/classes.css">
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/classes.css">
 
-  <meta charset="UTF-8">
-  <title>liu packet 5</title>
+    <meta charset="UTF-8">
+    <title>liu packet 5</title>
 </head>
 <body>
 
@@ -18,16 +18,16 @@
 
 <h3>3 sampling methods liu gave here</h3>
 <ul>
-  <li>convenience sampling- <b>BIASED</b></li>
-  <li>voluntary response sampling- <b>BIASED</b></li>
-  <li>simple random sample (SRS)</li>
+    <li>convenience sampling- <b>BIASED</b></li>
+    <li>voluntary response sampling- <b>BIASED</b></li>
+    <li>simple random sample (SRS)</li>
 </ul>
 
 <h3>how to do SRS</h3>
 <ol>
-  <li>label individuals (assign number or put slips of paper in a hat)</li>
-  <li>rng that shit</li>
-  <li>select \(x\) of them (\(n\) is the population size)</li>
+    <li>label individuals (assign number or put slips of paper in a hat)</li>
+    <li>rng that shit</li>
+    <li>select \(x\) of them (\(n\) is the population size)</li>
 </ol>
 
 <h2>more random sampling methods (part 1)</h2>
@@ -35,30 +35,30 @@
 <h2>stratified random sample (also has the SRS acronym, idfk)</h2>
 
 <ol>
-  <li>split pop into groups (strata)- <b>preferably groups w/ similar characteristics (homogenous)</b></li>
-  <li>choose an SRS from each strata <span class="small">SRS = each member is equally likely to be chosen</span></li>
+    <li>split pop into groups (strata)- <b>preferably groups w/ similar characteristics (homogenous)</b></li>
+    <li>choose an SRS from each strata <span class="small">SRS = each member is equally likely to be chosen</span></li>
 </ol>
 
 <h2>more sampling methods (part 2)</h2>
 
 <h3>cluster sampling</h3>
 <ol>
-  <li>split population into groups</li>
-  <li>based on location (usually? idk) select random groups and sample everyone there</li>
-  <li>heterogeneous (diverse) groups good for representation</li>
+    <li>split population into groups</li>
+    <li>based on location (usually? idk) select random groups and sample everyone there</li>
+    <li>heterogeneous (diverse) groups good for representation</li>
 </ol>
 
 <h3>overview of all 3 of note</h3>
 
 <h4>stratified sampling</h4>
 
-<img class="half-img center" src="img/packet5/stratified.png" alt="stratified shit">
+<img class="half-img center" src="img/packet5/stratified.png" alt="stratified shit"/>
 
 <p>sample some from all groups (homogeneous good)</p>
 
 <h4>cluster sampling</h4>
 
-<img class="half-img center" src="img/packet5/cluster.png" alt="cluster shit">
+<img class="half-img center" src="img/packet5/cluster.png" alt="cluster shit"/>
 
 <p>sample all from chosen groups (heterogeneous good)</p>
 
@@ -69,34 +69,51 @@
 <h2>problems with sample surveys</h2>
 
 <ul>
-  <li><b>undercoverage bias:</b> when some population members are less likely to be included</li>
-  <li>
-    <b>nonresponse bias:</b>
-    when an individual is part of a sample but chooses not to respond or can't be reached
-  </li>
-  <li><b>response bias:</b> pattern of inaccurate results due to some influence (wording, interviewer, lying, etc.)</li>
-  <li>voluntary response/self-selected sample, he talked about this previously</li>
-  <li>convenience sampling, same as above</li>
+    <li><b>undercoverage bias:</b> when some population members are less likely to be included</li>
+    <li>
+        <b>nonresponse bias:</b>
+        when an individual is part of a sample but chooses not to respond or can't be reached
+    </li>
+    <li><b>response bias:</b> pattern of inaccurate results due to some influence (wording, interviewer, lying, etc.)</li>
+    <li>voluntary response/self-selected sample, he talked about this previously</li>
+    <li>convenience sampling, same as above</li>
 </ul>
 
 <h2>observational studies & experiments</h2>
 
-<img class="half-img center" src="img/packet5/causation.png" alt="causation diagram">
+<img class="half-img center" src="img/packet5/causation.png" alt="causation diagram"/>
 
 <ul>
-  <li><b>A:</b> explanatory variable- helps explain/predict B</li>
-  <li><b>B:</b> response variable- outcome being measured</li>
-  <li><b>C:</b> confounding variable- influences A & B</li>
+    <li><b>A:</b> explanatory variable- helps explain/predict B</li>
+    <li><b>B:</b> response variable- outcome being measured</li>
+    <li><b>C:</b> confounding variable- influences A & B</li>
 </ul>
 
 <h3>random fuckass definitions about experiments and stuff</h3>
 
 <ul>
-  <li><b>observational study:</b> no <u>imposed</u> treatment</li>
-  <li><b>experiment:</b> treatments imposed, allows us to show causation</li>
-  <li><b>experimental units:</b> what/who the treatment's imposed on</li>
-  <li><b>treatment:</b> what's done (OR NOT DONE) to the experimental units</li>
+    <li><b>observational study:</b> no <u>imposed</u> treatment</li>
+    <li><b>experiment:</b> treatments imposed, allows us to show causation</li>
+    <li><b>experimental units:</b> what/who the treatment's imposed on</li>
+    <li><b>treatment:</b> what's done (OR NOT DONE) to the experimental units</li>
 </ul>
+
+<h2>randomized block designs</h2>
+
+<p>
+    <b>block:</b> group of experimental units that are similar-
+    different from stratify in that it's used to assign treatments, not to select units<br/>
+    so essentially you stratify, <i>then</i> block
+</p>
+<p><b>randomized block design:</b> separate subjects and then RNG assign within each block<br/></p>
+
+<b>matched pairs design:</b>
+<ul>
+    <li>subjects are paired (blocks of size 2) and then randomly assigned to a treatment</li>
+    <li><b>OR:</b> each subject receives 2 treatments (ORDER MUST BE RANDOMIZED)</li>
+</ul>
+
+<img class="half-img center" src="img/packet5/sat_exp.png" alt="diagram for the front of the hw packet"/>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
