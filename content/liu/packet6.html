@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="../../style-bs/css/fancy.css">
-  <link rel="stylesheet" href="../../style-bs/css/classes.css">
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/classes.css">
 
-  <meta charset="UTF-8">
-  <title>liu packet 5</title>
+    <meta charset="UTF-8">
+    <title>liu packet 5</title>
 </head>
 <body>
 
@@ -18,16 +18,51 @@
 
 <h3>probability</h3>
 <ul>
-  <li><i><b>long run</b></i> relative freq</li>
-  <li>it's always between 0 & 1 inclusive</li>
-  <li>short term &#8594; unpredictable</li>
-  <li>long term &#8594; predictable</li>
+    <li><i><b>long run</b></i> relative freq</li>
+    <li>it's always between 0 & 1 inclusive</li>
+    <li>short term &#8594; unpredictable</li>
+    <li>long term &#8594; predictable</li>
 </ul>
 
 <h3>law of large #'s</h3>
 
-if we do something a shitton of times, the <i><b>proportion</b></i> of the desired outcomes
-will approach the <i><b>probability</b></i> of the desired outcome
+<p>
+    if we do something a shitton of times, the <i><b>proportion</b></i> of the desired outcomes
+    will approach the <i><b>probability</b></i> of the desired outcome
+</p>
+
+<h2>simulation</h2>
+
+<p>
+    <b>simulation:</b> imitation of a chance behavior based on a model that accurately reflects
+    the situation<br/>
+    ex: dice, coin flip, applet, rng, <s>gacha games</s>
+</p>
+
+<h3>sim process:</h3>
+<ol>
+    <li>describe how you'll simulate 1 trial/repetition</li>
+    <li>perform a shitton of em</li>
+    <li>use the results to answer the question</li>
+</ol>
+
+<h2>basic probability rules</h2>
+
+<h3>probability model</h3>
+<ul>
+    <li>lists all outcomes & their respective probabilities</li>
+    <li>must add to 1</li>
+    <li>each chance is between 0 & 1</li>
+</ul>
+
+<h3>random stuff</h3>
+<ul>
+    <li>\(P(E)=\) chance of \(E\) occurring</li>
+    <li>complement = chance of something <b><i>NOT</i></b> happening</li>
+    <li>\(P(E^C)=1-P(E)\)</li>
+    <li>mutually exclusive/disjoint = events can't occur together</li>
+    <li>addition rule: \(P(A\text{ or }B)=P(A)+P(B)\), given that A & B are mutually exclusive</li>
+</ul>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
