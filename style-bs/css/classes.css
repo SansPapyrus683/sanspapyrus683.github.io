@@ -17,9 +17,23 @@ table.centered-border {
     border-collapse: collapse;
 }
 
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
 td {
+    padding: 5px;
+    text-align: center;
+}
+
+td.solid-border {
     border: 1px solid #84fff2;
     padding: 1%;
+}
+
+td.border-top {
+    border: 1px solid #84fff2;
 }
 
 span.small {

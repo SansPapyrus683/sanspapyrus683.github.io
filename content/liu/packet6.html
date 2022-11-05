@@ -64,6 +64,57 @@
     <li>addition rule: \(P(A\text{ or }B)=P(A)+P(B)\), given that A & B are mutually exclusive</li>
 </ul>
 
+<h2>venn diagrams, general addition rule</h2>
+
+<h3>2 way table (contingency table)</h3>
+
+<!-- credit to arch for doing this -->
+<table>
+    <tbody>
+    <tr>
+        <td></td>
+        <td>B</td>
+        <td>B<sup>c</sup></td>
+        <td>total</td>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td class="border-top">1</td>
+        <td class="border-top">2</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>A<sup>c</sup></td>
+        <td class="border-top">3</td>
+        <td class="border-top">4</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>total</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>venn diagram</h3>
+
+<img src="img/packet6/venn.png" alt="venn diagram shit" class="half-img center"/>
+
+<h3>general addition rule</h3>
+
+\[P(A\text{ or }B)=P(A)+P(B)-P(A\text{ and }B)\]
+
+<ul>
+    <li>\(P(A\text{ or }B)=P(A \cup B)\) "union"</li>
+    <li>\(P(A\text{ and }B)=P(A \cap B)\) "intersection"</li>
+</ul>
+
+<p>
+    if A & B are disjoint, \(P(A \cap B)=0 \rightarrow P(A \cup B)=P(A)+P(B)\)
+</p>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
