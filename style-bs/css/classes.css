@@ -34,3 +34,7 @@ td.border {
 span.small {
     font-size: smaller;
 }
+
+span.big {
+    font-size: larger
+}
