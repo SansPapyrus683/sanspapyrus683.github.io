@@ -76,7 +76,20 @@
 
 <p>
     quick thing: apparently you can use the calculator syntax, but you have to show what's happening:
-    \[\text{binomcdf}(n=5, p=0.25, X=2)\]
+    \[P(X \leq 2)=\text{binomcdf}(n=5, p=0.25, X=2)\]
+</p>
+
+<h2>binomial random variables part 3: what the fuck?</h2>
+
+<p>
+    <b>10% condition:</b> if we do a random sample w/o replacement of size \(n\)
+    from a population of size \(N\) and \(n \leq 0.10N\), it's close enough that we can just
+    assume a binomial distribution, aka fuck it, i'm too lazy
+</p>
+
+<p>
+    <b>large counts condition:</b> we can use a normal distr. to model a binomial distr.
+    if \(np \geq 10\) (expected # of successes) and \(n(1-p) \geq 10\) (expected # of failures)
 </p>
 
 <script src="../inline_code.js"></script>
