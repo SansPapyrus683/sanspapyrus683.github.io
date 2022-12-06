@@ -92,6 +92,26 @@
     if \(np \geq 10\) (expected # of successes) and \(n(1-p) \geq 10\) (expected # of failures)
 </p>
 
+<h2>the geometric distribution</h2>
+
+<h3>requirements</h3>
+
+<ul>
+    <li><b><span class="big">B</span></b>inary: same as the B in the binomial</li>
+    <li><b><span class="big">I</span></b>ndependent: same as the I in the binomial</li>
+    <li><b><span class="big">T</span></b>rials until success: yeah, just make sure that's what a var is measuring</li>
+    <li><b><span class="big">S</span></b>ame probability of success: same as the S in binomial</li>
+</ul>
+
+<h3>attributes</h3>
+
+<ul>
+    <li><b>geometric formula:</b> \(P(X=x)=(1-p)^{x-1}p\)</li>
+    <li><b>shape:</b> right-skewed</li>
+    <li><b>center:</b> \(\mu_x=\frac{1}{p}\)</li>
+    <li><b>variability:</b> \(\sigma_x=\frac{\sqrt{1-p}}{p}\)</li>
+</ul>
+
 <script src="../inline_code.js"></script>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
