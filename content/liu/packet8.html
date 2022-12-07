@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/classes.css">
+
+    <meta charset="UTF-8">
+    <title>liu packet 8</title>
+</head>
+<body>
+
+<a href="liu_index.html">back to all liu packets</a><br/>
+<a href="../../index.html">back to home</a>
+
+<h1>hw packet 8</h1>
+
+<h2>binomial random variables</h2>
+
+<h3>requirements for a variable to have a binomial dist.</h3>
+<ul>
+    <li>binary: success or failure</li>
+    <li>independent: events don't effect each other</li>
+    <li>fixed # of trials</li>
+    <li>some chance of success for each trial</li>
+</ul>
+
+<p>
+    <b>all have to be satisfied for it to be a binomial dist.</b>
+</p>
+
+<h3>binomial formula</h3>
+
+\[P(X=k)=\binom{n}{k} \cdot p^k \cdot (1-p)^{n-k}\]
+
+<ul>
+    <li>n = # of trials</li>
+    <li>k = # of successes</li>
+    <li>p = chance of success for a single trial</li>
+    <li>1-p = chance of failure for a single trial</li>
+    <li>n-k = # of failures</li>
+</ul>
+
+<h2>binomial random variables part 2: electric boogaloo</h2>
+
+<h3>requirements (what you write when justifying whether it's a binomial distribution)</h3>
+
+<p>
+    i'm gonna use what he wrote for the pop quiz as an example
+</p>
+<ul>
+    <li><b><span class="big">B</span></b>inary: success &#8594; correct, failure &#8594; wrong</li>
+    <li><b><span class="big">I</span></b>ndependent trials: each answer doesn't affect the other</li>
+    <li><b><span class="big">N</span></b>umber of trials is constant: \(n=5\)</li>
+    <li><b><span class="big">S</span></b>ame chance of success for each: \(p=0.25\)</li>
+</ul>
+
+<h3>describing binomial distributions</h3>
+
+<ul>
+    <li><b>shape:</b> histogram</li>
+    <li><b>center:</b> mean</li>
+    <li><b>variability:</b> SD</li>
+</ul>
+
+<h3>attributes & interpretations</h3>
+
+<p>
+    \[\mu_x=np\]
+    "after a shitton of trials, the average # of [successes] is \(\mu_x\) out of n"
+</p>
+
+<p>
+    \[\sigma_x=\sqrt{np(1-p)}\]
+    "the # of [successes] typically varies by \(\sigma_x\) from the mean of \(\mu_x\) out of n"
+</p>
+
+<p>
+    quick thing: apparently you can use the calculator syntax, but you have to show what's happening:
+    \[P(X \leq 2)=\text{binomcdf}(n=5, p=0.25, X=2)\]
+</p>
+
+<h2>binomial random variables part 3: what the fuck?</h2>
+
+<p>
+    <b>10% condition:</b> if we do a random sample w/o replacement of size \(n\)
+    from a population of size \(N\) and \(n \leq 0.10N\), it's close enough that we can just
+    assume a binomial distribution, aka fuck it, i'm too lazy
+</p>
+
+<p>
+    <b>large counts condition:</b> we can use a normal distr. to model a binomial distr.
+    if \(np \geq 10\) (expected # of successes) and \(n(1-p) \geq 10\) (expected # of failures)
+</p>
+
+<h2>the geometric distribution</h2>
+
+<h3>requirements</h3>
+
+<ul>
+    <li><b><span class="big">B</span></b>inary: same as the B in the binomial</li>
+    <li><b><span class="big">I</span></b>ndependent: same as the I in the binomial</li>
+    <li><b><span class="big">T</span></b>rials until success: yeah, just make sure that's what a var is measuring</li>
+    <li><b><span class="big">S</span></b>ame probability of success: same as the S in binomial</li>
+</ul>
+
+<h3>attributes</h3>
+
+<ul>
+    <li><b>geometric formula:</b> \(P(X=x)=(1-p)^{x-1}p\)</li>
+    <li><b>shape:</b> right-skewed</li>
+    <li><b>center:</b> \(\mu_x=\frac{1}{p}\)</li>
+    <li><b>variability:</b> \(\sigma_x=\frac{\sqrt{1-p}}{p}\)</li>
+</ul>
+
+<script src="../inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
