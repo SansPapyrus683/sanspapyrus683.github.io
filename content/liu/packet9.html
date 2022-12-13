@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="../../style-bs/css/fancy.css">
-  <link rel="stylesheet" href="../../style-bs/css/classes.css">
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/classes.css">
 
-  <meta charset="UTF-8">
-  <title>liu packet 9</title>
+    <meta charset="UTF-8">
+    <title>liu packet 9</title>
 </head>
 <body>
 
@@ -17,21 +17,61 @@
 <h2>what's a sampling distribution? day 1</h2>
 
 <p>
-  <b>statistic:</b> a val from a <span class="big"><i>sample</i></span>
-  (\(\bar{x}\), \(\hat{p}\), \(s\))
+    <b>statistic:</b> a val from a <span class="big"><i>sample</i></span>
+    (\(\bar{x}\), \(\hat{p}\), \(s\))
 </p>
 
 <p>
-  <b>parameter:</b> a val that describes a <span class="big"><i>population</i></span>
-  (\(\mu\), \(p\), \(\sigma\))
+    <b>parameter:</b> a val that describes a <span class="big"><i>population</i></span>
+    (\(\mu\), \(p\), \(\sigma\))
 </p>
 
 <p>
-  <b>sampling distr:</b> distr of a stat from all possible
-  samples of the same size from the same population<br/>
-  a stat's an <i>unbiased estimator</i> if the mean of the
-  sampling distribution is equal to the parameter
+    <b>sampling distr:</b> distr of a stat from all possible
+    samples of the same size from the same population<br/>
+    a stat's an <i>unbiased estimator</i> if the mean of the
+    sampling distribution is equal to the parameter
 </p>
+
+<h2>the sampling distribution of \(\hat{p}\)</h2>
+
+<p>
+    \[\mu_{\hat{p}}=p\]
+    \[\sigma_{\hat{p}}=\sqrt{\frac{p(1-p)}{n}}\]
+    if the 10% condition is met i guess
+</p>
+
+<p>
+    <b>large counts condition:</b> basically the same as it is for binomial distrs,
+    if \(np \geq 10\) and \(n(1-p) \geq 10\), the sampling distribution is approximately normal<br/>
+    and if it's approximately normal,
+    \[z=\frac{\hat{p}-p}{\sqrt{\frac{p(1-p)}{n}}}\]
+</p>
+
+<h2>sampling distribution of difference between 2 proportions (or just variables)</h2>
+
+<ul>
+    <li>
+        <b>shape:</b> approx. normal if
+        <ul>
+            <li>\(n_1 \cdot p_1 \geq 10\)</li>
+            <li>\(n_1(1-p_1) \geq 10\)</li>
+            <li>\(n_2 \cdot p_2 \geq 10\)</li>
+            <li>\(n_2 (1-p_2) \geq 10\)</li>
+        </ul>
+    </li>
+    <li><b>center:</b> \(\mu_{\hat{p_1}-\hat{p_2}}=p_1-p_2\)</li>
+    <li><b>variability:</b> \(\sigma_{\hat{p_1}-\hat{p_2}}=\sqrt{\frac{p_1(1-p_1)}{n_1}+\frac{p_2(1-p_2)}{n_2}}\)</li>
+</ul>
+
+<h2>evaluating a claim</h2>
+
+<ol>
+    <li>assume the null hypothesis- "it's probably nothing"</li>
+    <li>do a simulated sampling distribution given said hypothesis</li>
+    <li>get the probability that the observed result happened</li>
+    <li>if it's strictly less than 5%, it's probably something, not nothing</li>
+</ol>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
