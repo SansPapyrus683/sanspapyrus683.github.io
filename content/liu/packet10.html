@@ -53,6 +53,46 @@
     does acc. for sampling variability, but <b>doesn't</b> acc for nonresponse, undercoverage, or response bias
 </p>
 
+<h2>constructing a confidence interval</h2>
+
+<h3>conditions for a CI</h3>
+
+<ol>
+    <li>random sample</li>
+    <li>10% condition: \(n \leq \frac{1}{10}N \rightarrow\) independence</li>
+    <li>
+        large counts condition \(n\hat{p}\text{, }n(1-\hat{p}) \geq 10 \rightarrow\)
+        can use normal distribution to approximate sampling distribution of \(\hat{p}\)
+    </li>
+</ol>
+
+<h3>crit z-values</h3>
+
+<ul>
+    <li>90% \(z^* \approx 1.645\)</li>
+    <li>95% \(z^* \approx 1.960\)</li>
+    <li>99% \(z^* \approx 2.576\)</li>
+</ul>
+
+<p>
+    you need the normal distribution graph at minimum for work,
+    but you can also include the \(\text{invNorm}\) thing if you wanna make sure
+</p>
+
+<h3>confidence interval for a value of \(\hat{p}\)</h3>
+
+\[\hat{p} \pm z^* \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\]
+
+<p>
+    btw the \(\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\) is called the standard error,
+    and is referred to as \(SE_{\hat{p}}\)
+</p>
+
+<p>
+    <b>SIDE NOTE:</b> given that on the WS for the "parameter:" and "statistic:" question he put
+    "p = true [whatever]" and "\(\hat{p}\) = point estimate of [whatever]", we should probably do that asw
+</p>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
