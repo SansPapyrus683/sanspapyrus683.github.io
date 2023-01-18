@@ -93,6 +93,26 @@
     "p = true [whatever]" and "\(\hat{p}\) = point estimate of [whatever]", we should probably do that asw
 </p>
 
+<h2>estimating a pop. prop: 4-step process</h2>
+
+<h3>4-step process</h3>
+
+<ol>
+    <li><b>state:</b> parameter & confidence level</li>
+    <li><b>plan:</b> name the procedure & check the conditions (rng, large counts, etc.)</li>
+    <li><b>do:</b> general & specific formulas, plug in & calc</li>
+    <li><b>conclude:</b> interpret interval in context</li>
+</ol>
+
+<h3>choosing \(n\)</h3>
+
+\[ME=z^* \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \qquad n=\frac{\hat{p}(1-\hat{p})}{(\frac{ME}{z^*})^2}\]
+
+<p>
+    if you don't know \(\hat{p}\), set it as 0.5 for the worst-case scenario<br/>
+    also you should <b>always round \(n\) up</b>, if you don't you'll die irl, trust me
+</p>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
