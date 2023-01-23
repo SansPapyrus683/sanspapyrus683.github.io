@@ -115,6 +115,34 @@
     also you should <b>always round \(n\) up</b>, if you don't you'll die irl, trust me
 </p>
 
+<h2>significance tests: the basics</h2>
+
+<h3>types of hypotheses</h3>
+
+<p>
+    \(H_0\), or "it was probably nothing": \(p\) or \(\mu\) is equal to the base claim
+</p>
+
+<p>
+    \(H_a\), or "it's something.": \(p\) or \(\mu\) is &lt;, &gt;, or \(\neq\) the base claim (null value)
+</p>
+
+<p>
+    <b>interpretation of P-val:</b> "assuming \(H_0\) is valid, or [ctx], there's a ~[P-val] chance of getting
+    the deserved result or something more extreme due to sampling variability"
+</p>
+
+<p>
+    <b>how to conclude:</b> "because the P-value [&lt;/&gt;] \(\alpha\), we [do/don't] have convincing
+    evidence for \(H_a\) context"
+</p>
+
+<p>
+    if the P-value is less than \(\alpha\), it's convincing<br/>
+    if it's greater than \(\alpha\), it's not<br/>
+    if it's exactly equal to \(\alpha\), then idk, maybe not to be more conservative<br/>
+</p>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
