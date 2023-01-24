@@ -143,6 +143,31 @@
     if it's exactly equal to \(\alpha\), then idk, maybe not to be more conservative<br/>
 </p>
 
+<h2>significance test for p</h2>
+
+<p>
+    <b>conditions:</b> literally the same as those of a CI
+</p>
+
+<h3>standardized test statistic (z-score)</h3>
+
+<img src="img/packet10/normal.png" alt="normal thing" class="half-img center"/>
+
+<p>
+    couple of things about this normal plot
+</p>
+
+<ul>
+    <li>\(\mu{\hat{p}}=p\)</li>
+    <li>\(\sigma{\hat{p}}=\sqrt{\frac{p(1-p)}{n}}\)- we use base p bc we're presuming the null hypo. is true</li>
+    <li>\(z=\frac{\hat{p}-p}{\sqrt{\frac{p(1-p)}{n}}}\)</li>
+</ul>
+
+<p>
+    btw, if the p-val &lt; \(\alpha\) (5%), it's called "statistically significant",
+    aka we've convincing evidence for the [ctx]
+</p>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
