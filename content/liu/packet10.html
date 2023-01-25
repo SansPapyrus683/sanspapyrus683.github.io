@@ -168,6 +168,75 @@
     aka we've convincing evidence for the [ctx]
 </p>
 
+<h2>significance test for a proportion- 4 step</h2>
+
+<p>
+    alr, so i'm just gonna go through the ws this day & what he put
+</p>
+
+<h3>state: (parameter, statistic, hypotheses, significance level)</h3>
+
+<p>
+    <b>parameter:</b> p: proportion of homes <i>in flint</i> that have contaminated water<br/>
+    <b>statistic:</b> \(\hat{p}=\frac{32}{140} \approx 0.22857\)<br/>
+    <b>hypotheses:</b> \(H_0\): p = 0.1, \(H_a\): p &gt; 0.1<br/>
+    <b>significance level: 5%</b><br/>
+</p>
+
+<h3>plan: (name & checks)</h3>
+
+<p>
+    <b>name:</b> one sample z-test for p
+</p>
+
+<h4>conditions:</h4>
+
+<ul>
+    <li><b>rng:</b> not stated but we assume a random sample. proceed w/ caution!!</li>
+    <li><b>10% condition:</b> probably &gt; 140/0.1 = 1400 homes in flint</li>
+    <li>
+        <b>large counts condition:</b>
+        <ul>
+            <li>\(np \geq 10\)</li>
+            <li>\(n(1-p) \geq 10\)</li>
+        </ul>
+        note that we use p, not \(\hat{p}\)!!
+    </li>
+</ul>
+
+<h3>do: (specific formula, pic, work, p-val)</h3>
+
+<p>
+    <b>general formula (not req):</b> \(\frac{\text{}-\text{}}{\text{}}\) <br/>
+    <b>specific formula (yea this one is needed:</b> \(z=\frac{\hat{p}-p}{\sqrt{\frac{p(1-p)}{n}}}\)
+</p>
+
+<p>
+    <b>work:</b> 
+    \[\]
+    <b>p-val:</b>
+</p>
+
+<h4>picture:</h4>
+
+<h3>conclude: (interpret p-val & conclusion)</h3>
+
+<p>
+    <b>conclusion:</b> since the p-value is less than our significance level of 5%,
+    we've convincing evidence that the water supply of flint is unsafe
+</p>
+
+<p>
+    <b>interpretation of p-val:</b> assuming the null hypothesis is true, there's a ~0% chance that
+    32/140 or more of the randomly sampled homes in flint had contaminated water
+</p>
+
+<p>
+    by the way, there's this 2-sided test as well for when you just want to test inequality,
+    not greater than or less than<br/>
+    to do this you double the p-val & shade on both sides of the normal curve
+</p>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
