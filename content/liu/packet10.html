@@ -207,17 +207,26 @@
 <h3>do: (specific formula, pic, work, p-val)</h3>
 
 <p>
-    <b>general formula (not req):</b> \(\frac{\text{}-\text{}}{\text{}}\) <br/>
+    <b>general formula (not req):</b> \(\frac{\text{stat}-\text{param}}{\text{SD stat}}\) <br/>
     <b>specific formula (yea this one is needed:</b> \(z=\frac{\hat{p}-p}{\sqrt{\frac{p(1-p)}{n}}}\)
 </p>
 
 <p>
     <b>work:</b> 
-    \[\]
-    <b>p-val:</b>
+    \[\begin{align}
+    z &= \frac{\frac{32}{140}-0.1}{\sqrt{\frac{0.1(1-0.1)}{140}}} \\
+    &= 5.071
+    \end{align}\]
+    <b>p-val: \(1.983 \cdot 10^{-7} \approx 0\)</b>
 </p>
 
 <h4>picture:</h4>
+
+<img src="img/packet10/test.png" alt="test curve thing" class="center half-img"/>
+
+<p>
+    you can also use \(\mu\) and \(\sigma_{\hat{p}}\), but imo this one is easier
+</p>
 
 <h3>conclude: (interpret p-val & conclusion)</h3>
 
