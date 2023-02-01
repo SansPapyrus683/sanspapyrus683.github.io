@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/classes.css">
+
+    <meta charset="UTF-8">
+    <title>liu packet 11</title>
+</head>
+<body>
+
+<a href="liu_index.html">back to all liu packets</a><br/>
+<a href="../../index.html">back to home</a>
+
+<h1>hw packet 11</h1>
+
+<h2>constructing a confidence interval for \(p_1-p_2\)</h2>
+
+<h3>CI for \(p_1-p_2\)</h3>
+
+<p>
+    basically the same as the CIs you've done before<br/>
+    just check the 10% & large counts condition for both populations and that
+    they're <i>independently</i> randomly sampled<br/>
+    also now \(\sigma=\sqrt{\frac{\hat{p_1}(1-\hat{p_1})}{n_1}-\frac{\hat{p_2}(1-\hat{p_2})}{n_2}}\)
+</p>
+
+<p>
+    <b>interpretation:</b> same as normal<br/>
+    <b>interpretation DLC:</b> the interval suggests that the true proportion of [\(p_1\) ctx]
+    is between [a% lower/higher] & [b% lower/higher] than of [\(p_2\) ctx]
+</p>
+
+<h3>some stuff that should be pretty obvious</h3>
+
+<p>
+    so if [a, b]'s our CI
+</p>
+
+<ul>
+    <li><b>if a's + & b's +</b> then the first proportion is greater</li>
+    <li><b>if a's - & b's -</b> then the second proportion is greater</li>
+    <li><b>if a's - & b's +</b> then IDK</li>
+</ul>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
