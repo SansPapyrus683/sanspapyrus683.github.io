@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/classes.css">
+
+    <meta charset="UTF-8">
+    <title>liu packet 12</title>
+</head>
+<body>
+
+<a href="liu_index.html">back to all liu packets</a><br/>
+<a href="../../index.html">back to home</a>
+
+<h1>hw packet 12</h1>
+
+<h2>estimating a population mean - intro</h2>
+
+<p>
+    so recall that the std dev of a sampling distr of a population for the mean was \(\frac{\sigma}{\sqrt{n}}\)<br/>
+    yeah to get the CI of a mean we do this:
+    \[\bar{x} \pm t^* \cdot \frac{s_x}{\sqrt{n}}\]
+</p>
+
+<p>
+    to find \(t^*\) we do \(\text{invNorm}(area=\text{left tail area}, df=n-1)\)<br/>
+    liu also says use table b but what sane person would actually do that wtf
+</p>
+
+<h3>conditions for this CI</h3>
+
+<ul>
+    <li>rng (sample or assignment)</li>
+    <li>10% (doesn't apply for assignment)</li>
+    <li>
+        normal/large sample-
+        if <b>ANY</b> of these conditions are satisfied you're golden
+        <ul>
+            <li>population distr is ~normal</li>
+            <li>\(n \geq 30\)</li>
+            <li>sample data doesn't have skews/outliers to infer the first condition</li>
+        </ul>
+    </li>
+</ul>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
