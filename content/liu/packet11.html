@@ -63,7 +63,10 @@
         <b>rng:</b> either independent random samples (for generalizable results)
         or random assignment (to prove causation)
     </li>
-    <li><b>10%:</b> yeah yeah- but keep in mind this is for no replacement sampling only</li>
+    <li>
+        <b>10%:</b> same thing, keep in mind this is for no replacement sampling only-
+        if we're doing an experiment it isn't needed
+    </li>
     <li><b>large counts:</b> same thing but use the one probability \(\hat{p_c}=\frac{x_1+x_2}{n_1+n_2}\)</li>
 </ul>
 
@@ -90,7 +93,8 @@
 <h3>do: (formula, work, & pic?)</h3>
 
 <p>
-    ditto
+    ditto except now it's
+    \(\sigma_{\hat{p_c}}=\sqrt{\frac{\hat{p_c}(1-\hat{p_c})}{n_1}-\frac{\hat{p_c}(1-\hat{p_c})}{n_2}}\)
 </p>
 
 <p>
@@ -113,6 +117,97 @@
 <p>
     <b>type ii:</b> you didn't reject when you should've<br/>
     <b>interpretation:</b> "[\(H_a\) ctx] true, but we've'nt convincing evidence for [\(H_a\) ctx]"
+</p>
+
+<h2>power of a test</h2>
+
+<h3>POWER??? FROM CHAINSAW MAN???</h3>
+
+<img src="img/packet11/power.png" alt="power, the character based on eric cartman from chainsaw man" class="center half-img"/>
+
+<p>
+    unfortunately it's not<br/>
+    the power of a test is the chance that you reject \(H_0\) when you should, i.e. when \(H_a\) is true
+</p>
+
+<p>
+    <b>interpretation:</b> "if \(H_a\) is true [plus some \(H_a\) context] there's a [power] chance that we find
+    convicing evidence to reject [\(H_0\) context]"
+</p>
+
+<p>
+    to increase power, you can do some things<br/>
+    increase \(\alpha\), increase n, or increase the distance from \(H_a\) to the base claim (effective size)
+</p>
+
+<h2>finding chance of type ii error</h2>
+
+<p>
+    i'm willing to bet my right kidney that liu's going to include this on the test, so here's how to find it
+</p>
+
+<img src="img/packet11/null.png" alt="normal distr" class="center half-img"/>
+
+<p>
+    this, is ol' reliable.<br/>
+    our null distribution. the default distribution.<br/>
+    it's what we use to base all our hypothesis tests on, and it's nice!
+</p>
+
+<p>
+    <b>BUT IT'S ACTUALLY A FUCKING LIAR.</b>
+</p>
+
+<img src="img/packet11/null_alt.png" alt="2 normal distrs" class="center half-img"/>
+
+<p>
+    let's say it's actually wrong, and the dark blue distribution is the true distribution in the world!
+</p>
+
+<p>
+    the thing is, we've no fucking clue.<br/>
+    we only have our z-test and some idea of how far away it is
+</p>
+
+<p>
+    so let's define our alpha boundaries
+</p>
+
+<img src="img/packet11/null_alt_bounds.png" alt="ok, now we have our alpha shit" class="center half-img"/>
+
+<p>
+    if we got anything within those boundaries, we'd reject the null hypothesis and have the alternate distribution
+    get back it's rightful position as the true distribution
+</p>
+
+<p>
+    the thing is, the chance we get that, if you can see...is pretty fucking slim<br/>
+</p>
+
+<img src="img/packet11/alt_prob.png" alt="the chances do not look good" class="center half-img"/>
+
+<p>
+    NOTE that IRL we're actually sampling from the alt distr when we think we're sampling from the null distr!!!<br/>
+    for us to realize it, we have to get something in that light green area
+    (there's a bit on the left as well but it's covered by the bastard null distr)
+</p>
+
+<p>
+    so given that diagram, the probability of a type ii error is the dark blue area
+    (again, some is hidden by the null distr)
+</p>
+
+<p>
+    now in actual math terms, here's how you find the chance of a type ii error
+</p>
+
+<ol>
+    <li>use \(\text{invNorm}\) with the <i>null distr parameters</i> to get where the red bounds are</li>
+    <li>use \(\text{normalCDF}\) with the <i>alternate distr parameters</i> to get the area of the blue shit</li>
+</ol>
+
+<p>
+    and i think i said this before, but power is just 1 - P(type ii error) so yeah
 </p>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
