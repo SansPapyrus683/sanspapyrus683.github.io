@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../style-bs/css/classes.css">
+
+    <meta charset="UTF-8">
+    <title>liu packet 14</title>
+</head>
+<body>
+
+<a href="liu_index.html">back to all liu packets</a><br/>
+<a href="../../index.html">back to home</a>
+
+<h1>hw packet 14</h1>
+
+<h2>chi-square test for goodness of fit</h2>
+
+<p>
+    this test is used to compare categorical distributions and see how
+    likely it is you got one by sampling from the other
+</p>
+
+<h3>conditions</h3>
+
+<ul>
+    <li><b>rng</b></li>
+    <li><b>10%:</b> sum of all instances (in the harvard wksht it was 2023 total admits)</li>
+    <li><b>large counts:</b> expected counts of all categories is at least 5!! not 10, 5!!!</li>
+</ul>
+
+<h3>formula</h3>
+
+\[\chi^2=\sum \frac{(O-E)^2}{E}\]
+
+<p>
+    here, O is the observed value & E is the expected value for each category<br/>
+    then use chi squared cdf on your calculator w/ df = (# of categories) - 1
+    to get the final p-value
+</p>
+
+<h3>pic</h3>
+
+<p>
+    here's what shit looks like
+</p>
+
+<img class="center half-img" src="img/packet14/chi_squared.png" alt="pic of the chi squared distr"/>
+
+<p>
+    lime green area is what you shade & calculate the area of to get the p-value
+</p>
+
+<p>
+    be sure to indicate the df<br/>
+    personally i also like to indicate where 0 is, but who knows
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
