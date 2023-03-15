@@ -21,6 +21,13 @@
     likely it is you got one by sampling from the other
 </p>
 
+<h3>hypotheses</h3>
+
+<p>
+    \(H_0\): the claimed distr [ctx] is true<br/>
+    \(H_a\): the claimed distr [ctx] <i>isn't</i> true
+</p>
+
 <h3>conditions</h3>
 
 <ul>
@@ -55,6 +62,29 @@
     be sure to indicate the df<br/>
     personally i also like to indicate where 0 is, but who knows
 </p>
+
+<h2>chi-square test for homo</h2>
+
+<h3>hypotheses</h3>
+
+<p>
+    \(H_0\): there's no diff in the [categorical var] distr between [pop 1] & [pop 2]<br/>
+    \(H_a\): there <i>is</i> a diff in yeah yeah we fucking get it
+</p>
+
+<p>
+    conditions are basically the same,
+    just a couple of things that make this different from the last one
+</p>
+
+<ul>
+    <li>
+        expected counts for each cell =
+        \(\text{sample total} \cdot \frac{\text{category total}}{\text{total total}}\)
+    </li>
+    <li>\(\text{df}=(\text{# of cat vars} - 1)(\text{# of samples} - 1)\)</li>
+    <li>this one is 2 samples 1 var, the last one was 1 sample 1 var</li>
+</ul>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
