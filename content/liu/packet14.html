@@ -103,6 +103,66 @@
     <li><b>indep:</b> 1 sample, 2 vars, testing if across the same sample shit's related</li>
 </ul>
 
+<h2>sampling distribution of b</h2>
+
+<p>
+    so if we want to predict a correlation between two variables,
+    this is the true equation- "god's equation", if you will:
+    \[\mu_y=\alpha+\beta x\]
+</p>
+
+<p>
+    but of course, we are pathetically limited in our ability to predict it- the best we can do is a:
+    \[\hat{y}=a+bx\]
+</p>
+
+<p>
+    here's a table comparing the stat (what we predict)
+    vs the parameter (the actual parameter irl set by god)
+</p>
+
+<table>
+    <tr>
+        <td></td>
+        <td>stat</td>
+        <td>parameter</td>
+    </tr>
+    <tbody>
+    <tr>
+        <td>y-intercept</td>
+        <td class="border">a</td>
+        <td class="border">\(\alpha\)</td>
+    </tr>
+    <tr>
+        <td>slope</td>
+        <td class="border">b</td>
+        <td class="border">\(\beta\)</td>
+    </tr>
+    <tr>
+        <td>residual SD</td>
+        <td class="border">s</td>
+        <td class="border">\(\sigma\)</td>
+    </tr>
+    <tr>
+        <td>slope SD</td>
+        <td class="border">\(\text{SE}_b\)</td>
+        <td class="border">\(\\sigma_b\)</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>
+    due to some stat fuckery, the distribution of all possible slopes
+    takes on a normal distribution with mean \(\beta\) and stdev \(\sigma_b\)
+    (which we use \(\text{SE}_b\) to approximate)
+</p>
+
+<p>
+    if you wanna do a hypo test, set the mean to be 0 & go from there
+</p>
+
+<img class="center half-img" src="img/packet14/b_distr.png" alt="null distr for b"/>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
