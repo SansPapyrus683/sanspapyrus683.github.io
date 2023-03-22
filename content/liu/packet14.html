@@ -163,6 +163,64 @@
 
 <img class="center half-img" src="img/packet14/b_distr.png" alt="null distr for b"/>
 
+<h2>CIs for slope</h2>
+
+<p>
+    <b>OH MY FUCKING GOD HOW MANY 4-STEP PROCESSES ARE THERE 老子他妈要吐了</b>
+</p>
+
+<h3>state</h3>
+
+<p>
+    <b>param:</b> \(\beta\) is the true slope of the population lsrl for [x-ctx] and [y-ctx]<br/>
+    also confidence level
+</p>
+
+<h3>plan</h3>
+
+<p>
+    <b>name:</b> 1-sample t-interval for slope
+</p>
+
+<h4>conditions</h4>
+
+<ul>
+    <li>
+        <b><span class="big">L</span></b>inear:
+        i mean the scatterplot has to look promising;
+        for this you plot the data (lsrl too? maybe just to be safe) & do a residual graph too because fuck you
+    </li>
+    <li><b><span class="big">I</span></b>ndependent: 10% or random ass, whichever applies</li>
+    <li>
+        <b><span class="big">N</span></b>ormal:
+        make a histogram/dotplot of the residuals-
+        it better look normal or else you're getting sent to the stats gulag by andrew
+    </li>
+    <li><b><span class="big">E</span></b>qual stdev: no christmas tree pattern (homoscedasticity i think?)</li>
+    <li><b><span class="big">R</span></b>andom: duh</li>
+</ul>
+
+<h3>do</h3>
+
+<p>
+    formula is p simple: \(b \pm t^* \cdot \text{SE}_b\)
+</p>
+
+<p>
+    in this case, df = n - 2 bc there's 2 unknown variables? bro idfk<br/>
+    for \(\text{SE}_b\) they usually give you it but just in case liu feels especially sadistic on test day:
+</p>
+
+\[s=\sqrt{\frac{\Sigma (y_i-\hat{y}_i)^2}{n-2}}\]
+\[\sigma_b=\frac{\sigma}{\sigma_x \sqrt{n}}\]
+\[\text{SE}_b=\frac{s}{s_x \sqrt{n-1}}\]
+
+<h3>conclude</h3>
+
+<p>
+    fuck you
+</p>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
