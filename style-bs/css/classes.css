@@ -26,13 +26,13 @@ td {
     padding: 5px;
     text-align: center;
 }
-
+    
 td.border {
     border: 1px solid #84fff2;
 }
 
 span.small {
-    font-size: smaller;
+    font-size: x-small;
 }
 
 span.big {
