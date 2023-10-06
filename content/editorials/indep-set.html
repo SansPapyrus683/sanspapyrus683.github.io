@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+
+    <title>mountain time</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<p><a href="https://judge.yosupo.jp/problem/maximum_independent_set">problem link</a></p>
+
+<div id="title">
+    <h1>max independent set</h1>
+</div>
+
+<div id="editorial">
+    <p>oh god <i>*shudders*</i></p>
+    <p>this problem was a debugging <b><i>nightmare</i></b></p>
+
+    <p>
+        so the first thing i did was go to the
+        <a href="https://en.wikipedia.org/wiki/Maximal_independent_set">wikipedia page</a>
+        for wth an independent set actually was, and it did not disappoint
+        <br/>
+        scrolling down a little we can see that this problem is equivalent to
+        the <a href="https://en.wikipedia.org/wiki/Clique_problem">clique problem</a>
+        on the <a href="https://en.wikipedia.org/wiki/Complement_graph">complement graph</a>
+    </p>
+
+    <p>
+        so from here on out i'll just be talking about the maximum clique problem instead,
+        it makes things a tad bit easier to explain
+    </p>
+
+    <p>
+        anyways, we have \( n \leq 40 \)! <br/>
+        this probably means that we have to split crap in 2 then merge somehow... <br/>
+        if you want some other problems that are like this you can go
+        <a href="https://usaco.guide/gold/meet-in-the-middle">here</a> btw
+        <br/>
+        (or it means \( \mathcal{O}(n^5) \) or something but the chance of
+        that is lesser than my dad coming home with milk)
+    </p>
+
+    <p>
+        so whatever, let's just go through all subsets in half of the total
+        graph and see what happens
+    </p>
+    <p>
+        so here's our halfway dp-
+        ```
+        dp[ss] = max clique if we can only use the nodes specified in ss (subset)
+        ```
+        note that another option would be
+        ```
+        dp[ss] = do all the nodes in the ss form a clique?
+        ```
+        but it can be seen later on that this definition sucks balls when we
+        try combining the 2 subsets
+    </p>
+    <p>
+        once we have the definition, we can fill it up with brute force-
+        i'll leave it to the code to explain how that works
+    </p>
+
+    <hr/>
+
+    <p>
+        so now we have 2 of these `dp` things <br/>
+        so how can we combine them? <br/>
+        for any subset, we need to know all the nodes in the other half
+        that could be "compatible", which in this case means
+        that they're connected to literally every node in our current subset
+    </p>
+    <p>
+        this might seem like a daunting task, but it actually isn't that
+        bad if you know how bitwise ops work<br/>
+        like the brute force, how this works is in the code
+    </p>
+
+    <p>
+        so we have a subset and another subset of all the nodes in the
+        other half that it's compatible with<br/>
+        we can then get a candidate for the max clique with
+        `dp1[ss1] + dp2[ss2]` and then go!
+    </p>
+</div>
+
+<div id="code">
+    ```cpp
+    #include <iostream>
+    #include <vector>
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+
+    inline bool bit_set(const long long& n, int pos) {
+        return n & (1LL << pos);
+    }
+
+    long long more_bits(const long long& a, const long long& b) {
+        return __builtin_popcountll(a) > __builtin_popcountll(b) ? a : b;
+    }
+
+    vector<long long> largest_clique(const vector<long long>& adj) {
+        int sz = adj.size();  // just a shorthand
+        vector<bool> valid(1 << sz);  // actually the scrapped dp definition lol
+        valid[0] = true;
+        for (int n1 = 0; n1 < sz; n1++) {
+            valid[1 << n1] = true;
+            for (int n2 = n1 + 1; n2 < sz; n2++) {
+                valid[(1 << n1) + (1 << n2)] = adj[n1] & (1 << n2);
+            }
+        }
+        for (int ss = 1; ss < (1 << sz); ss++) {
+            if (__builtin_popcountll(ss) <= 2) {
+                continue;
+            }
+            valid[ss] = true;
+            for (int prev = 0; prev < sz; prev++) {
+                if (bit_set(ss, prev) && !valid[ss & ~(1 << prev)]) {
+                    valid[ss] = false;
+                    break;
+                }
+            }
+        }
+
+        // here's our actual dp, the one we're gonna combine
+        vector<long long> largest(1 << sz);
+        for (int ss = 0; ss < (1 << sz); ss++) {
+            if (valid[ss]) {
+                largest[ss] = ss;
+                continue;
+            }
+            for (int prev = 0; prev < sz; prev++) {
+                if (bit_set(ss, prev)) {
+                    largest[ss] = more_bits(largest[ss], largest[ss & ~(1 << prev)]);
+                }
+            }
+        }
+        return largest;
+    }
+
+    /**
+     * https://judge.yosupo.jp/problem/maximum_independent_set
+     * (input omitted due to length)
+     */
+    int main() {
+        int node_num;
+        int edge_num;
+        std::cin >> node_num >> edge_num;
+        vector<long long> adj(node_num, (1LL << node_num) - 1);
+        for (int e = 0; e < edge_num; e++) {
+            int n1, n2;
+            std::cin >> n1 >> n2;
+            adj[n1] &= ~(1LL << n2);
+            adj[n2] &= ~(1LL << n1);
+        }
+
+        int half1 = node_num / 2;
+        vector<long long> half1_adj(half1);
+        for (int n = 0; n < half1; n++) {
+            half1_adj[n] = adj[n] & ((1 << half1) - 1);
+        }
+        vector<long long> largest1 = largest_clique(half1_adj);
+
+        int half2 = node_num - half1;
+        vector<long long> half2_adj(half2);
+        for (int n = 0; n < half2; n++) {
+            half2_adj[n] = adj[half1 + n] >> half1;
+        }
+        vector<long long> largest2 = largest_clique(half2_adj);
+
+        long long best_ss = 0;
+        // here's the part where we combine the two dp things
+        for (int ss1 = 0; ss1 < (1 << half1); ss1++) {
+            // initially, everything in half2 is up for consideration
+            long long ss2 = (1 << half2) - 1;
+            for (int n = 0; n < half1; n++) {
+                if (bit_set(ss1, n)) {
+                    // remove any nodes that aren't connected to the current node
+                    ss2 &= adj[n] >> half1;
+                }
+            }
+            best_ss = more_bits(best_ss, largest1[ss1] + (largest2[ss2] << half1));
+        }
+
+        cout << __builtin_popcountll(best_ss) << endl;
+        for (int i = 0; i < node_num; i++) {
+            if (bit_set(best_ss, i)) {
+                cout << i << ' ';  // trailing whitespace doesn't matter
+            }
+        }
+    }
+    ```
+</div>
+
+<script src="../../lib/prism/prism.js"></script>
+<script src="../inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
