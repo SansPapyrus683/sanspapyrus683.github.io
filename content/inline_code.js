@@ -1,6 +1,6 @@
 ﻿const BLOCK_LEN = 3;
 
-let text = document.getElementById("editorial").innerHTML;
+const text = document.body.innerHTML;
 
 let newText = "";
 let inlineClosing = false;
@@ -45,8 +45,6 @@ for (let i = 0; i < text.length; i++) {
                 lines[l] = lines[l].slice(spaceNum);
             }
 
-            console.log(lines);
-
             // don't worry if lang is empty- prism handles it just fine
             final += `<pre><code class="language-${lang}">`
             for (let l of lines) {
@@ -70,4 +68,4 @@ for (let i = 0; i < text.length; i++) {
     }
 }
 
-document.getElementById("editorial").innerHTML = newText;
+document.body.innerHTML = newText;
