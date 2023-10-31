@@ -162,9 +162,9 @@
     </p>
 
     ```cpp
-    #include <iostream>
-    #include <cassert>
-    #include <vector>
+    #include &lt;iostream&gt;
+    #include &lt;cassert&gt;
+    #include &lt;vector&gt;
 
     using std::cout;
     using std::endl;
@@ -175,8 +175,8 @@
 
     int popcount(int x) {
         int res = 0;
-        for (int i = 0; i < 31; i++) {  // not sure if 31 or 32 lol
-            res += (bool) (x & (1 << i));
+        for (int i = 0; i &#60; 31; i++) {  // not sure if 31 or 32 lol
+            res += (bool) (x &#38; (1 &#60;&#60; i));
         }
         return res;
     }
@@ -188,20 +188,20 @@
      */
     int main() {
         int contest_num;
-        std::cin >> contest_num;
-        vector<int> contests;
-        for (int c = 0; c < contest_num; c++) {
+        std::cin &#62;&#62; contest_num;
+        vector&#60;int&#62; contests;
+        for (int c = 0; c &#60; contest_num; c++) {
             char contest;
-            std::cin >> contest;
-            assert('A' <= contest && contest < 'A' + TYPE_NUM);
+            std::cin &#62;&#62; contest;
+            assert('A' &#60;= contest &#38;&#38; contest &#60; 'A' + TYPE_NUM);
             contests.push_back(contest - 'A');
         }
 
-        vector<vector<long long>> num_ways(
-            1 << TYPE_NUM, vector<long long>(contest_num + 1)
+        vector&#60;vector&#60;long long&#62;&#62; num_ways(
+            1 &#60;&#60; TYPE_NUM, vector&#60;long long&#62;(contest_num + 1)
         );
-        for (int ss = 1; ss < (1 << TYPE_NUM); ss++) {
-            vector<long long>& curr = num_ways[ss];
+        for (int ss = 1; ss &#60; (1 &#60;&#60; TYPE_NUM); ss++) {
+            vector&#60;long long&#62;&#38; curr = num_ways[ss];
             /*
              * base case is when there's only one character we care about,
              * i didn't talk about this in the explanation srry
@@ -209,35 +209,35 @@
             if (popcount(ss) == 1) {
                 // get the first set bit
                 int set = 0;
-                for (; (ss & (1 << set)) == 0; set++);
+                for (; (ss &#38; (1 &#60;&#60; set)) == 0; set++);
 
                 curr[0] = 1;
-                for (int c = 1; c <= contest_num; c++) {
+                for (int c = 1; c &#60;= contest_num; c++) {
                     if (contests[c - 1] == set) {
                         curr[c] = curr[c - 1] * 2 % MOD;
                     } else {
                         curr[c] = curr[c - 1];
                     }
                 }
-                for (long long& c : curr) {
+                for (long long&#38; c : curr) {
                     // can't have an empty string so we sub 1 from all of them
                     c--;
                 }
                 continue;
             }
 
-            for (int to_add = 0; to_add < TYPE_NUM; to_add++) {
-                if ((ss & (1 << to_add)) == 0) {
+            for (int to_add = 0; to_add &#60; TYPE_NUM; to_add++) {
+                if ((ss &#38; (1 &#60;&#60; to_add)) == 0) {
                     continue;
                 }
 
                 // that state where we didn't have to_add in this crapshow
-                const vector<long long>& prev = num_ways[ss & ~(1 << to_add)];
-                vector<long long> new_ways(contest_num + 1);
+                const vector&#60;long long&#62;&#38; prev = num_ways[ss &#38; ~(1 &#60;&#60; to_add)];
+                vector&#60;long long&#62; new_ways(contest_num + 1);
                 new_ways[0] = 0;  // just making it obvious
-                for (int c = 1; c <= contest_num; c++) {
+                for (int c = 1; c &#60;= contest_num; c++) {
                     // wth we don't care about this contest at all get outta here
-                    if ((ss & (1 << contests[c - 1])) == 0) {
+                    if ((ss &#38; (1 &#60;&#60; contests[c - 1])) == 0) {
                         new_ways[c] = new_ways[c - 1];
                         continue;
                     }
@@ -251,14 +251,14 @@
                         + 2 * MOD) % MOD;
                     }
                 }
-                for (int c = 0; c <= contest_num; c++) {
+                for (int c = 0; c &#60;= contest_num; c++) {
                     // we overcounted some though, be sure to account for that
                     curr[c] = (curr[c] + new_ways[c] - prev[c] + MOD) % MOD;
                 }
             }
         }
 
-        cout << num_ways[(1 << TYPE_NUM) - 1][contest_num] << endl;
+        cout &#60;&#60; num_ways[(1 &#60;&#60; TYPE_NUM) - 1][contest_num] &#60;&#60; endl;
     }
     ```
 </div>
