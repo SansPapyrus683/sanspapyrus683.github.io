@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../../style-bs/css/classes.css">
+    <link rel="stylesheet" href="../../../lib/prism/prism.css">
+
+    <title>I HATE GO</title>
+</head>
+
+<body>
+
+<p><a href="../../../index.html">back to home</a></p>
+
+<div id="title">
+    <h1>ok go just SUCKS.</h1>
+</div>
+
+<div>
+    <p>
+        ok not even gonna start with a disclaimer here because i refuse to
+        believe anyone unironically uses this abomination of a language
+    </p>
+
+    <p>
+        i thought it would be a fun idea to finally finish aoc 2019
+        (since i deleted all my old code for that year),
+        and i also thought i should do it in a new language for a fun challenge
+    </p>
+    <p>
+        since i had tried rust and hated it, i thought i should try go,
+        a language people often compare it with for some reason
+    </p>
+    <p>
+        and i believe that although rust sucks, go is <b>1000x WORSE.</b><br/>
+        so let's get down into the weeds of it, shall we?
+    </p>
+
+    <hr/>
+
+    <p>
+        i didn't have any prejudices coming into this, no.<br/>
+        <i>maybe</i> the fact that i was also learning vim at the same time had some impact
+        <br/>
+        <a href="https://gist.github.com/SansPapyrus683/a05edd9ac364d152b67d6219f2fa144e">
+            <span class="small">here's my `.vimrc` if anyone cares</span>
+        </a>
+        <br/>
+        but given that i had a positive experience with <i>vim</i>, i don't think so
+    </p>
+
+    <p>
+        regardless, after doing 24 days (skipped 2019's day 22 bc of the large numbers involved),
+        i've come to realize what go is.
+    </p>
+    <p>
+        does anyone? remember the "kids mode" on certain applications that would shut down
+        some functions of the device so kids couldn't do sussy stuff?<br/>
+        <span class="small">i remember my parents put that on the ipad so i couldn't play games lol</span>
+    </p>
+    <p>
+        that's go!<br/>
+        the developers think we're too dumb to be trusted with any nice syntax sugar or features that have
+        even the smallest percentage of a chance at being unsafe, so they just make go the most
+        bare bones thing that it can possibly be.
+    </p>
+
+    <img src="gopher.jpeg" class="half-img" alt="THIS GOPHER CAN EAT MY RIGHT NUT"/>
+    <p>
+        <i>this gopher is a blight upon god's green earth.</i>
+    </p>
+
+    <h2>list of grievances (as always)</h2>
+
+    <h3>no unused variables??</h3>
+
+    <p>
+        go and i got off on the wrong foot when it tried to pull <i>this</i> on me:
+    </p>
+    ```
+    sanspapyrus683@kevin-laptop:~/GitHub/advent-of-code/y2019/go$ go run . <<< "2"
+    # aoc2019
+    ./day2.go:44:2: x declared and not used
+    ```
+    <p>
+        i'm...sorry? is this a warning? if so, why is nothing else printing?
+    </p>
+
+    <p>
+        <span class="big"><b><i>NO.</i></b></span>
+    </p>
+
+    <p>
+        turns out it's a godammned <b>ERROR</b>.<br/>
+        the neckbearded linux emacs users over at google thought no code should have unused variables,
+        so they made it so that code just...didn't compile.
+    </p>
+    <p>
+        <b><i>THERE ISN'T EVEN ANY CONSISTENCY WITH THIS RULE??!!</i></b><br/>
+        unused vars and imports are errors, but unused function parameters and functions
+    </p>
+
+    <p>
+        <b>way</b> too many times i've gotten the general layout of a program down and i want
+        to run it to see if any RTEs happen only to be met with this stupid, godforsaken error.<br/>
+    </p>
+
+    <h3>no sets...</h3>
+    <p>
+        yeah.<br/>
+        to get sets, you have to do this workaround:
+    </p>
+    ```go
+    inbredSet := map[int]bool{1: true, 3: true}
+    inbredSet[9] = true  // to add an element
+    delete(inbredSet, 1)  // to delete an element
+    ```
+    <p>
+        for a language that has its compiler autoinsert semicolons so it's "cleaner,"
+        this sure as hell is not clean, go.
+    </p>
+
+    <h3>1984 brace style</h3>
+    <p>
+        oh! speaking of semicolons, did i mention that because of that semicolon insertion,
+        golang actually doesn't allow if statements like this:
+    </p>
+    ```go
+    x := 2
+    if x == 2
+    {
+        fmt.Println("x is 2")
+    }
+    ```
+    <p>
+        i wasn't a fan of this brace style anyways, but people should be free to use it if they want to!
+    </p>
+
+    <h3>stupid naming conventions</h3>
+    <p>
+        did i mention the naming?
+    </p>
+    <p>
+        in go, <i>everything</i>, even including constants, are named in camelCase.<br/>
+        the only exception is public exported things, which are named with PascalCase.<br/>
+        whose bright idea was that?
+    </p>
+    <p>
+        when i'm typing an identifier, it's kinda helpful to know whether it's a function, class, constant, or anything!
+        <i>especially</i> in a language where functions can be passed around and assigned
+    </p>
+
+    <h3>weird assignment ops</h3>
+    <p>
+        also, what's with the two different assignment operators `:=` and `=`?<br/>
+        why can't go just just handle variable scope normally like every other language?<br/>
+        because of go's crap, i can't do this:
+    </p>
+    ```go
+    type testStruct struct {
+        a int
+    }
+
+    x := testStruct{2}
+    x.a, b := funcThatReturnsTwoValues()  // this errors. need i say more?
+    ```
+
+    <h3>awful arrays</h3>
+    <p>
+        say you want to make a 2d array of 1's. should be a simple enough endeavour, right?<br/>
+        well in GO, here's what you have to do
+    </p>
+    ```go
+    stupidArr := make([][]int, 5)
+    for i := 0; i < len(stupidArr); i++ {
+        for j := 0; j < 7; j++ {
+            stupidArr[i] = append(stupidArr[i], 1)
+        }
+    }
+    ```
+    <p>
+        also, see that `append` function?<br/>
+        you have to type in the array name TWICE to append it,
+        so if you have a really long way to get to an array, well, good luck!
+    </p>
+
+    <h3>no ternary</h3>
+    <p>
+        even rust at least has some primitive form of "if condition then this value, else this value"<br/>
+        so instead, i have to do this:
+    </p>
+    ```go
+    var x int
+    if condition {
+        x = value1
+    } else {
+        x = value2
+    }
+    ```
+    <p>
+        congratulations, go.
+        you've managed to turn one line of code into <b>SIX.</b>
+    </p>
+
+    <h3>no inline increments</h3>
+    <p>
+        ok this complaint isn't too big, but still.<br/>
+        i see no reason why this is "unreadable" unless you're like just starting out in programming or something:
+    </p>
+    ```go
+    arr[ind++] = val
+    ```
+    <p>
+        bruh.
+    </p>
+
+    <h3>really, <i>really</i> empty stdlib</h3>
+    <p>
+        remember when i said there were no sets?
+    </p>
+    <p>
+        well, turns out like a billion other data structures and stuff are lacking in this language<br/>
+        i actually had to copy paste a
+        <a href="https://github.com/SansPapyrus683/advent-of-code/blob/main/y2019/go/pq.go">priority queue implementation</a>
+        FROM SCRATCH to implement dijkstra's algo!!
+    </p>
+    <p>
+        at least there's regex, but that's cold comfort when even
+        <a href="https://stackoverflow.com/a/1085120/12128483">c conditionally has em</a>
+    </p>
+
+    <h3>no tuples or pairs or anything</h3>
+    <p>
+        yeah.
+    </p>
+    <p>
+        if you want a map that holds two values, you have to slog through the creation
+        of a whole new struct and then pass that struct to the map type.<br/>
+        because of this, what could have been a simple
+    </p>
+    ```go
+    x := make(map[int](int, string))
+    ```
+    <p>
+        gets turned into
+    </p>
+    ```go
+    type mapVal struct {
+        a int
+        b string
+    }
+    x := make(map[int]mapVal)
+    ```
+    <p>
+        what the hell, man?
+    </p>
+
+    <h2>"conclusion"</h2>
+    <p>
+        i remember saying that rust was fine, it would just take some time for me to get used to it.
+    </p>
+    <p>
+        well, i'm NEVER getting used to this trash heap of a language.<br/>
+        people joke that js was made in like 3 days or whatever, but THIS is the real 3-day-wonder.
+    </p>
+    <p>
+        bye. god i'm burnt out.
+    </p>
+</div>
+
+<script src="../../inline_code.js"></script>
+<script src="../../../lib/prism/prism.js"></script>
+
+</body>
+</html>

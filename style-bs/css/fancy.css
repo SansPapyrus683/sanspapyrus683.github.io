@@ -56,7 +56,9 @@ blockquote::before { /* this actually adds the rectangle on the left */
     padding: 5px;
     border-radius: 5px;
     font-family: "Skyhook Mono", monospace;
+    /* idk if this is good or not, who cares */
     font-weight: bold;
+    /*font-size: small;*/
     color: #84fff2;
 }
 
