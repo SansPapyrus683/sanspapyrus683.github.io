@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+
+    <title>aoc 2019 day 22</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<p><a href="https://adventofcode.com/2019/day/22">problem link</a></p>
+
+<div id="title">
+    <h1>aoc 2019 day 22</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        yknow i find it pretty cool<br/>
+        when i first did this problem as a high school freshman<br/>
+        i malded so hard it wasn't even funny<br/>
+        had to read like 3 explanations and even then i was copying code without having any idea what it was doing
+    </p>
+
+    <p>
+        and now i'm like, "yeah, this is just how it is" and solve it without looking at anything
+    </p>
+
+    <p>
+        but anyways<br/>
+        brute force suffices for p1<br/>
+        but we're here for the much more interesting p2<br/>
+        it just makes your deck STUPID big and also makes you go through the shuffle sequence a STUPID
+        amount of times
+    </p>
+
+    <h2>starting off</h2>
+
+    <p>
+        how about let's try to come up with mathematical analogues for each of the shuffle operations?
+        perhaps that'll let us simplify the shuffle sequence we're given here
+    </p>
+
+    <p>
+        in all of these ops, here, say we have a card at position \(x\) in a deck of size \(d\)
+        we number our positions \(0\) to \(\)
+    </p>
+
+    <ul>
+        <li>when we `deal into new stack`, our new position is \(d-x-1\)</li>
+        <li>
+            to `cut N` cards, we make our new position \(x-N \ (\mathrm{mod}\ d)\).
+            this works even when \(N\) is negative, don't worry
+        </li>
+        <li>
+            and finally to `deal with increment N`, our position gets turned into \(N \cdot x \ (\mathrm{mod}\ d)\).
+            also quick note that \(d\) and \(N\) have to be coprime,
+            otherwise you'd have two cards in the same position!
+            (at least i think so lol)
+        </li>
+    </ul>
+
+    <p>
+        now, with these arithmetic operations, notice that all of them are just +/-/*<br/>
+        so we can compress our <i>ENTIRE SHUFFLE SEQUENCE</i> into the form \(ax-b\ (\mathrm{mod}\ d)\)<br/>
+        meaning that to get the position of a card initially at \(x\) after the shuffle, we just
+        do one multiplication, one subtraction, and one modulus and we're done!
+    </p>
+
+    <h2>applying the loops</h2>
+
+    <p>
+        but we also have to go through the shuffle sequence itself like a stupid amount of times as well<br/>
+        which amounts to applying \(f(x)=ax-b\ (\mathrm{mod}\ d)\) to \(x\) alot<br/>
+        let's try to find a pattern here, maybe that'll help (the mod is removed for brevity reasons)
+    </p>
+
+    \[\begin{align}
+    f(x)&=ax-b \\
+    f(f(x))&=a^2x - ab - b \\
+    f(f(f(x)))&=a^3x - a^2b - ab - b \\
+    f(f(f(f(x))))&=a^4x - a^3b - a^2b - ab - b \\
+    \end{align}\]
+
+    <p>
+        in general, if we apply the shuffle sequence \(n\) times,
+        a card at position \(x\) ends up at the position given by the following expression:
+    </p>
+
+    \[a^nx - b(a^{n-1}+a^{n-2} + \cdots + a)\]
+
+    <p>
+        with the
+        <a href="https://en.wikipedia.org/wiki/Geometric_series#Sum">formula for the sum of a geometric series</a>,
+        we can then turn this into
+    </p>
+
+    \[x'=a^nx - b\frac{a^n-a}{a-1}\]
+
+    <p>
+        where \(x'\) is the new position of x
+    </p>
+
+    <h2>getting the card in the position</h2>
+
+    <p>
+        then you might be thinking,
+        "my brother in christ it's not asking for where card `2020` went!
+        it's asking for the card <i>in</i> position `2020`!"
+    </p>
+
+    <p>
+        yeah. unfortunately we have to do a teensy bit more work,
+        which is modifying the equation to give \(x\), the initial position, in terms of \(x'\), the final position<br/>
+        doing that gives us this:
+    </p>
+
+    \[x=\frac{x'+b\frac{a^n-a}{a-1}}{a^n}\]
+
+    <p>
+        and that's our formula!
+        note that since things are done mod \(d\), we have to compute some
+        <a href="https://en.wikipedia.org/wiki/Modular_multiplicative_inverse">modular inverse</a>,
+        but that's an implementation detail
+        <a href="https://stackoverflow.com/a/9758173/12128483">python can do itself</a>
+    </p>
+</div>
+
+<div id="code">
+    <h2>
+        time for code!
+    </h2>
+
+    <p>
+        look, i know this <i>is</i> hosted on my
+        <a href="https://github.com/SansPapyrus683/advent-of-code/blob/main/y2019/python/day22.py">aoc repo</a>,
+        but might as well put it here too
+    </p>
+
+    ```py
+    import enum
+    import re
+
+    P1_DECK, P1_CARD = 10007, 2019
+    P2_DECK, P2_POS, P2_LOOPS = 119315717514047, 2020, 101741582076661
+
+
+    class CardOp(enum.Enum):
+        STACK = enum.auto()
+        CUT = enum.auto()
+        INC = enum.auto()
+
+
+    def compress_ops(ops: list[tuple[CardOp, int]], deck: int) -> tuple[int, int]:
+        mul = 1
+        sub = 0
+        for t, v in ops:
+            if t == CardOp.STACK:
+                mul, sub = -mul, -sub
+                sub -= deck - 1
+            elif t == CardOp.CUT:
+                sub += v
+            elif t == CardOp.INC:
+                mul *= v
+                sub *= v
+            mul %= deck
+            sub %= deck
+        return mul, sub
+
+
+    def mod_inv(x: int, mod: int) -> int:
+        """https://stackoverflow.com/a/9758173/12128483"""
+        return pow(x, -1, mod)
+
+
+    def card_pos(
+            ops: list[tuple[CardOp, int]],
+            card: int, deck: int
+    ):
+        mul, sub = compress_ops(ops, deck)
+        return (card * mul - sub) % deck
+
+
+    def pos_card(
+            ops: list[tuple[CardOp, int]],
+            pos: int, deck: int, loops: int
+    ) -> int:
+        # i really should explain what i'm doing here huh
+        mul, sub = compress_ops(ops, deck)
+        mul_pow = pow(mul, loops, deck)
+
+        top = pos + sub * (mul_pow - 1) * mod_inv(mul - 1, deck)
+        bot = mod_inv(mul_pow, deck)
+        return top * bot % deck
+
+
+    stack_fmt = "^deal into new stack$"
+    cut_fmt = r"^cut (-?\d+)$"
+    inc_fmt = r"^deal with increment (\d+)"
+    ops = []
+    with open("input/day22.txt") as read:
+        for i in read.readlines():
+            if re.findall(stack_fmt, i):
+                ops.append((CardOp.STACK, 0))  # 2nd # isn't needed lol
+            elif res := re.findall(cut_fmt, i):
+                ops.append((CardOp.CUT, int(res[0])))
+            elif res := re.findall(inc_fmt, i):
+                ops.append((CardOp.INC, int(res[0])))
+
+    print(f"pos of card {P1_CARD}: {card_pos(ops, P1_CARD, P1_DECK)}")
+    print(f"card in pos {P2_POS}: {pos_card(ops, P2_POS, P2_DECK, P2_LOOPS)}")
+    ```
+</div>
+
+<script src="../../lib/prism/prism.js"></script>
+<script src="../inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
