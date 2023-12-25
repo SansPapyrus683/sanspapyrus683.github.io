@@ -12,6 +12,7 @@ body {
     background: #1e272c;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 2em;
     max-width: 50vw;
     line-height: 1.6;
 
@@ -28,8 +29,19 @@ a {
     color: #e288a2;
 }
 
+a:hover {
+    color: #d85f82;
+}
+
 h1, h2, h3 {
-    line-height: 1.2
+    line-height: 1.2;
+    margin-bottom: 0;
+}
+
+h1 + ol, h2 + ol, h3 + ol,
+h1 + ul, h2 + ul, h3 + ul,
+h1 + p, h2 + p, h3 + p {
+    margin-top: 0;
 }
 
 /* sauce: https://espadrine.github.io/blog/posts/markdown-quote-styling.html */
