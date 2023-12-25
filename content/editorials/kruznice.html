@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style-bs/css/fancy.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+
+    <title>balanced parenthesis</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<p><a href="https://hsin.hr/2010/school/seniors/tasks.pdf">problem link</a></p>
+<p><a href="https://www.acmicpc.net/problem/3102">submission link</a></p>
+
+<div id="title">
+    <h1>kruznice solution</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        i got bored enough to port another solution from my gists lol
+    </p>
+
+    <p>
+        so yknow i was on the dp grind when someone posted
+        <a href="https://hsin.hr/2010/school/seniors/tasks.pdf">this</a> problem on the github
+        issues for the usaco guide
+        (you can test <a href="https://boj.kr/3102">here</a>, but prepare google translate)
+    </p>
+
+    <p>
+        so we have a buncha circles, intervals really<br/>
+        and we wanna remove some so that none of them intersect
+        (they can be tangent tho)
+    </p>
+
+    <p>
+        so let's define `min_remove[s][e]` as the minimum amount of circles we have to
+        remove given that the only circles we consider are the ones that are completely
+        in the interval `[s, e]`<br/>
+    </p>
+
+    <p>
+        the recurrence for this is as follows:<br/>
+        we go through all the middle cutting points and calculate the cost for isolating
+        the left & right parts completely from each other, which would mean removing
+        all circles in the interval that intersect with `mid`<br/>
+
+        NOTE however, that we don't include the
+        circle that goes completely around the <i>entire</i> interval,
+        because it doesn't interfere with the left & right parts
+    </p>
+
+    <p>
+        so if the cutting point was defined as `mid`, we'd have this:
+    </p>
+
+    ```
+    min_remove[s][e] = min_remove[s][mid - 1] + min_remove[s][mid + 1] + circles_in[mid]
+    ```
+
+    <p>
+        so we just do a simple <a href="https://usaco.guide/gold/dp-ranges">range dp</a>
+        with this relation and basically win the problem
+    </p>
+
+    <p>right?</p>
+
+    <p><b><i>WRONG.</i></b></p>
+
+    <p>
+        you see, the dp relation itself isn't hard- it's calculating `circles_in` that's
+        the hard part (at least it was the case for me)
+    </p>
+    <p>
+        so to fix this, we need to define <b><i>ANOTHER DP ARRAY</i></b><br/>
+        `circles_in[s][e][i]`
+        is going to be the number of circles that intersect the point
+        `s + i` given that the only circles we consider are in `[s, e]`
+        (excluding the possible outermost one that covers both `s` and `e`)
+    </p>
+    <p>
+        ...actually, i think i'll leave it to the code to explain it<br/>
+        it does a better job
+    </p>
+</div>
+
+<div id="code">
+    <p>
+        but enough rambling, here's the solution
+    </p>
+
+    ```cpp
+    #include &lt;iostream&gt;
+    #include &lt;vector&gt;
+    #include &lt;algorithm&gt;
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+    using std::pair;
+
+    /**
+    * task: https://hsin.hr/2010/school/seniors/tasks.pdf
+    * submission: https://www.acmicpc.net/problem/3102
+    * (sample input omitted due to length)
+    */
+    int main() {
+    int circle_num;
+    std::cin &gt;&gt; circle_num;
+    // they're gonna be specified by start &amp; end instead of center &amp; radius
+    vector&lt;pair&lt;int, int&gt;&gt; circles(circle_num);
+    int min = INT32_MAX;
+    // just gonna assume valid input lmao
+    for (int c = 0; c &lt; circle_num; c++) {
+    int center;
+    int radius;
+    std::cin &gt;&gt; center &gt;&gt; radius;
+    circles[c] = {center - radius, center + radius};
+    min = std::min(min, circles[c].first);
+    }
+
+    // normalize the intervals
+    int max = INT32_MIN;
+    for (int c = 0; c &lt; circle_num; c++) {
+    circles[c].first -= min;
+    circles[c].second -= min;
+    max = std::max(max, circles[c].second);
+    }
+
+    vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; circles_in(max + 1, vector&lt;vector&lt;int&gt;&gt;(max + 1));
+    // fancy meeting you here, this is the part where i calculate circles_in
+    for (const pair&lt;int, int&gt;&amp; c : circles) {
+    // set our base cases
+    circles_in[c.first][c.second] = vector&lt;int&gt;(c.second - c.first - 1, 1);
+    }
+    for (int len = 2; len &lt;= max; len++) {
+    for (int start = 0; start + len &lt;= max; start++) {
+    int end = start + len;
+    if (circles_in[start][end].empty()) {
+    circles_in[start][end] = vector&lt;int&gt;(len - 1);
+    }
+    vector&lt;int&gt;&amp; curr = circles_in[start][end];
+    const vector&lt;int&gt;&amp; lprev = circles_in[start][end - 1];
+    const vector&lt;int&gt;&amp; rprev = circles_in[start + 1][end];
+    const vector&lt;int&gt;&amp; mprev = circles_in[start + 1][end - 1];
+    if (len &gt; 2) {
+    curr.front() += lprev.front();
+    curr.back() += rprev.back();
+    for (int i = 1; i &lt; curr.size() - 1; i++) {
+    /*
+    * add the ones contributed by the left &amp; right,
+    * then account for overcounting by subtracting the stuff
+    * that's common to both (aka in the middle)
+    */
+    curr[i] += lprev[i] + rprev[i - 1] - mprev[i - 1];
+    }
+    }
+    }
+    }
+    // excluse the outermost circles for each interval (if thereis one)
+    for (const pair&lt;int, int&gt;&amp; c : circles) {
+    vector&lt;int&gt;&amp; interval = circles_in[c.first][c.second];
+    for (int&amp; i : interval) {
+    i--;
+    }
+    }
+
+    vector&lt;vector&lt;int&gt;&gt; min_removed(max + 1, vector&lt;int&gt;(max + 1, INT32_MAX));
+    // set up base cases
+    for (int i = 0; i &lt;= max; i++) {
+    min_removed[i][i] = 0;
+    if (i &lt; max) {
+    min_removed[i][i + 1] = 0;
+    }
+    }
+    // just do our range dp &amp; win
+    for (int len = 2; len &lt;= max; len++) {
+    for (int start = 0; start + len &lt;= max; start++) {
+    int end = start + len;
+    for (int mid = start + 1; mid &lt; end; mid++) {
+    int left = min_removed[start][mid];
+    int right = min_removed[mid][end];
+    min_removed[start][end] = std::min(
+    min_removed[start][end],
+    left + right + circles_in[start][end][mid - start - 1]
+    );
+    }
+    }
+    }
+    cout &lt;&lt; min_removed[0][max] &lt;&lt; endl;
+    }
+    ```
+</div>
+
+<script src="../../lib/prism/prism.js"></script>
+<script src="../inline_code.js"></script>
+
+</body>
+</html>
