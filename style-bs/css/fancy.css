@@ -59,13 +59,23 @@ a:hover {
 
 h1, h2, h3 {
     line-height: 1.2;
-    margin-bottom: 0;
+    margin: 0;
 }
 
 h1 + ol, h2 + ol, h3 + ol,
 h1 + ul, h2 + ul, h3 + ul,
 h1 + p, h2 + p, h3 + p {
     margin-top: 0;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td {
+    padding: 5px;
+    text-align: center;
 }
 
 /* sauce: https://espadrine.github.io/blog/posts/markdown-quote-styling.html */

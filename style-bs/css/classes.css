@@ -16,16 +16,6 @@ table.centered-border {
     border: 1px solid #84fff2;
     border-collapse: collapse;
 }
-
-table {
-    border-collapse: collapse;
-    margin: 0 auto;
-}
-
-td {
-    padding: 5px;
-    text-align: center;
-}
     
 td.border {
     border: 1px solid #84fff2;
