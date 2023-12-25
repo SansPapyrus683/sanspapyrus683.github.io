@@ -4,6 +4,30 @@
 }
 
 @font-face {
+    font-family: Comic Neue;
+    src: url("../fonts/ComicNeue-Regular.ttf");
+}
+
+@font-face {
+    font-family: Comic Neue;
+    src: url("../fonts/ComicNeue-Italic.ttf");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: Comic Neue;
+    src: url("../fonts/ComicNeue-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: Comic Neue;
+    src: url("../fonts/ComicNeue-BoldItalic.ttf");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
     font-family: Skyhook Mono;
     src: url("../fonts/skyhook-mono.ttf");
 }
@@ -18,7 +42,7 @@ body {
 
     padding: 0 10px;  /* what does this even do */
 
-    font-family: "Comic Mono", cursive;
+    font-family: "Comic Neue", cursive;
     font-variant-ligatures: common-ligatures;
     font-size: 18px;
     text-align: left;
@@ -70,7 +94,7 @@ blockquote::before { /* this actually adds the rectangle on the left */
     font-family: "Skyhook Mono", monospace;
     /* idk if this is good or not, who cares */
     font-weight: bold;
-    /*font-size: small;*/
+    font-size: small;
     color: #84fff2;
 }
 
