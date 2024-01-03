@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style/css/fancy.css">
+    <link rel="stylesheet" href="../../style/css/classes.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>drought (gold)</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<p><a href="http://usaco.org/index.php?page=viewproblem2&cpid=1185">problem link</a></p>
+
+<div id="title">
+    <h1>drought (gold) solution</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        uh just read the problem yourself, explaining it here would take way too long
+    </p>
+
+    <p>
+        so it would be absolute cancer to try and actually calculate if each tuple
+        can get to a level where all cows have the same hunger level<br/>not only that, calculating all the possible
+        tuples themselves...
+    </p>
+    <p>
+        hm<br/>
+        what if we thought of the problem in <i>reverse</i>?<br/>
+        so like we started at a level where all the cows
+        were equal, and then we <i>added</i> pairs of 1's to cows until we got a random n-tuple that also
+        satisfied the input's upper bounds?<br/>
+        actually that might work!
+    </p>
+    <p>
+        but here's the thing: we have to handle cases where the number of cows is
+        even differently from the cases where the number of cows is odd<br/>
+        why?<br/>
+        because if the # of cows is even, all levels can be gotten from if all the hunger levels were 0<br/>
+        however, if the # of cows is <i>odd</i>, no level can be achieved from each other
+    </p>
+    <p>
+        actually yk what just have an example
+        if there we 3 cows, we couldn't get, say, `2 2 2` from `0 0 0` or `1 1 1`<br/>
+        however, if there were 4 cows, we <i>could</i> get `2 2 2 2` from `0 0 0 0`
+    </p>
+    <p>
+        so if the # of cows is even, we only have to calculate for if we start from 0,
+        but if it's odd, we have to calculate from 0 all the way to the min upper bound
+    </p>
+    <p>
+        now to get to actually solving it for a random level & upper bound<br/>
+        first let's just subtract the level from all upper bounds so we can just treat it as if we're starting from 0<br/>
+        next, let's define `num_ways[c][l]` as the number of ways to bring crap up from 0
+        given that:
+    </p>
+    <ol>
+        <li>we only consider the first `c` cows</li>
+        <li>the last cow's level is `l` (so the dp array is going to be ragged)</li>
+    </ol>
+
+    <p>
+        after some pain with the first couple values of `c` because of edge cases,
+        we can get this recursion:
+    </p>
+    ```
+    num_ways[c][0] = sum of all of num_ways[c - 1]
+    num_ways[c][l] = sum of everything EXCEPT THE LAST l ELEMENTS of num_ways[c - 1]
+    ```
+
+    <ul>
+        <li>
+            the `0` case is just bc we could just pretend `c` didn't exist and sum up
+            all the previous ones for obvious reasons
+        </li>
+        <li>
+            for the other ones, it works like this:
+            <ul>
+                <li>to get the last cow to the level `l`, we need to add crap to the prev cow as well</li>
+                <li>
+                    but the thing is, we can't add too much, or the prev cow's upper bound will be
+                    violated and we can't have that
+                </li>
+                <li>
+                    so we just sum up all the previous levels except where it'll have the prev cow
+                    exceed it's upper bound
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <p>
+        but constantly calculating the sum of the previous things would take too long,
+        so let's just use a prefix sum as well to make things faster
+    </p>
+    <p>
+        and yeah, we basically solved the thing!
+    </p>
+</div>
+
+<div id="code">
+    <p>
+        code here:
+    </p>
+
+    ```cpp
+    #include &#60;iostream&#62;
+    #include &#60;vector&#62;
+    #include &#60;algorithm&#62;
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+    using std::pair;
+
+    constexpr int MOD = 1e9 + 7;
+
+    // given the upper bounds, how many ways can we start from all 0's?
+    int num_ways(const vector&#60;int&#62;&#38; levels) {
+        // just handle the first two pesky cases
+        vector&#60;vector&#60;int&#62;&#62; num_ways{vector&#60;int&#62;(levels[0] + 1, 1)};
+        if (levels.size() &#62;= 2) {
+            int min = std::min(levels[0], levels[1]);
+            num_ways.push_back({1});
+            for (int i = 1; i &#60;= levels[1]; i++) {
+                num_ways[1].push_back(i &#60;= min);
+            }
+        }
+
+        vector&#60;int&#62; prefs{0};
+        for (int i : num_ways.back()) {
+            prefs.push_back(prefs.back() + i);  // no need for modding here
+        }
+        for (int c = 2; c &#60; levels.size(); c++) {
+            num_ways.push_back(vector&#60;int&#62;(levels[c] + 1));
+            for (int l = 0; l &#60;= levels[c - 1]; l++) {
+                num_ways[c][0] = (num_ways[c][0] + num_ways[c - 1][l]) % MOD;
+            }
+            for (int l = 1; l &#60;= levels[c]; l++) {
+                if (l &#60;= levels[c - 1]) {
+                    num_ways[c][l] = prefs[levels[c - 1] - l + 1];
+                }
+            }
+
+            prefs = {0};  // calculate prefix sums for the next iteration
+            for (int l = 0; l &#60;= levels[c]; l++) {
+                prefs.push_back((prefs.back() + num_ways[c][l]) % MOD);
+            }
+        }
+
+        // sum everything up @ the end &#38; return it
+        int total = 0;
+        for (int i : num_ways.back()) {
+            total = (total + i) % MOD;
+        }
+        return total;
+    }
+
+    /**
+     * 2022 jan gold
+     * 3
+     * 9 11 7 should output 241
+     * 4
+     * 6 8 5 9 should output 137
+     */
+    int main() {
+        int cow_num;
+        std::cin &#62;&#62; cow_num;
+        vector&#60;int&#62; levels(cow_num);
+        int min_hunger = INT32_MAX;
+        for (int&#38; c : levels) {
+            std::cin &#62;&#62; c;
+            min_hunger = std::min(min_hunger, c);
+        }
+
+        int total = num_ways(levels);
+        // special odd cases
+        if (cow_num % 2 == 1) {
+            // go through all possible starting levels
+            for (int i = 1; i &#60;= min_hunger; i++)  {
+                for (int&#38; c : levels) {
+                    c--;
+                }
+                total = (total + num_ways(levels)) % MOD;
+            }
+        }
+        cout &#60;&#60; total &#60;&#60; endl;
+    }
+    ```
+</div>
+
+<script src="../../lib/prism/prism.js"></script>
+<script src="../inline_code.js"></script>
+
+</body>
+</html>

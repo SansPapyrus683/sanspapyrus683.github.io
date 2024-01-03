@@ -37,6 +37,7 @@ for (let i = 0; i < text.length; i++) {
                     spaceNum++;  // NOTE: assumes all whitespace is SPACES. NO TABS!!
                 }
             }
+            spaceNum -= spaceNum % 4;  // yeah all indents should be multiples of 4 as well
             let lines = code.split("\n");
             if (lines[lines.length - 1].trim() === "") {
                 lines.pop();

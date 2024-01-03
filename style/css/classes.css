@@ -28,3 +28,15 @@ span.small {
 span.big {
     font-size: large;
 }
+
+/* woah, classes! */
+.inline {
+    background-color: #51938f;
+    padding: 5px;
+    border-radius: 5px;
+    font-family: "Skyhook Mono", monospace;
+    /* idk if this is good or not, who cares */
+    font-weight: bold;
+    font-size: medium;
+    color: #84fff2;
+}

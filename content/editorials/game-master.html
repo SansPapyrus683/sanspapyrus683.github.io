@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style/css/fancy.css">
+    <link rel="stylesheet" href="../../style/css/classes.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>game master</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<p><a href="https://codeforces.com/contest/1608/problem/C">problem link</a></p>
+
+<div id="title">
+    <h1>game master solution</h1>
+</div>
+
+<div id="editorial">
+    <blockquote>
+        "Domination". Look it up.<br//>
+        -<cite>Scout, TF2</cite>
+    </blockquote>
+
+    <p>
+        so, this problem.
+    </p>
+    
+    <p>
+        it gives us a bunch of players who have 2 strengths- one for each of two maps<br/>we can match two players on any of the two maps, and the player who's stronger
+        on that map wins without fail<br/>it then asks us to calculate for each of the players if they can dominate all
+        the others, whether that be directly or indirectly</p>
+    <p>so first let's just sort all the players by map 1 strength<br/>this way, if p2 comes after p1, we know that p2 can dominate p2 hard-on<br/>NOTICE! that the <em>rearranged</em> answer array will <strong>always</strong> look like this:</p>
+
+    ```
+     00000000...0000000   111111...111111111
+    |------------------| |------------------|
+    nonnegative # of 0's nonnegative # of 1's
+    ```
+
+    <p>
+        why? i think we just have to prove two sub-things to get to the actual claim:
+    </p>
+    
+    <ol>
+        <li>each player can only dominate a prefix of the sorted array</li>
+        <li>the length of this subarray can only increase or stay the same as you go through
+            the array from left to right</li>
+    
+    </ol>
+    
+    <p>so let's get proofing ig</p>
+    <h2 id="proof-part-1">proof part 1</h2>
+    <p>
+        if hypothetically, for the sake of the argument, we had a can-dominate array like this:
+    </p>
+    ```
+    000111100001111000
+    ```
+
+    <p>
+        that would be insane, because the middle & leftmost segment of 0's can be
+        dominated through the right sequence of 1's<br/>
+        so yeah
+    </p>
+
+    <h2 id="proof-part-2-electric-boogaloo">
+        proof part 2: electric boogaloo
+    </h2>
+
+    <p>
+        ok say p2 came right after p1<br/>
+        now the domination array can only stay the same or increase, because p2 can dominate
+        everyone p1 has through p1, and maybe even dominate a bit more!
+    </p>
+
+    <p>q.e.d. ez clap</p>
+
+    <p>
+        now that the proof is done, we can just use binary search to find the breakpoint<br/>
+        to check if a player can dominate everyone we keep track of the maximum second map strength
+        that we can utilize and then while that strength can keep on expanding throughout the
+        rest of the playerbase we keep on updating that strength<br/>
+        if we get to the final player we win, and if we don't we lose!
+    </p>
+</div>
+
+<div id="code">
+    <p>
+        code here:
+    </p>
+
+    ```java
+    import java.io.*;
+    import java.util.*;
+
+    public class GameMaster {
+        public static void main(String[] args) throws IOException {
+            BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+            int testNum = Integer.parseInt(read.readLine());
+            for (int t = 0; t &#60; testNum; t++) {
+                int playerNum = Integer.parseInt(read.readLine());
+                StringTokenizer map1 = new StringTokenizer(read.readLine());
+                StringTokenizer map2 = new StringTokenizer(read.readLine());
+                int[][] players = new int[playerNum][];
+                for (int p = 0; p &#60; playerNum; p++) {
+                    players[p] = new int[]{
+                            Integer.parseInt(map1.nextToken()),
+                            Integer.parseInt(map2.nextToken()),
+                            p  // keep track of the original index
+                    };
+                }
+                // elements are guaranteed to be unique
+                Arrays.sort(players, Comparator.comparingInt(p -&#62; p[0]));
+    
+                /*
+                 * this[x] = if our current map strength is x,
+                 * what's the maximum index we can dominate up to (inclusive)?
+                 */
+                TreeMap&#60;Integer, Integer&#62; maxKills = new TreeMap&#60;&#62;();
+                for (int p = 0; p &#60; players.length; p++) {
+                    maxKills.put(players[p][1], p);
+                }
+                int prev = Integer.MIN_VALUE;
+                for (int i : maxKills.keySet()) {
+                    if (prev != Integer.MIN_VALUE) {
+                        maxKills.put(i, Math.max(maxKills.get(i), maxKills.get(prev)));
+                    }
+                    prev = i;
+                }
+    
+                // this[p] = best map 2 strength up to player p
+                int[] bestMap2 = new int[playerNum];
+                bestMap2[0] = players[0][1];
+                for (int p = 1; p &#60; playerNum; p++) {
+                    bestMap2[p] = Math.max(bestMap2[p - 1], players[p][1]);
+                }
+    
+                int lo = 0;
+                int hi = playerNum - 1;
+                int valid = -1;
+                while (lo &#60;= hi) {
+                    int mid = (lo + hi) / 2;
+                    int at = mid;
+                    while (maxKills.get(bestMap2[at]) != at) {
+                        at = maxKills.get(bestMap2[at]);
+                    }
+    
+                    if (at == playerNum - 1) {
+                        valid = mid;
+                        hi = mid - 1;
+                    } else {
+                        lo = mid + 1;
+                    }
+                }
+    
+                int[] possible = new int[playerNum];
+                for (int p = valid; p &#60; playerNum; p++) {
+                    possible[players[p][2]] = 1;
+                }
+                for (int p = 0; p &#60; playerNum; p++) {
+                    System.out.print(possible[p]);
+                }
+                System.out.println();
+            }
+        }
+    }
+    ```
+</div>
+
+<script src="../../lib/prism/prism.js"></script>
+<script src="../inline_code.js"></script>
+
+</body>
+</html>

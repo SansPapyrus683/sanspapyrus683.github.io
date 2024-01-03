@@ -59,7 +59,7 @@ a:hover {
 
 h1, h2, h3 {
     line-height: 1.2;
-    margin: 0;
+    margin: 0.1em;
 }
 
 h1 + ol, h2 + ol, h3 + ol,
@@ -94,18 +94,6 @@ blockquote::before { /* this actually adds the rectangle on the left */
     height: 100%;
     background: #dadada;
     border-radius: 2px / 4px;
-}
-
-/* woah, classes! */
-.inline {
-    background-color: #51938f;
-    padding: 5px;
-    border-radius: 5px;
-    font-family: "Skyhook Mono", monospace;
-    /* idk if this is good or not, who cares */
-    font-weight: bold;
-    font-size: small;
-    color: #84fff2;
 }
 
 /* copied from some random website here: https://codepen.io/MoritzGiessmann/pen/PobErJB */

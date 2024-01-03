@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../style/css/fancy.css">
+    <link rel="stylesheet" href="../../style/css/classes.css">
+    <link rel="stylesheet" href="../../lib/prism/prism.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>hilo (gold)</title>
+</head>
+
+<body>
+
+<p><a href="../../index.html">back to home</a></p>
+
+<p><a href="http://usaco.org/index.php?page=viewproblem2&cpid=1162">problem link</a></p>
+
+<div id="title">
+    <h1>hilo (gold) solution</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        man istg each year the problem descriptions get more and more elaborate<br/>
+        $10 they'll be asking us to solve tsp in linear time by 2030
+    </p>
+
+    <p>
+        anyway just the first thing i did was write a brute force python script to
+        see if there was any pattern once N got like kinda large<br/>
+        lo and behold, there actually was
+    </p>
+    <p>
+        here's the permutation and relevant values for every x we have to go through<br/>
+        first row is the actual perm<br/>
+        all next rows go like `[x] [status] [actual ans]`<br/>
+        for the status, `HI` + `LO`
+        are self-explanatory- `SK` means elsie skipped that number
+    </p>
+
+    ```
+       [13, 1, 16, 4, 11, 9, 15, 19, 2, 17, 3, 12, 14, 20, 18, 8, 7, 5, 10, 6]
+    00 [HI, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK] 0
+    01 [HI, LO, SK, HI, SK, SK, SK, SK, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK] 1
+    02 [HI, LO, SK, HI, SK, SK, SK, SK, LO, SK, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK] 2
+    03 [HI, LO, SK, HI, SK, SK, SK, SK, LO, SK, LO, SK, SK, SK, SK, SK, SK, SK, SK, SK] 2
+    04 [HI, LO, SK, LO, HI, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK, HI, HI, HI, SK, SK] 1
+    05 [HI, LO, SK, LO, HI, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK, HI, HI, LO, SK, HI] 2
+    06 [HI, LO, SK, LO, HI, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK, HI, HI, LO, SK, LO] 2
+    07 [HI, LO, SK, LO, HI, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK, HI, LO, SK, SK, SK] 2
+    08 [HI, LO, SK, LO, HI, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK, LO, SK, SK, SK, SK] 2
+    09 [HI, LO, SK, LO, HI, LO, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, HI, SK] 2
+    10 [HI, LO, SK, LO, HI, LO, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, LO, SK] 2
+    11 [HI, LO, SK, LO, LO, SK, SK, SK, SK, SK, SK, HI, SK, SK, SK, SK, SK, SK, SK, SK] 1
+    12 [HI, LO, SK, LO, LO, SK, SK, SK, SK, SK, SK, LO, SK, SK, SK, SK, SK, SK, SK, SK] 1
+    13 [LO, SK, HI, SK, SK, SK, HI, SK, SK, SK, SK, SK, HI, SK, SK, SK, SK, SK, SK, SK] 0
+    14 [LO, SK, HI, SK, SK, SK, HI, SK, SK, SK, SK, SK, LO, SK, SK, SK, SK, SK, SK, SK] 1
+    15 [LO, SK, HI, SK, SK, SK, LO, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK] 1
+    16 [LO, SK, LO, SK, SK, SK, SK, HI, SK, HI, SK, SK, SK, SK, SK, SK, SK, SK, SK, SK] 0
+    17 [LO, SK, LO, SK, SK, SK, SK, HI, SK, LO, SK, SK, SK, SK, HI, SK, SK, SK, SK, SK] 1
+    18 [LO, SK, LO, SK, SK, SK, SK, HI, SK, LO, SK, SK, SK, SK, LO, SK, SK, SK, SK, SK] 1
+    19 [LO, SK, LO, SK, SK, SK, SK, LO, SK, SK, SK, SK, SK, HI, SK, SK, SK, SK, SK, SK] 0
+    20 [LO, SK, LO, SK, SK, SK, SK, LO, SK, SK, SK, SK, SK, LO, SK, SK, SK, SK, SK, SK] 0
+    ```
+
+    <p>
+        if you read the above, you'll see something magical<br/>
+        each value in the permutation has a "lifecycle" of some sort<br/>
+        it starts out as `SK`, becomes `HI`, then `LO`, then goes back to `SK`<br/>
+        of course the starting + ending `SK`'s are optional as evidenced by 13, 1, 19, etc.
+    </p>
+
+    <p>
+        why is this the case?<br/>
+        lmao, i have no idea.
+    </p>
+
+    <p>
+        so let's try to find the x value for each value in the permutation where said value first becomes a HI<br/>
+        after diving into the giant blob of data above, notice that an element the permutation
+        becomes a `HI` when there is NO number <i>before</i> it that is both
+    </p>
+    <ol>
+        <li>less than said element</li>
+        <li>greater than or equal to the current x value</li>
+    </ol>
+
+    <p>
+        so we can just use a sorted set and iterate through the permutation in order, finding the
+        largest element that satisfies both of the criteria (code stores this in `started_his`)<br/>
+        after that, while we're actually going through all the x values, we keep the indices of the `HI`s in a set
+    </p>
+    <p>
+        of course, just knowing the HI points isn't enough- we also need to know when they become a LO and a SK
+        (again)<br/>
+        so we'll have to notice a few more neat things about this<br/>
+        so first of all, the element corresponding to x in the permutation will change from HI to LO without fail each
+        time x increments by 1<br/>
+        but that's obvious- the other magical thing is that when we increment- actually lemme just show you here
+    </p>
+
+    ```
+    12 [HI, LO, SK, LO, LO, SK, SK, SK, SK, SK, SK, LO, SK, SK, SK, SK, SK, SK, SK, SK] 1
+    13 [LO, SK, HI, SK, SK, SK, HI, SK, SK, SK, SK, SK, HI, SK, SK, SK, SK, SK, SK, SK] 0
+    ```
+
+    <p>
+        notice that when the HI changed to a LO (0 ind if you can't see), all the LO's to the
+        right of it just got thanos snapped and got to the end of their lifecycle (the final SK)
+    </p>
+
+    <p>so why <i>does</i> this always happen? again, idk lol it just does</p>
+
+    <p>
+        now for the LOs, we use a stack instead of the HIs<br/>
+        when we change a HI to a LO with each x increment, we do the following steps:
+    </p>
+    <ol>
+        <li>remove that HI from the set of HIs</li>
+        <li>while the top of the stack occurs to the right of the current HI, pop it</li>
+        <li>
+            convert the current HI to a LO and add it on top of the stack
+            (so the stack will always be increasing from bottom to top)
+        </li>
+    </ol>
+    <p>
+        then, now that we have the indices of the HIs and the LOs for each x value, we can just
+        use a sorted set of all the aforementioned HIs and LOs, keeping track of the # of HILOs with each update
+    </p>
+</div>
+
+<div id="code">
+    <p>
+        man that was really long huh<br/>
+        impl right here:
+    </p>
+
+    ```cpp
+    #include &#60;iostream&#62;
+    #include &#60;vector&#62;
+    #include &#60;set&#62;
+    #include &#60;map&#62;
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+
+    /**
+     * 2021 dec gold
+     * 5
+     * 5 1 2 4 3
+     * should output 0, 1, 1, 2, 1, and 0, each on a new line
+     * no input validation because c++ isn't python
+     */
+    int main() {
+        int size;
+        std::cin &#62;&#62; size;
+        vector&#60;int&#62; perm(size);
+        vector&#60;int&#62; ind(size + 1);
+        for (int i = 0; i &#60; size; i++) {
+            std::cin &#62;&#62; perm[i];
+            ind[perm[i]] = i;
+        }
+
+        vector&#60;vector&#60;int&#62;&#62; started_his(size + 1);
+        std::set&#60;int&#62; added;
+        for (int i : perm) {
+            auto it = added.lower_bound(i);
+            // largest value that occurs before i and is less than i
+            int start = it == added.begin() ? 0 : *(--it);
+            // that's the value of x which i starts being a HI
+            started_his[start].push_back(ind[i]);
+            added.insert(i);
+        }
+
+        vector&#60;int&#62; hilo_num;
+        vector&#60;int&#62; lo;
+        std::set&#60;int&#62; hi;
+        /*
+         * hi = true, lo = false
+         * the out of bounds values is so i don't have to check if random
+         * iterator values are equal to the beginning or end
+         * trust me they don't affect anything at alll
+         */
+        std::map&#60;int, bool&#62; hilos{{-1, false}, {size + 1, true}};
+        int curr_hilo = 0;
+        for (int x = 0; x &#60;= size; x++) {
+            // add the new values of hi
+            for (int h : started_his[x]) {
+                hi.insert(h);
+                auto it = hilos.lower_bound(h);
+                if (!it-&#62;second &#38;&#38; !(--it)-&#62;second) {
+                    curr_hilo++;
+                }
+                hilos[h] = true;
+            }
+
+            hilo_num.push_back(curr_hilo);
+
+            // start updating for the next value of x
+            if (x &#60; size) {
+                int changed = ind[x + 1];
+                while (!lo.empty() &#38;&#38; changed &#60; lo.back()) {
+                    auto it = hilos.lower_bound(lo.back());
+                    if ((--it)-&#62;second) {
+                        curr_hilo--;
+                    }
+                    hilos.erase(lo.back());
+                    lo.pop_back();
+                }
+
+                bool prev = (--hilos.lower_bound(changed))-&#62;second;
+                bool next = (++hilos.lower_bound(changed))-&#62;second;
+                curr_hilo += prev + !next;
+                hi.erase(changed);
+                lo.push_back(changed);
+                hilos[changed] = false;
+            }
+        }
+
+        for (int i : hilo_num) {
+            cout &#60;&#60; i &#60;&#60; '\n';
+        }
+    }
+    ```
+</div>
+
+<script src="../../lib/prism/prism.js"></script>
+<script src="../inline_code.js"></script>
+
+</body>
+</html>
