@@ -57,7 +57,11 @@ a:hover {
     color: #d85f82;
 }
 
-h1, h2, h3 {
+h1 {
+    margin-bottom: 0.1em;
+}
+
+h2, h3 {
     line-height: 1.2;
     margin: 0.1em;
 }
