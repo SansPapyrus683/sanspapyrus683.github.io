@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <meta charset="UTF-8">
+    <title>cs35l assignment 2</title>
+</head>
+<body>
+
+<a href="../index.html">back to eggert home</a><br/>
+<a href="/index.html">back to home</a>
+
+<h1>assign 2</h1>
+
+<p>
+    don't you love it when you have to learn two programming languages for one assignment?
+</p>
+
+<h2>lisp (elisp, really)</h2>
+
+<h3>`notes.txt` questions</h3>
+
+<p>
+    you can do some funny lisp playground stuff in emacs' `*scratch*` buffer,
+    opened <a href="https://emacs.stackexchange.com/a/23">like so</a>
+</p>
+
+<ol>
+    <li>
+        give an elisp expression/function that computes \(\left(2^{607-1}\right)\left(2^{607}-1\right)\)-
+        you can do this with the `expt` function and friends
+    </li>
+    <li>
+        then, write an expression that computes how many bits would be needed to store this number<br/>
+        for example, you need 3 bits to represent 4, and 7 bits to represent 100<br/>
+        you can do this with a log and ceiling function, should be quite straightforward
+    </li>
+    <li>what does `C-h k C-h k` do? why?</li>
+    <li>what about `C-h k M-SPC`?</li>
+    <li>
+        go to the source code for the function `M-SPC` calls by going to its help page and
+        pressing enter or clicking on the file source name<br/>
+        the source for `M-SPC` should be implemented in terms of a more general function<br/>
+        what's that general function? how can you call it?
+    </li>
+</ol>
+
+<h3>"we have `what-line` at home" (main part)</h3>
+
+<p>
+    take a look at emacs' `what-line` command (run with `M-x what-line`) and notice that it outputs the current
+    line number, but not how many lines are in the file total
+</p>
+
+<p>
+    how about we fix that? make a file `gps-line.el` that contains a lisp function `what-line`
+    that outputs the following
+</p>
+```
+Line [x]/[n]
+```
+<p>
+    where `[x]` should just be the line you're currently at and `[n]` is the total number of lines in the buffer<br/>
+    visit `what-line`'s source code to see how it works!
+</p>
+<p>
+    to count the total number of lines, you should just get the buffer and count the number of newline characters<br/>
+    due to this specification, your function should be able to say things like `Line 1/0` when called on some text
+    that doesn't end in a newline
+</p>
+
+<p>
+    if you look at the source code for `what-line`, you'll see that there's some special logic for "narrowed buffers"
+    or whatever the hell<br/>
+    i would recommend implementing support for that just in case, since the code is pretty copy and paste-able for that
+</p>
+
+<p>
+    you should be able to load the file and the function within by typing `M-:` (really `M-shift-;`) and running this:
+    ```lisp
+    (require "gps-line.el")
+    ```
+    or you can follow <a href="https://stackoverflow.com/a/6401163/12128483">this guide</a> to load it in on startup
+</p>
+
+<h2>python</h2>
+
+<p>
+    honestly wonder what proportion of a 35l class knows python already
+</p>
+
+<p>
+    but anyways there's three versions of python that are of relevance to this part
+</p>
+<ul>
+    <li>
+        `/usr/local/cs/bin/python3`, python 3.11, invoked when you do `python3` given that you followed
+        the initial setup instructions in <a href="assign1.html">assignment 1</a> correctly
+    </li>
+    <li>`/usr/bin/python3`, an earlier version of python3</li>
+    <li>`python2`, python 2 WHICH LITERALLY ISN'T SUPPORTED ANYMORE WHY ARE WE STILL BEING EDUCATED ON THIS</li>
+</ul>
+
+<h3>`notes.txt` questions part 1</h3>
+
+<p>
+    consider the following script
+    <a href="https://web.cs.ucla.edu/classes/winter24/cs35L/assign/randline.py">randline</a>
+    <b>(WINTER 24 VERSION, MAY BE OUTDATED)</b>
+</p>
+<ol>
+    <li>
+        what happens when you run this and why?
+        ```bash
+        ./randline.py /dev/null  # or any other empty file
+        ```
+    </li>
+    <li>
+        this script is built for python 2- what happens when it's run with python 3? like this:
+        ```bash
+        python3 randline.py
+        ```
+    </li>
+</ol>
+
+<h3>main part</h3>
+
+<p>
+    code up a python 3 script `shuf.py` that mimics the default `shuf` command<br/>
+    it should implement the following options:
+</p>
+<ul>
+    <li>`-n`/`--head-count`, which specifies the number of lines of output</li>
+    <li>`-e`/`--echo`, which specifies treats the given arguments (except flags) as the lines to shuffle</li>
+    <li>`-r`/`--repeat`, which when specified allows for a single line to be outputted twice</li>
+    <li>`--help`, which you shouldn't worry about because `argparse` should generate one for you</li>
+</ul>
+<p>
+    these descriptions aren't comprehensive-
+    consult the man pages or just run it yourself to see how things actually work
+</p>
+
+<!-- TODO: PUT SOME TEST CASES --->
+
+<p>
+    as of winter 24, you can only import from `argparse`, `string`,
+    and the non-`optparse` modules already imported in the `randline` script
+</p>
+
+<h3>`notes.txt` questions part 2</h3>
+
+<ol>
+    <li>
+        what happens when your script is invoked with python 2 instead of python 3?
+    </li>
+    <li>
+        according to python, 3.11 is significantly faster than older versions; let's test it out!
+        time your shuf script like so:
+        ```bash
+        time [executable] < /usr/share/unicode/ucd/BidiTest.txt > /dev/null
+        ```
+        where `[executable]` can be one of three things:
+        <ul>
+            <li>`shuf` (just default lol)</li>
+            <li>`/usr/local/cs/bin/python3 shuf.py` (python 3.11)</li>
+            <li>`/usr/bin/python3` (some version before python 3.11)</li>
+        </ul>
+
+        for each command, time it three times, and report the median of the sum of the user & system times<br/>
+    </li>
+    <li>
+        well? is 3.11 faster? if your program can't run on the given pre-3.11 version, explain why<br/>
+        also document the cpu model and os this crap was run on by
+        running `lscpu` and looking at `/etc/os-release` respectively
+    </li>
+</ol>
+
+<h2>what to turn in</h2>
+
+<ul>
+    <li>`gps-line.el`, with a function `what-line` that performs as specified</li>
+    <li>`shuf.py`</li>
+    <li>`notes.txt`, with the answers to the questions specified above</li>
+</ul>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
