@@ -26,17 +26,17 @@ span.small {
 }
 
 span.big {
-    font-size: large;
+    font-size: larger;
 }
 
 /* woah, classes! */
 .inline {
     background-color: #51938f;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 4px;
+    border-radius: 4px;
     font-family: "Skyhook Mono", monospace;
     /* idk if this is good or not, who cares */
     font-weight: bold;
-    font-size: medium;
+    font-size: small;
     color: #84fff2;
 }
