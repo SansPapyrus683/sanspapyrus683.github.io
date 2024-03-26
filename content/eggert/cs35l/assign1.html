@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <meta charset="UTF-8">
+    <title>cs35l assignment 1</title>
+</head>
+<style>
+  /* yeah yeah, i put the css directoy in my html, cry about it */
+  li + li {
+    margin-top: 10px;
+  }
+</style>
+<body>
+
+<a href="../index.html">back to eggert home</a><br/>
+<a href="/index.html">back to home</a>
+
+<h1>assign 1</h1>
+
+<p>
+    welcome to to hell that is 35l.<br/>
+    this first assignment has you do things with emacs and bash, so we're off to a great start<br/>
+    i'm gonna assume you took 31 or 32 and have one of those seasnet accounts to login with
+</p>
+
+<h2>setup</h2>
+
+<ol>
+    <li>
+        ssh into `lnxsrv11`, `lnxsrv13`, or `lnxsrv15` with this command:
+        ```bash
+        ssh [username]@lnxsrv11.seas.ucla.edu # replace 11 with another if you wanna
+        ```
+        vsc also has <a href="https://code.visualstudio.com/docs/remote/ssh">ssh support</a> if you're that kinda person
+    </li>
+    <li>
+        go to the filepath `~/.profile` or create one if it doesn't already exist and add this text:
+        ```bash
+        export PATH=/usr/local/cs/bin:$PATH
+        ```
+        `/usr/local/cs/bin` has some cool commands and stuff that the course uses<br/>
+        pretty sure you have to log out and log back in again as well
+    </li>
+</ol>
+
+<h2>some scavenger hunt lab</h2>
+
+<h3>lab 1.0</h3>
+
+<p>
+    nothing much, just first make sure emacs is doing its thing by typing
+    ```bash
+    emacs --version
+    ```
+    it should be 29.1
+</p>
+
+<p>
+    then actually start it up by running emacs without that version flag<br/>
+    start the tutorial by pressing `Ctrl+h` and `t`- notice that you have to do two sets of keypresses!<br/>
+    <i>disclaimer: you don't have to go through all of it, just enough to give you a general idea of how crap works</i>
+</p>
+
+<h3>lab 1.1</h3>
+
+<p>
+    run this command:
+    ```bash
+    wget2 https://web.cs.ucla.edu/classes/winter24/cs35L/assign/assign1.html
+    ```
+    this downloads a copy of winter 24's assignment 1 webpage to your file system<br/>
+    change the quarter to yours i suppose
+</p>
+
+<p>
+    next, copy the file (it should be DL'ed as `assign1.html`) to 3 new names:
+    `exer1.html`, `exer2.html`, and `exer3.html`<br/>
+    we'll mess around with the other 2 files later, but first open `exer1.html` with this command:
+    ```bash
+    emacs exer1.html # or whatever path you've copied it to
+    ```
+</p>
+
+<p>
+    run the emacs command `M-x open-dribble-file` to create a dribble file `lab1.drib` that will log all your keypresses
+    for the current session<br/>
+    <b>later, you'll do the same for labs 1.2, 1.3, and 1.4- make `lab[x].drib` files for those as well</b>
+</p>
+
+<p>
+    perform the following actions with cool emacs commands- <b>don't just use the arrow keys for everything</b>
+</p>
+<ol>
+    <li>use searching to move the cursor to just after the first occurrence of the string "UTF-8" (all upper-case).</li>
+    <li>now move the cursor to the start of the first later occurrence of the word "scavenger".</li>
+    <li>now move the cursor to the start of the first later occurrence of the word "self-referential".</li>
+    <li>now move the cursor to the start of the first later occurrence of the word "arrow".</li>
+    <li>now move the cursor to the end of the current line.</li>
+    <li>now move the cursor to the beginning of the current line.</li>
+    <li>that's it! do `C-x C-c` to exit emacs and you should see all your keypresses in `lab1.drib`</li>
+</ol>
+
+<p>
+    the TAs won't like check if you've done the actions <i>exactly</i>- they'll just check if the commands you
+    used are efficient enough, like using `C-s` for forward searching and `C-a` for going to the beginning of a line
+</p>
+
+<h3>lab 1.2</h3>
+
+<p>
+    open emacs on `exer2.html` this time and create the appropriate dribble file
+</p>
+
+<p>
+    do these tasks, which should eventually remove all html comments on the page<br/>
+    again, be sure to use cool emacs commands instead of backspacing everything
+</p>
+
+<ol>
+    <li>
+        delete the 71st line, which should be smth like this:
+        ```html
+        &lt;!-- HTML comments look like this, but the comment you delete has different text inside. --&gt;
+        ```
+    </li>
+    <li>delete the comment containing the text `DELETE-ME DELETE-ME DELETE-ME`
+    <li>ditto, but w/ the comment containg `https://en.wikipedia.org/wiki/HTML_comment#Comments`</li>
+    <li>should be 2 more comments in the page- kill those asw</li>
+    <li>alr you're done, exit emacs</li>
+</ol>
+
+<p>
+    to check your work, run this command:
+    ```bash
+    diff -u exer1.html exer2.html >exer2.diff
+    ```
+    it should contain only the text you wanna remove, smth like this:
+    ```diff
+    --- exer1.html 2024-03-25 16:08:00.248297761 -0700
+    +++ exer2.html 2024-03-25 16:08:00.248297761 -0700
+    @@ -68,7 +68,6 @@
+    and you are not expected to read it all.&lt;/li&gt;
+    &lt;/ul&gt;
+
+    -&lt;!--
+    diff，在UNIX系統上的一個工具程式，它可以比較兩個檔案之間的不同。通常它被用來比較同一個檔案，在不同版本間的差異。它可以產生一個擴展名為.diff或.patch的檔案，這個檔案可以被另一個工具程式patch來使用。--&gt;
+
+    &lt;/section&gt;
+    &lt;section&gt;
+    ```
+    don't stress if your file doesn't match this exactly-
+    again, the TAs just look to see which commands you used for deletion or whatever
+</p>
+
+<h3>lab 1.3</h3>
+
+<p>
+    open emacs on `exer3.html`, yada yada
+</p>
+
+<ol>
+    <li>change the <i>first two instances</i> of `Assignment 1` to `Assignment 27`</li>
+    <li>change the first instance of `UTF-8` to `US-ASCII`.</li>
+    <li>
+        alright now that we've said that our file is ascii, we should probably make it that way<br/>
+        most of the chars are the
+        <a href='https://en.wikipedia.org/wiki/Unicode'>unicode</a>
+        character <a href='https://www.fileformat.info/info/unicode/char/2019/index.htm'>here -&gt; &rsquo;</a>;
+        fix these by replacing each one with a normal ascii apostrophe- `'`<br/>
+        <span class="small">psst, `M-x replace-string` is pretty cool</span>
+    <li>
+        find the first remaining non-ascii char<br/>
+        you can do this by searching for the regex `[^[:ascii:]]`.
+    </li>
+    <li>
+        what is that char?
+        you can use
+        <a href='https://www.gnu.org/software/emacs/manual/html_node/emacs/Position-Info.html'>
+            `C-u C-x = (what-cursor-position)`</a>  <!-- yeah, for styling reasons the closing tag has to be here -->
+        to find out<br/>
+        <b>put the answer in a file named `notes.txt`</b>
+    </li>
+    <li>
+        remove every <i>line</i> that contains a non-ascii character, besides the apostrophe chars you alr replaced
+    </li>
+
+    <li>
+        kk exit emacs now- if you wanna, use `diff` to check your output or whatever
+    </li>
+</ol>
+
+<h3>lab 1.4</h3>
+
+<p>
+    this one actually doesn't start with opening an exer file, wow!
+</p>
+
+<ol>
+    <li>
+        run this:
+        ```bash
+        # creates exer4.html, which consists of
+        # a copy of exer2.html followed by a copy of exer2.diff
+        cat exer2.html exer2.diff &gt;exer4.html
+        ```
+        we're gonna try to modify `exer4.html` so that it looks like `exer1.html`,
+        just with some extra stuff at the end
+    </li>
+    <li>oh- <i>now</i> open `exer4.html` and do the whole dribble file thing</li>
+    <li>go to the end of the file and copy the new lines in the last chunk of diff output</li>
+    <li>paste them into the correct location in the html part of the file</li>
+    <li>repeat for all the chunks of the output</li>
+    <li>delete the diff output from `exer2.diff`</li>
+    <li><i>undo</i> that deletion (wtf??)</li>
+
+    <li>
+        turn the diff output into a comment by surrounding it with `&lt;!--` and `--&gt;`<br/>
+        if the diff output itself contains end-comment markers `--&gt;`,
+        escape them by replacing each such `--&gt;` w/ `--&amp;gt;`.
+    </li>
+
+    <li>search the doc for `&lt;ol&gt;`- how many did you find? put the answer in `notes.txt`</li>
+    <li>replace all of em w/ `&lt;oL&gt;` cuz why not</li>
+</ol>
+
+<p>
+    check by running the shell command `diff -u exer1.html exer4.html`<br/>
+    the only differences should be changes from `&lt;ol&gt;` to `&lt;oL&gt;` and a giant html comment at the end<br/>
+    but <b>don't stress if your output is ever so slightly different!</b>
+    again, the TAs will just look if you used cool emacs commands
+</p>
+
+<h3>lab 1.5</h3>
+
+<p>
+    put all the answers here along with the commands you used to get them in `notes.txt`<br/>
+    most of the questions here are suffixed by a cool command that can be used for it because
+    there's no goddamn way people are supposed to figure this out by themselves
+</p>
+
+<ol>
+    <li>where are the `sh`, `sleep`, and `type` commands located? - `type`</li>
+
+    <li>
+        what executables in `/usr/bin` have names that are exactly three characters
+        long and start with the two letters `se`, and what do they do? - `grep`, `man`
+    </li>
+
+    <li>
+        when you run the symbolic link (symlink for short) `/usr/local/cs/bin/emacs`,
+        which file actually is run? - `readlink`
+    </li>
+
+    <li>
+        what's is the version number of `/usr/bin/gcc`? what about `gcc`?
+        why are the two different? - `gcc` (obv), `readlink`
+    </li>
+
+    <li>
+        the `chmod` program changes permissions on a file.
+        what does the symbolic mode `u+sx,o-w` mean, in terms of permissions? - `man`
+    </li>
+
+    <li>
+        use `find` to find all directories that are located under (or are the same as) the directory `/usr/local/cs`,
+        and that were modified after the directory `/usr/local/cs/lib` was modified.
+        sort them alphabetically and list the first five names - `find`<br/>
+        <b>be sure to type out the FULL, ABSOLUTE PATHS- NO `.` OR `..` OR WHATEVER</b>
+    </li>
+
+    <li>
+        how many regular files match the pattern `/usr/local/cs/src/python/Python-*`?
+        we're just talking about regular files here, no symlinks, directories, or any fancy crap - `find`, `wc`
+    </li>
+
+    <li>how many files in `/usr/local/cs/bin` are symlinks? - `find`, `wc`</li>
+
+    <li>
+        what's the oldest file in the `/usr/lib64` directory?
+        use the last-modified time to determine age - `find`, `sort`<br/>
+        <b>there's a bunch of conditions for this problem</b>
+        <ul>
+            <li>specify the name of the file without the `/usr/lib64/` prefix</li>
+            <li>
+                don’t ignore files whose names start with "`.`",
+                but <i>do</i> ignore files under subdirectories of `/usr/lib64/`<br/>
+                for example, `/usr/lib64/.asdf` would be up for consideration, but `/usr/lib64/lmao/what` wouldn't
+            </li>
+            <li>for <i>this</i> problem, the answer could a symlink, directory, or whatever - `find`, `sort`</li>
+        </ul>
+    </li>
+
+    <li>in emacs, what commands have `transpose` in their name? - `C-h a`</li>
+
+    <li>what does the emacs `yank` function do, and how can you easily invoke it using keystrokes? - `C-h f`</li>
+
+    <li>
+        use `ps` to find your own login shell’s process, all that process’s ancestors, and all its descendants<br/>
+        some cool options are `-e`, `-f`, `-j`, `-l`, `-t`, `-H`, and `-T`
+    </li>
+</ol>
+
+<h3>lab 1.6</h3>
+
+<p>
+    the spec says to do this in emacs, but it doesn't matter<br/>
+    the TAs literally don't check if you did it so
+</p>
+
+<p>
+    create this file named `hello.c` or whatever you want with the following content:
+    ```c
+    #include &lt;stdio.h&gt;
+    int
+    main (void)
+    {
+      for (;;)
+        {
+          int c = getchar ();
+          if (c &lt; 0)
+            {
+              if (ferror (stdin))
+                perror (&quot;stdin&quot;);
+              else
+                fprintf (stderr, &quot;EOF on input\n&quot;);
+              return 1;
+            }
+          if (putchar (c) &lt; 0 || (c == '\n' &amp;&amp; fclose (stdout) != 0))
+            {
+              perror (&quot;stdout&quot;);
+              return 1;
+            }
+          if (c == '\n')
+            return 0;
+        }
+    }
+    ```
+</p>
+
+<ol>
+    <li>compile it, either in emacs w/ `M-x compile` or gcc w/ `gcc hello.c`</li>
+
+    <li>
+        run it, either in emacs w/ `M-!` or in bash w/ `./a.out`<br/>
+        put the program’s standard output (stdout) into a file named `hello-a1`
+        and its standard error (stderr) into a file `hello-a2`
+    </li>
+
+    <li>
+        same as before, except run the program with stdin <i>closed</i>,
+        and put stdout/stderr into `hello-b1` and `hello-b2` respectively.<br/>
+        note that closing standard input isn't the same as having an empty input file!<br/>
+        you can arrange for this via the
+        <a href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_07_05">
+            `&lt;&amp;-` shell syntax
+        </a><br/>
+        by that, eggert means you can do this:
+        ```bash
+        ./a.out <&-  # output redirection omitted
+        ```
+    </li>
+
+    <li>
+        now run the program with stdin being the file `/etc/passwd`,
+        and redirect stdout/stderr to `hello-c1`/`hello-c2`
+    </li>
+
+    <li>
+        ok try doing it with stdin being the file `/etc/passwd` and stdout being the file `/dev/full`;
+        put stderr into `hello-d2`
+    </li>
+</ol>
+
+<h2>actual bash scripting</h2>
+
+<h3>intro</h3>
+
+<p>
+    i really recommend you understand these commands first before doing this assignment<br/>
+    if you don't, you can use `man` or `tldr` to figure that out<br/>
+</p>
+<ol>
+    <li>`cat`</li>
+    <li>`tr`</li>
+    <li>`sort`</li>
+    <li>`comm`</li>
+    <li>
+        oh yeah also make sure you get
+        <a href="https://stackoverflow.com/q/9834086/12128483">piping</a> and whatnot
+    </li>
+</ol>
+
+<h3>startup</h3>
+
+<p>
+    use the `sort` command and some funny redirection to make a file named `sorted.words` that
+    contains all the words of `/usr/share/dict/linux.words` in alphabetical order
+</p>
+
+<p>
+    now, take this lil bash script:
+    ```bash
+    tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - sorted.words
+    ```
+    it tries to be a rudimentary spellchecker, but it kinda sucks
+</p>
+
+<p>
+    to see why, run this command, which runs the script with the very dictionary we generated `sorted.words` from:
+    ```bash
+    tr -cs 'A-Za-z' '[\n*]' &lt;/usr/share/dict/linux.words |
+        sort -u | comm -23 - sorted.words
+    ```
+    a bunch of weird words come out! try to figure out why first before moving on
+</p>
+
+<h3>the actual task</h3>
+
+<p>
+    write a shellscript named `myspell` that looks at `linux.words` and spellchecks some text given from stdin<br/>
+    by that, i mean it should take in text from stdin and output misspelled words to stdout
+</p>
+
+<p>
+    for this assignment, a "word" can be defined as just any consecutive string of uppercase or lowercase alphabets<br/>
+    so don't worry, the given `tr` command:
+    ```bash
+    tr -cs 'A-Za-z' '[\n*]'
+    ```
+    will work just fine for separating out all the "words" of a file
+</p>
+
+<p>
+    if you want to, you can make a helper script `makedict` to preprocess `linux.words` first<br/>
+    but beware- the TAs won't call it for you! you have to run it yourself in `myspell`
+</p>
+
+<p>
+    you can expect the TAs to call it like so:
+    ```bash
+    ./myspell &lt;file_with_words_idk.txt
+    ```
+</p>
+
+<h3>sanity checks</h3>
+
+<p>
+    ```bash
+    ./myspell &lt;/usr/share/dict/linux.words
+    ```
+    should output nothing because the dictionary by definition should only contain correctly spelled words
+</p>
+
+<p>
+    say we have the following file named `lol.txt`:
+    ```
+    I love Software Construction
+    I love software Construction?
+    Professor Eggert is the best
+    I am "enjoying" the class
+    Am_I_enjoying_the_class?
+    we-all love sushi.
+    whitefish-taste-bad
+    ```
+    when we run the following command:
+    ```bash
+    ./myspell &lt;lol.txt &gt;output.xt
+    ```
+    a new file `output.txt` should appear with the following text:
+    ```
+    Construction
+    Eggert
+    Professor
+    Software
+    ```
+</p>
+
+<p>
+    <span class="big"><b>if the TAs say the output should be otherwise, believe <i>them</i>!</b></span>
+</p>
+
+<h2>what to turn in</h2>
+
+<p>
+    alright i won't be ambiguous, here's a list of all files that should be in your thing
+</p>
+
+<ul>
+    <li>`lab1.drib`, `lab2.drib`, `lab3.drib`, and `lab4.drib`</li>
+    <li>`hello-a1`, `hello-a2`, `hello-b1`, `hello-b2`, `hello-c1`, `hello-c2`, `hello-d2`</li>
+    <li>`myspell`</li>
+    <li>`makedict`, if you made one</li>
+    <li>`notes.txt`, which should have answers to questions in labs 1.3, 1.4, and 1.5</li>
+</ul>
+
+<p>
+    submit these files as a `.tgz` file- you can generate this by doing the following command:
+    ```bash
+    tar -cvzf assign1.tgz lab1.drib lab2.drib  # .. i'm not gonna list all the files here
+    ```
+    you can check that all the files are in there by doing this:
+    ```bash
+    tar -tvf assign1.tgz
+    ```
+</p>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
