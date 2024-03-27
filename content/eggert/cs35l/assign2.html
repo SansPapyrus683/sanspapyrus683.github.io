@@ -78,6 +78,15 @@ Line [x]/[n]
 </p>
 
 <p>
+    to give you an idea of what this file might look like, here's the general structure of my `gps-line.el`
+</p>
+```lisp
+(defun gps-line()
+  (interactive)
+  (message "do some stuff here"))
+```
+
+<p>
     if you look at the source code for `what-line`, you'll see that there's some special logic for "narrowed buffers"
     or whatever the hell<br/>
     i would recommend implementing support for that just in case, since the code is pretty copy and paste-able for that
@@ -149,12 +158,24 @@ Line [x]/[n]
     consult the man pages or just run it yourself to see how things actually work
 </p>
 
-<!-- TODO: PUT SOME TEST CASES --->
-
 <p>
     as of winter 24, you can only import from `argparse`, `string`,
     and the non-`optparse` modules already imported in the `randline` script
 </p>
+
+<h3>sanity checks</h3>
+
+<p>
+    my friends and i found a ton of edge cases that you might wanna test, since the default `shuf`
+    has some behavior that might differ a bit from `argparse`
+</p>
+```bash
+shuf -e asdf -r  # should output "asdf" forever
+shuf asdf -i 6-10  # should error, since 6-10 was already given as an input range
+shuf thing.txt what.txt  # ditto, except this time the input file was already given
+shuf -i -1-10  # this errors, you should only handle nonnegative integers for -i
+shuf -e -asdf  # you'd think this'd print "-asdf". nope! it errors
+```
 
 <h3>`notes.txt` questions part 2</h3>
 
@@ -172,7 +193,7 @@ Line [x]/[n]
         <ul>
             <li>`shuf` (just default lol)</li>
             <li>`/usr/local/cs/bin/python3 shuf.py` (python 3.11)</li>
-            <li>`/usr/bin/python3` (some version before python 3.11)</li>
+            <li>`/usr/bin/python3 shuf.py` (some version before python 3.11)</li>
         </ul>
 
         for each command, time it three times, and report the median of the sum of the user & system times<br/>
