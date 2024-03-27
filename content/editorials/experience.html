@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <title>experience</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<p><a href="https://codeforces.com/edu/course/2/lesson/7/1/practice/contest/289390/problem/C">problem link</a></p>
+
+<div id="title">
+    <h1>experience</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        hi i'm back with another solution thing<br/>
+        whatever you like to call it
+    </p>
+    <p>
+        this time it's this problem from the codeforces educational portal or whatever
+    </p>
+    <p>pretty standard dsu problem, except this time you need to</p>
+    <ol>
+        <li>get the value of a certain node</li>
+        <li>increment all the values of a set (given by a certain node) by some value</li>
+    </ol>
+
+    <p>and there's the standard linking operation but that's obvious lmao</p>
+    <p>
+        so at first i thought about storing points in a `points` array and then just
+        incrementing the root of each set when the input asked me to increment a set<br/>
+        then when they queried for the amt of points
+        i could just sum up the `points` array for each node that was on the path
+        from the current node to the root and win basically</p>
+
+    <p>
+        but then i realized if the root already had some previous value when
+        it was declared as the parent of another set, this would also cause the set that was
+        merged into the parent to be incremented by what was already in the root
+    </p>
+    <p>
+        take the sample input for example- we have `points[1]` to be `100`,
+        but then when we merge node `3` into node `1`, now the algorithm thinks that node `3` also has `100` points,
+        even though it was just node `1`
+    </p>
+    <p>
+        so we fix this by keeping an array `extra_points` that stores the initial value
+        in the root and then subtract the values in the array when querying to tell all the points
+        that were previously there when merged to screw off
+    </p>
+    <p>
+        also disclaimer path compression isn't used because it would mess up the algorithm<br/>
+        think it's still possible tho
+    </p>
+</div>
+
+<div id="code">
+    <p>
+        since no one reads this i'll just say i wanna be a femboy
+    </p>
+
+    ```cpp
+    #include &lt;iostream&gt;
+    #include &lt;vector&gt;
+    #include &lt;string&gt;
+    #include &lt;algorithm&gt;
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+
+    class Players {
+        private:
+            vector&lt;int&gt; parents;
+            vector&lt;int&gt; sizes;
+            vector&lt;int&gt; points;
+            vector&lt;int&gt; extra_points;
+        public:
+            Players(int size) : parents(size), sizes(size, 1),
+                                points(size), extra_points(size) {
+                for (int i = 0; i &lt; size; i++) {
+                    parents[i] = i;
+                }
+            }
+
+            int get_ultimate(int n) {
+                return parents[n] == n ? n : get_ultimate(parents[n]);
+            }
+
+            int get_points(int n) {
+                int amt = points[n];
+                if (parents[n] == n) {
+                    return amt;
+                }
+                amt += get_points(parents[n]) - extra_points[n];
+                return amt;
+            }
+
+            void add_points(int n, int p) {
+                int top = get_ultimate(n);
+                points[top] += p;
+            }
+
+            bool link(int n1, int n2) {
+                n1 = get_ultimate(n1);
+                n2 = get_ultimate(n2);
+                if (n1 == n2) {
+                    return false;
+                }
+                if (sizes[n1] &lt; sizes[n2]) {
+                    std::swap(n1, n2);
+                }
+                sizes[n1] += sizes[n2];
+                parents[n2] = n1;
+                extra_points[n2] = points[n1];
+                return true;
+            }
+    };
+
+    /**
+     * https://codeforces.com/edu/course/2/lesson/7/1/practice/contest/289390/problem/C
+     * 3 6
+     * add 1 100
+     * join 1 3
+     * add 1 50
+     * get 1
+     * get 2
+     * get 3 should output 150, 0, and 50, each on a new line
+     */
+    int main() {
+        int node_num;
+        int query_num;
+        std::cin &gt;&gt; node_num &gt;&gt; query_num;
+        Players players(node_num + 1);
+        for (int q = 0; q &lt; query_num; q++) {
+            std::string type;
+            std::cin &gt;&gt; type;
+            if (type == &quot;get&quot;) {
+                int n;
+                std::cin &gt;&gt; n;
+                cout &lt;&lt; players.get_points(n) &lt;&lt; endl;
+            } else if (type == &quot;add&quot;) {
+                int n;
+                int points;
+                std::cin &gt;&gt; n &gt;&gt; points;
+                players.add_points(n, points);
+            } else if (type == &quot;join&quot;) {
+                int a;
+                int b;
+                std::cin &gt;&gt; a &gt;&gt; b;
+                players.link(a, b);
+            }
+        }
+    }
+    ```
+</div>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

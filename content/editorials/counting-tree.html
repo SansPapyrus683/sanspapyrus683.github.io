@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <title>counting on tree</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<p>
+    <a href="https://www.hackerearth.com/challenges/competitive/march-clash-15/algorithm/counting-on-tree-1/description/">
+        problem link
+    </a>
+</p>
+
+<div id="title">
+    <h1>counting on tree</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        i should probably make a cf blog or something but the people on there
+        are more unpredictable than my history teacher
+    </p>
+    <p>
+        so i came upon this problem and found that the editorial was absolutely awful
+    </p>
+
+    <p>
+        so we have a tree with nodes and values, normal crap<br/>
+        and they want us to find how many subtrees have a sum of \(t\) (\((t \le 100)\))
+    </p>
+    <p>
+        this is actually a pretty standard tree dp problem, we just keep an array `sum_ways` and define it like this:
+        ```
+        sum_ways[n][s] = number of subtrees rooted at node n that have a sum s
+        ```
+        seems pretty simple to understand (the answer we output is the sum of `sum_ways[n][t]` across all `n`)
+    </p>
+    <p>
+        to handle the base case for a leaf (and every node), we increment `sum_ways[node][node_value]` by 1
+    </p>
+
+    <p>
+        now to actually merge a child's array into a parent's array- the actual dp part of tree dp<br/>
+        let's say our parent and child array were something like this (who cares if these are actually possible):
+    </p>
+    ```
+    parent = [0, 0, 4, 1, 5, 0, 3]  (let's just say t = 6)
+    child = [0, 1, 3, 3, 0, 1, 1]
+    ```
+    <p>
+        how do we merge these?<br/>
+        let's just start with the target value because why not<br/>
+        there's 7 ways for the parent & child to come together and make a new subtree that sums to 6:
+    </p>
+    <ul>
+        <li>parent contributes 0, child contributes 6</li>
+        <li>parent contributes 1, child contributes 5</li>
+        <li>parent contributes 2, child contributes 4</li>
+        <li>...</li>
+        <li>parent contributes 6, child contributes 0</li>
+    </ul>
+    <p>
+        and for each of these `p_contrib` and `c_contrib` values,
+        we just increment `parent[t]` by `p_contrib * c_contrib`<br/>
+        and then we win
+    </p>
+
+    <p>
+        "but wait, kevin!" i can hear you typing in the comment sections already<br/>
+        "this dp relation only accounts for the current child *adding on*
+        to what the parent already has with the others!"<br/>
+        "it doesn't account for just the parent node and the child's subtrees alone!"<br/>
+        but note that our base case of incrementing `sum_ways[node][node_value]`
+        by 1 accounted for that! checkmate, liberal!
+    </p>
+</div>
+
+<div id="code">
+    <p>
+        but enough of me, you can just take the code and go now ig
+    </p>
+
+    ```cpp
+    #include &lt;iostream&gt;
+    #include &lt;cassert&gt;
+    #include &lt;vector&gt;
+    #include &lt;algorithm&gt;
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+    using std::pair;
+
+    constexpr int MOD = 1e9 + 7;
+
+    // some of the values here have different names than in the editorial
+    // i hope that doesn't ruin things for you
+    class Tree {
+        private:
+            static const int ROOT = 0;
+
+            const vector&lt;vector&lt;int&gt;&gt;&amp; neighbors;
+            const vector&lt;int&gt;&amp; node_vals;
+            vector&lt;vector&lt;long long&gt;&gt; sum_ways;
+            int target;
+
+            void process_sums(int at, int prev) {
+                int val = node_vals[at];  // just a shorthand
+                if (val &lt;= target) {
+                    sum_ways[at][val]++;
+                }
+                for (int n : neighbors[at]) {
+                    if (n == prev) {
+                        continue;
+                    }
+                    process_sums(n, at);
+                    if (val &gt; target) {
+                        continue;
+                    }
+                    for (int t = target; t &gt;= 0; t--) {
+                        // this is so the update can happen simultaneously
+                        int new_val = sum_ways[at][t];
+                        for (int a = 0; a &lt;= t; a++) {
+                            int b = t - a;
+                            new_val = (
+                                new_val + sum_ways[at][a] * sum_ways[n][b]
+                            ) % MOD;
+                        }
+                        sum_ways[at][t] = new_val;
+                    }
+                }
+            }
+        public:
+            Tree(const vector&lt;vector&lt;int&gt;&gt;&amp; neighbors,
+                 const vector&lt;int&gt;&amp; node_vals,
+                 int target)
+                    : neighbors(neighbors),
+                      node_vals(node_vals),
+                      target(target),
+                      sum_ways(neighbors.size(), vector&lt;long long&gt;(target + 1)) {
+                assert(node_vals.size() == neighbors.size());
+                process_sums(ROOT, ROOT);
+            }
+
+            long long sum_num(int n) {
+                return sum_ways[n][target];
+            }
+    };
+
+    int main() {
+        int test_num;
+        std::cin &gt;&gt; test_num;
+        for (int t = 0; t &lt; test_num; t++) {
+            int node_num;
+            int target;
+            std::cin &gt;&gt; node_num &gt;&gt; target;
+            vector&lt;int&gt; node_vals(node_num);
+            for (int&amp; v : node_vals) {
+                std::cin &gt;&gt; v;
+            }
+
+            vector&lt;vector&lt;int&gt;&gt; neighbors(node_num);
+            for (int e = 0; e &lt; node_num - 1; e++) {
+                int a;
+                int b;
+                std::cin &gt;&gt; a &gt;&gt; b;
+                neighbors[--a].push_back(--b);
+                neighbors[b].push_back(a);
+            }
+
+            Tree tree(neighbors, node_vals, target);
+            long long total_sums = 0;
+            for (int n = 0; n &lt; node_num; n++) {
+                total_sums = (total_sums + tree.sum_num(n)) % MOD;
+            }
+            cout &lt;&lt; total_sums &lt;&lt; endl;
+        }
+    }
+    ```
+</div>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

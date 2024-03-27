@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <title>required subset</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<p><a href="https://codeforces.com/edu/course/2/lesson/9/3/practice/contest/307094/problem/I">problem link</a></p>
+
+<div id="title">
+    <h1>segment with required subset</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        wow another solution in just a day<br/>
+        <span class="small">does anyone even read these</span>
+    </p>
+
+    <p>
+        but anyways i did this, and
+        it basically gives you an array of \(10^5\) elements and a target \(n \le 1000\)
+        and then it asks you to find the smallest segment that has a subset which sums to that given target
+    </p>
+    <p>
+        this problem is really stupid because it asks for like this one really niche method of using two pointers
+    </p>
+
+    <h2>a simpler problem</h2>
+    <p>
+        so to understand this method, let's do a simpler problem<br/>
+        you have some array of numbers blah blah blah find the longest
+        segment whose (max - min) is less than some given number<br/>
+        so you can just be a normal person and 2P this problem w/ a priority queue, stuff like that<br/>
+        but that gives you an extra \(\log N\) factor and god forbid your code have one of those<br/>
+    </p>
+    <p>
+        so what do we do to remove this pesky log factor?<br/>
+        first let's define a stack data structure that can support max and min queries in O(1)
+        along with the standard push and pop
+    </p>
+    <p>
+        coding this is pretty ez as all you need to do is define two extra stacks along with the actual stack that contain
+        the maximums and minimums of all the numbers below them
+    </p>
+    <p>
+        so for example if we had a stack that was like `[3, 1, 4, 5, 2, 7]`, the max stack would be `[3, 3, 4, 5, 5, 7]` and
+        the min stack would be `[3, 1, 1, 1, 1, 1]`
+    </p>
+
+    <p>
+        then we can do the same 2P thing but instead have 2 stacks- something like this:
+        ```
+        [===================([T---B][B------T])=====================]
+        ```
+        where `T` and `B` represent the top and bottom of the stack respectively
+    </p>
+    <p>
+        then when doing the classic 2P method, we can just push into the right stack and pop from the left stack as the
+        pointers direct us to do<br/>
+        (if the left stack is empty when we pop it,
+        we can just move all the elements from the right stack to the left stack then pop it)<br/>
+        and to get the max and min of the segment, we can just combine the max and mins of the two stacks
+    </p>
+    <p>
+        and that overly convoluted method is how you solve that problem in linear time
+    </p>
+
+    <h2>actually applying this godforsaken method</h2>
+    <p>
+        but coming off of this problem we can use the same 2-stack method to solve this subset sum problem<br/>
+        just store all possible sums on the stack instead of the max and min using some dp techniques
+    </p>
+    <p>
+        then you do the 2P method with said 2 stacks in basically the same way as the simpler problem and win
+    </p>
+</div>
+
+<div id="code">
+    <p>
+        no like seriously does anyone read these
+    </p>
+
+    ```cpp
+    #include &lt;iostream&gt;
+    #include &lt;cassert&gt;
+    #include &lt;bitset&gt;
+    #include &lt;vector&gt;
+    #include &lt;algorithm&gt;
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+    using std::bitset;
+
+    constexpr int MAX_TARGET = 1e3;
+
+    class SumStack {
+        // length is MAX_TARGET + 1 to account for 0
+        using SumSet = bitset&lt;MAX_TARGET + 1&gt;;
+        private:
+            const int max_sum;
+            vector&lt;int&gt; stack{0};
+            // using raw vectors might be too slow, so i use bitsets instead
+            vector&lt;SumSet&gt; sum_stack{SumSet()};
+        public:
+            SumStack(int max_sum) : max_sum(max_sum) {
+                sum_stack.back()[0] = 1;
+            }
+
+            void push(int val) {
+                stack.push_back(val);
+                SumSet new_sums = sum_stack.back();
+                // calculate the new values that can be achieved
+                for (int i = max_sum; i &gt;= val; i--) {
+                    new_sums[i] = new_sums[i] || new_sums[i - val];
+                }
+                sum_stack.push_back(new_sums);
+            }
+
+            int pop() {
+                sum_stack.pop_back();
+                int top = stack.back();
+                stack.pop_back();
+                return top;
+            }
+
+            bool empty() { return stack.size() == 1; }
+
+            const SumSet top_sums() { return sum_stack.back(); }
+    };
+
+    // reverses a bitset in [from, to) (totally not copied from stackoverflow)
+    template&lt;std::size_t N&gt;
+    void reverse(bitset&lt;N&gt;&amp; b, int from=0, int to=N) {
+        for (std::size_t i = from; i &lt; from + (from + to + 1) / 2; i++) {
+            bool temp = b[i];
+            b[i] = b[to - i - 1];
+            b[to - i - 1] = temp;
+        }
+    }
+
+    /**
+     * https://codeforces.com/edu/course/2/lesson/9/3/practice/contest/307094/problem/I
+     * 10 100
+     * 14 33 22 21 11 5 13 28 61 2 should output 5
+     */
+    int main() {
+        int size;
+        int target;
+        std::cin &gt;&gt; size &gt;&gt; target;
+        assert(target &lt;= MAX_TARGET);
+        vector&lt;int&gt; arr(size);
+        for (int&amp; i : arr) {
+            std::cin &gt;&gt; i;
+            assert(i &lt;= target);
+        }
+
+        SumStack left_stack(target);
+        SumStack right_stack(target);
+        auto achievable_sum = [&amp;] () -&gt; bool {
+            // get the achievable sums of the left and right stack
+            auto left = left_stack.top_sums();
+            auto right = right_stack.top_sums();
+            // reverse the left bitset to match up the sums with the right sums
+            reverse(left, 0, target + 1);
+            // now, when we combine the two, any set bit
+            // will represent a subset that sums to the target
+            return (bool) (left &amp; right).count();
+        };
+        left_stack.push(arr[0]);
+
+        int right = 0;
+        int min_good = INT32_MAX;
+        for (int left = 0; left &lt; size; left++) {
+            if (left &gt; 0) {
+                if (left_stack.empty()) {
+                    // move everything from the right to the left
+                    while (!right_stack.empty()) {
+                        left_stack.push(right_stack.pop());
+                    }
+                }
+                left_stack.pop();
+            }
+
+            // while we can't achieve the subset sum, move the pointer to the right
+            while (right &lt; size - 1 &amp;&amp; !achievable_sum()) {
+                right++;
+                right_stack.push(arr[right]);
+            }
+
+            if (achievable_sum()) {
+                min_good = std::min(min_good, right - left + 1);
+            }
+        }
+        cout &lt;&lt; (min_good == INT32_MAX ? -1 : min_good) &lt;&lt; endl;
+    }
+    ```
+</div>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>

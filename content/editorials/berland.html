@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <title>berland federalization</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<p><a href="https://codeforces.com/problemset/problem/440/D">problem link</a></p>
+
+<div id="title">
+    <h1>berland federalization</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        alright<br/>
+        time for <i>this</i> unholy problem
+    </p>
+    
+    <p>
+        <span class="big"><b>oh my god i want to kill the author of this</b></span>
+    </p>
+
+    <p>
+        not even joking<br/>this problem was so hecking hard
+    </p>
+    <p>
+        but anyways, i want to make you suffer less on this problem if you decide to give up<br/>
+        so we have a normal tree w/ at most 400 nodes and we want to find a subtree of k nodes such that the number of edges
+        connecting it to the rest of the tree is minimal
+    </p>
+    <p>
+        this is a tree dp problem, and the <i>definition</i> is easy- it's basically as dumb as you can get:
+    </p>
+    ```
+    dp[n][k] = min edge set that connects a subtree of size k rooted at n
+               to the rest of the tree (undefined if impossible)
+    ```
+
+    <p>
+        the hard part is transition and implementing-
+    </p>
+    <p>
+        ac<br/>
+        actually<br/>
+        now that i think about it this problem wasn't even that bad i was just smol brain
+    </p>
+
+    <p>
+        so for the transition the base cases are these:
+    </p>
+    ```
+    dp[n][0] = {}
+    dp[n][1] = {}
+    ```
+    <p>
+        then we go through each subtree, and add their dp array to the current one<br/>
+        and for each subtree, we have two main choices:
+    </p>
+    <ol>
+        <li>
+            we don't include any of it, and add the edge connecting it and the current root
+            to the current edge set we're processing
+        </li>
+        <li>we include some of it, and add the stuff stored in that portion's dp array</li>
+    </ol>
+</div>
+
+<div id="code">
+    <p>
+        that's it for the main algorithm, the rest is implementation crap so just here's the code
+    </p>
+
+    ```cpp
+    #include &lt;iostream&gt;
+    #include &lt;cassert&gt;
+    #include &lt;vector&gt;
+    #include &lt;set&gt;
+    #include &lt;algorithm&gt;
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+    using std::pair;
+
+    class Country {
+        private:
+            struct Road {
+                int from;
+                int to;
+                bool operator==(const Road&amp; o) {
+                    return (from == o.from &amp;&amp; to == o.to) || (from == o.to &amp;&amp; to == o.from);
+                }
+            };
+            static const int ROOT = 0;
+
+            const vector&lt;vector&lt;int&gt;&gt;&amp; neighbors;
+            int target_size;
+            vector&lt;int&gt; sub_town_num;
+            vector&lt;int&gt; parent;
+            /*
+             * this[n][k] = min problem roads given that
+             * there is a k-sized town rooted at n
+             * the stored vector is a list of the supposed &quot;problem&quot; roads
+             * min_roads just contains the size/validity of each state for convenience
+             */
+            vector&lt;vector&lt;vector&lt;Road&gt;&gt;&gt; best;
+            vector&lt;vector&lt;int&gt;&gt; min_roads;
+
+            void process_towns(int at, int prev) {
+                sub_town_num[at] = 1;
+                parent[at] = prev;
+                // preliminary calculations
+                for (int n : neighbors[at]) {
+                    if (n != prev) {
+                        process_towns(n, at);
+                        sub_town_num[at] += sub_town_num[n];
+                    }
+                }
+
+                /*
+                 * ok so this base case isn't really true, but if the parent wants
+                 * to include none from this subtree they have to cut off this road
+                 * so might as well include it now
+                 */
+                best[at][0] = {{at, prev}};
+                min_roads[at][0] = 1;
+                best[at][1] = {};
+                min_roads[at][1] = 0;
+                // then incorporate the child towns
+                for (int n : neighbors[at]) {
+                    if (n == prev) {
+                        continue;
+                    }
+                    vector&lt;vector&lt;Road&gt;&gt; new_b(target_size + 1);
+                    vector&lt;int&gt; new_m(target_size + 1, INT32_MAX);
+                    new_b[0] = best[at][0];
+                    new_m[0] = min_roads[at][0];
+                    // go through each state for this node and see
+                    // how much of the current subtree and neighbor to include
+                    for (int st = 1; st &lt;= target_size; st++) {
+                        for (int at_amt = 1; at_amt &lt;= st; at_amt++) {
+                            int n_amt = st - at_amt;
+                            if (min_roads[at][at_amt] == INT32_MAX
+                                || min_roads[n][n_amt] == INT32_MAX) {
+                                continue;
+                            }
+                            int new_r = min_roads[at][at_amt] + min_roads[n][n_amt];
+                            if (new_r &lt; new_m[st]) {
+                                new_m[st] = new_r;
+                                new_b[st] = vector&lt;Road&gt;(best[at][at_amt]);
+                                new_b[st].insert(
+                                    new_b[st].end(), best[n][n_amt].begin(), best[n][n_amt].end()
+                                );
+                            }
+                        }
+                    }
+                    best[at] = new_b;
+                    min_roads[at] = new_m;
+                }
+                if (sub_town_num[at] &lt;= target_size) {
+                    // or the entire subtree could be a state lol
+                    best[at][sub_town_num[at]] = {};
+                }
+            }
+        public:
+            // i honestly don't know if the formatting for this is correct or not lmao
+            Country(const vector&lt;vector&lt;int&gt;&gt;&amp; neighbors, int target_size)
+                    : neighbors(neighbors),
+                      target_size(target_size),
+                      sub_town_num(neighbors.size()),
+                      parent(neighbors.size()),
+                      best(neighbors.size(), vector&lt;vector&lt;Road&gt;&gt;(target_size + 1)),
+                      min_roads(neighbors.size(), vector&lt;int&gt;(target_size + 1, INT32_MAX)) {
+                assert(target_size &gt;= 1);  // this breaks down for any other number lol
+                process_towns(ROOT, ROOT);
+            }
+
+            vector&lt;Road&gt; min_problem_roads() {
+                int min_problem_amt = INT32_MAX;
+                vector&lt;Road&gt; town_roads;
+                for (int r = 0; r &lt; neighbors.size(); r++) {
+                    if (min_roads[r][target_size] == INT32_MAX) {
+                        continue;
+                    }
+                    if (r == ROOT) {
+                        if (min_roads[r][target_size] &lt; min_problem_amt) {
+                            min_problem_amt = min_roads[r][target_size];
+                            town_roads = best[r][target_size];
+                        }
+                    } else {
+                        // so if this node isn't the root, the edge connecting it
+                        // and its parent also needs to be considered
+                        if (min_roads[r][target_size] + 1 &lt; min_problem_amt) {
+                            min_problem_amt = min_roads[r][target_size] + 1;
+                            town_roads = best[r][target_size];
+                            town_roads.push_back({r, parent[r]});
+                        }
+                    }
+                }
+                return town_roads;
+            }
+    };
+
+    /**
+     * https://codeforces.com/contest/440/problem/D
+     * 5 2
+     * 1 2
+     * 1 3
+     * 1 4
+     * 1 5 should output
+     * 2
+     * 3 4
+     */
+    int main() {
+        int town_num;
+        int target_size;
+        std::cin &gt;&gt; town_num &gt;&gt; target_size;
+        vector&lt;vector&lt;int&gt;&gt; neighbors(town_num);
+        vector&lt;pair&lt;int, int&gt;&gt; roads;
+        for (int e = 0; e &lt; town_num - 1; e++) {
+            int from;
+            int to;
+            std::cin &gt;&gt; from &gt;&gt; to;
+            neighbors[--from].push_back(--to);
+            neighbors[to].push_back(from);
+            roads.push_back({from, to});
+        }
+
+        Country country(neighbors, target_size);
+        std::set&lt;pair&lt;int, int&gt;&gt; to_remove;
+        for (const auto&amp; r : country.min_problem_roads()) {
+            to_remove.insert({r.from, r.to});
+        }
+        vector&lt;int&gt; remove_ind;
+        for (int r = 0; r &lt; town_num - 1; r++) {
+            // append the indices of all roads that are in the &quot;to remove&quot; list
+            if (to_remove.count(roads[r])
+                    || to_remove.count(std::make_pair(roads[r].second, roads[r].first))) {
+                remove_ind.push_back(r);
+            }
+        }
+
+        cout &lt;&lt; remove_ind.size() &lt;&lt; endl;
+        for (int i = 0; i &lt; (int) remove_ind.size() - 1; i++) {
+            cout &lt;&lt; remove_ind[i] + 1 &lt;&lt; ' ';
+        }
+        if (!remove_ind.empty()) {
+            cout &lt;&lt; remove_ind.back() + 1;
+        }
+        cout &lt;&lt; endl;
+    }
+    ```
+</div>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+</body>
+</html>

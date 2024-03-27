@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <title>help yourself</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<p><a href="https://usaco.org/index.php?page=viewproblem2&cpid=1022">problem link</a></p>
+
+<div id="title">
+    <h1>help yourself</h1>
+</div>
+
+<div id="editorial">
+    <p>
+        usaco time
+        i've been doing some old problems that i failed at before and found this<br/>
+        i thought the solution was hot garbage (no offense benq) so i'm deciding
+        to write my own that actually makes sense
+    </p>
+
+    <p>
+        so<br/>
+        we have \(10^5\) line segments, standard stuff<br/>
+        and we want the sum of the <i>complexities</i> of each segment, where the complexity is the
+        number of connected components in the union of a segment
+    </p>
+
+    <p>
+        first, because i hate unordered stuff, let's sort the segments by starting point
+        and then process them in that order, keeping a <b>running total</b> of the current complexity
+    </p>
+    <p>
+        now, let's see...we have a segment whose starting point is greater than all the others
+        along with some previous segments whose endpoints may or may not be less than the current start point 
+    </p>
+    <p>
+        so say we're processing the last segment<br/>
+        this results in x2 the # of previous subsets, as for each previous subset
+        we can keep it or add the new segment<br/>
+        but let's just talk about the part where we add the new segment<br/>
+        <b>NOTICE!</b> that this new segment can only either</p>
+    <ol>
+        <li>
+            add 1 to the complexity (as it starts a new seg) and this is if the segment occurs strictly after the
+            <i>latest endpoint</i> of all the segments in the union
+        </li>
+        <li>
+            have the complexity be the same (i.e. it can't "merge" any previous segments) otherwise
+        </li>
+    </ol>
+    <p>(idk how to 100% prove this, just trust me that it works bro i swear it does)</p>
+
+    <p>
+        so when we process a new segment, we first double the current total then add<br/>
+        2^(number of segments that occur strictly before the current one)<br/>
+        why? uuuuhh
+    </p>
+
+    <p>
+        look given that case 1 happens only when the segment occurs after the latest endpoint, it also
+        means that it only happens if all of the previous subset was before the current start,
+        so we need to add (again) the # of previous subsets, which is that 2^ thing
+    </p>
+
+    <p>
+        actually lemme just given an example here:
+    </p>
+    ```
+    [[[--]][--[----]]---]
+    segments: [[0, 20], [1, 6], [2, 5], [7, 16], [10, 15]]
+    ```
+    <p>
+        closing brackets represent the start of a segment & ending brackets represent the end<br/>
+        now say we're processing the last segment in that list<br/>
+        the previous complexity is- actually that doesn't matter, let's just call it `total`<br/>
+        so first we double `total`, and then we count the # of case 1's<br/>
+        `[10, 15]` is completely ahead of 2 segments, so we add 2^2 = 4 to the already doubled total
+    </p>
+
+    <p>
+        phew!<br/>
+        now it remains to find the # of segments that occur strictly before the current one<br/>
+        you can do this w/ prefix sums, but my dumb self thought that i had to do this w/ a
+        goddamn <a href="https://cp-algorithms.com/data_structures/fenwick.html">BIT</a>
+    </p>
+</div>
+
+<div id="code">
+    <p>
+        but anyways, if you want the solution, here it is
+    </p>
+
+    ```cpp
+    #include &lt;iostream&gt;
+    #include &lt;fstream&gt;
+    #include &lt;vector&gt;
+    #include &lt;algorithm&gt;
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+
+    constexpr int MOD = 1e9 + 7;
+
+    // i mean a prefix sum would also work but i'm too lazy
+    class BITree {
+        private:
+            vector&lt;int&gt; bit;
+            int size;
+        public:
+            BITree(int size) : bit(size + 1), size(size) { }
+
+            void increment(int updateAt, int val) {
+                updateAt++;  // have the driver code not worry about 1-indexing
+                for (; updateAt &lt;= size; updateAt += updateAt &amp; -updateAt) {
+                    bit[updateAt] += val;
+                }
+            }
+
+            int query(int ind) {  // sum of elements in [0, ind]
+                ind++;
+                int sum = 0;
+                for (; ind &gt; 0; ind -= ind &amp; -ind) {
+                    sum += bit[ind];
+                }
+                return sum;
+            }
+    };
+
+    // 2020 feb gold
+    int main() {
+        std::ifstream read(&quot;help.in&quot;);
+        int range_num;
+        read &gt;&gt; range_num;
+
+        vector&lt;int&gt; two_pows(range_num + 1);
+        two_pows[0] = 1;
+        for (int i = 1; i &lt; two_pows.size(); i++) {
+            two_pows[i] = (two_pows[i - 1] * 2) % MOD;
+        }
+
+        vector&lt;std::pair&lt;int, int&gt;&gt; ranges(range_num);
+        // going to assume valid input, screw you validate your own input
+        BITree prev_ranges(2 * range_num);
+        for (std::pair&lt;int, int&gt;&amp; r : ranges) {
+            read &gt;&gt; r.first &gt;&gt; r.second;
+            r.first--;
+            r.second--;
+            prev_ranges.increment(r.second, 1);
+        }
+        std::sort(ranges.begin(), ranges.end());
+
+        long long total = 0;
+        for (int r = 0; r &lt; range_num; r++) {
+            int start = ranges[r].first;
+            int prev = start != 0 ? prev_ranges.query(start - 1) : 0;
+            total = (total * 2 + two_pows[prev]) % MOD;
+        }
+        cout &lt;&lt; total &lt;&lt; endl;
+        std::ofstream(&quot;help.out&quot;) &lt;&lt; total &lt;&lt; endl;
+    }
+    ```
+</div>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
