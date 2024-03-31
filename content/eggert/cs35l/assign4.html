@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <meta charset="UTF-8">
+    <title>cs35l assignment 4</title>
+</head>
+<style>
+  li + li {
+    margin-top: 10px;
+  }
+</style>
+<body>
+
+<a href="../index.html">back to eggert home</a><br/>
+<a href="/index.html">back to home</a>
+
+<h1>assign 4</h1>
+
+<p>
+    man this assignment is all over the place, i'm like 90% sure eggert wrote this on acid<br/>
+    i'll try to include SO links that might be helpful wherever i can
+</p>
+
+<p>
+    this one also has a lot of things that could be dependent on the quarter you take him,
+    so i'll suffix all of those with a <b>(QD)</b> for "quarter-dependent"
+</p>
+
+<p>
+    alot of questions also want you to explain what you did to get the answer in `notes.txt`, so i'll
+    suffix those with <b>(N)</b>
+</p>
+
+<h2>basic diffing</h2>
+
+<p>
+    that narcissist eggert wants us to work on his lil <a href="https://github.com/eggert/tz">tzdb repo</a>...<br/>
+    so clone that baby with this:
+    ```bash
+    git clone https://github.com/eggert/tz
+    ```
+    and let's get to work!
+</p>
+
+<ol>
+    <li>
+        oops i lied about using git, first he wants you to do some stuff on github<br/>
+        go to the tzdb url and
+        <a href="https://stackoverflow.com/a/49838096/12128483">
+            diff the current commit with the second most recent commit</a>
+        once you're at the diff page, just ctrl+s that baby and save it as `prevcur.html`<br/>
+        you might notice that when you view the html file you saved it looks awful, but that's to be expected!<br/>
+        also, don't worry if eggert commits some stuff during the assignment, thus changing the definition of
+        "most recent commit", as idt the TAs care too much anyways <b>(N)</b>
+    </li>
+    <li>
+        now use github to
+        <a href="https://docs.github.com/en/repositories/releasing-projects-on-github/comparing-releases">
+            compare the releases</a>
+        <a href="https://github.com/eggert/tz/releases/tag/2023d">2023d</a>
+        and <a href="https://github.com/eggert/tz/releases/tag/2024a">2024a</a> <b>(QD)</b>
+        and save that baby in a file named `2023d-2024a.html` <b>(QD, N)</b>
+    </li>
+    <li>
+        ok now we actually get to work on that local copy of the repo<br/>
+        make a bash/python script named `justone` that
+        <a href="https://stackoverflow.com/a/3368758/12128483">outputs the difference</a>
+        between the previous and current commit when run in a git repo <b>(N)</b><br/>
+        if written in bash, this script should be really straightforward with just one line of code
+    </li>
+    <li>
+        once you have that script, run `justone` in that tz repo and put the output in a file
+        named `justone.out` like so:
+        ```bash
+        ./justone >justone.out
+        ```
+    </li>
+    <li>
+        ok now write a script `compare-releases` that
+        <a href="https://stackoverflow.com/a/3211829/12128483">compares two releases</a>
+        given as arguments to the bash script <b>(N)</b><br/>
+        like `justone`, this should be really simply, one line of bash
+    </li>
+    <li>
+        yeah basically do the same thing you did w/ `justone`: run it in the tz repo and put the output in a file
+        ```bash
+        ./compare-releases 2023d 2024a >2023d-2024a.diff  # QD
+        ```
+        why `.diff` for this and `.out` for the other? hell if i know.
+    </li>
+</ol>
+
+<h2>general crap</h2>
+
+<ol>
+    <li>
+        alright so this next script, `tzcount` needs a bit more effort<br/>
+        it should take any commit range <a href='https://git-scm.com/docs/git-log'>`git log`</a> takes and calculate
+        the number of commits from each time zone in that range <b>(N)</b><br/>
+        the output might look something like this:
+        ```
+        -0800 12
+        -0400 1
+        -0300 3
+        +0200 10
+        ```
+        notice how the time zones are sorted in <i>numerical order</i><br/>
+        you can get an idea of how to get the time zone by checking out
+        <a href="https://git-scm.com/docs/git-log#_pretty_formats">this part</a> of the `git log` docs<br/>
+        i also found <a href="https://stackoverflow.com/a/49964914/12128483">this informative link</a>
+    </li>
+    <li>
+        why the hell do the TAs need your cmd output why can't they just run it themselves:
+        ```bash
+        ./tzcount 2012j..2024a >tzdb-2012j-2024a.tzcount  # QD
+        ```
+    </li>
+    <li>
+        find the <a href="https://stackoverflow.com/a/5816177/12128483">commit with this substring</a>:
+        <blockquote>
+            Even newspaper reports present contradictory information.
+        </blockquote>
+        in a text file `who-contributed.txt`, put the commands you used and the following to be safe:
+        <ul>
+            <li>commit hash</li>
+            <li>date of the commit</li>
+            <li>author of the commit</li>
+            <li>anything other you think is notable about the commit (perhaps regarding the author?)</li>
+        </ul>
+    </li>
+</ol>
+
+<p>
+    alright quick thing- after all these exercises he wants us to change to
+    <a href="https://github.com/git/git">git's own source code</a>
+</p>
+
+<ol start="4">
+    <li>
+        ok have this commit hash
+        ```
+        c03bee6e9f5c05259f5f501e1f47cd8adb63af38  (QD)
+        ```
+        now draw the directed graph of all paths towards this commit from the earlier commit in `git-graph.pdf`
+        ```
+        2a7d63a2453e2c30353342a2c9385fa22a846987 (QD)
+        ```
+        each node in the graph should have the commit hash, author, and committer<br/>
+        they say only include committer if different but i got docked for not including that 💀<br/>
+        oh yeah, the arrows should point from the child to the parent
+        (usually the earlier and later commit respectively)<br/>
+        <span class="small">
+            hey, did you know that `git log` has a
+            <a href="https://git-scm.com/docs/git-log#Documentation/git-log.txt---graph">`--graph`</a> option?
+        </span>
+    </li>
+    <li>
+        ok so in the git git repo, run <a href="https://git-scm.com/docs/git-branch">`git branch`</a> rq<br/>
+        ok now do the same for the git repo located on the seasnet server at `~eggert/src/github/git`<br/>
+        any differences? log them in `git.txt`
+    </li>
+</ol>
+
+<h2>who the hell fixed this?</h2>
+
+<p>
+    ok so the
+    <a href="https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.0.txt#L190">git 2.39 release notes</a>
+    say that an issue that could cause segfaults was fixed, which is pretty cool
+</p>
+
+<p>
+    now, eggert wants you to find the commit that actually fixed this<br/>
+    in a file named `git-detective.txt`, put the following:
+</p>
+<ul>
+    <li>how you got the answer</li>
+    <li>the title, author, and hash of the commit</li>
+    <li>the file the commit touched that fixed the issue</li>
+    <li>how did this commit fix the issue?</li>
+</ul>
+
+<p>
+    also, <a href="https://stackoverflow.com/a/6658352/12128483">gen the patch file</a> for the commit, and
+    document how you did so in `git-detective.txt` too<br/>
+    oh yeah submit the patch file too
+</p>
+
+<h3>hopefully helpful hints</h3>
+
+<ul>
+    <li>ok so this bug got fixed in 2.39, which means it was probably present in some other version...</li>
+    <li>
+        try looking for keywords like "segfault" or "merge"<br/>
+        the cool thing about this repo is that the commit messages are actually descriptive and talk about
+        what their respective commits actually do/fix
+    </li>
+</ul>
+
+<h2>what to turn in</h2>
+
+<p>
+    the og spec actually outlines this pretty well, but i'll put it here jic
+</p>
+<ul>
+    <li>`notes.txt`</li>
+    <li>`prevcur.html`</li>
+    <li>`2023d-2024a.html` <b>(QD)</b></li>
+    <li>`justone`</li>
+    <li>`justone.out`</li>
+    <li>`compare-releases`</li>
+    <li>`2023d-2024a.diff` <b>(QD)</b></li>
+    <li>`tzcount`</li>
+    <li>`tzdb-2012j-2024a.tzcount` <b>(QD)</b></li>
+    <li>`who-contributed.txt`</li>
+    <li>`git.txt`</li>
+    <li>`git-graph.pdf`</li>
+    <li>`git-detective.txt`</li>
+    <li>the patch file you generated w/ `git format-patch`; mine went smth like `0001-commit-name.patch`</li>
+</ul>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+</body>
+</html>
