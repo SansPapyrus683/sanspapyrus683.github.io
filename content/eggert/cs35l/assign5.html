@@ -55,6 +55,12 @@
         besides the libraries they already gave, i found `pathlib` and `collections` to be quite helpful<br/>
         you might not have use for these libraries, though, and that's ok!
     </li>
+    <li>
+        the spec says to use `strace -f` to make sure you don't call any system processes,
+        but it doesn't tell you what to look for<br/>
+        so once you have the outputted file, just `grep` for `execve` in the resulting logs;
+        there should be only calls to `python` or whatever (at least i think so?)
+    </li>
 </ul>
 
 <h2>what to turn in</h2>
