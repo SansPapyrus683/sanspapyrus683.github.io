@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <meta charset="UTF-8">
+    <title>cs35l assignment 3</title>
+</head>
+<style>
+  li + li {
+    margin-top: 10px;
+  }
+</style>
+<body>
+
+<a href="../index.html">back to eggert home</a><br/>
+<a href="/index.html">back to home</a>
+
+<h1>assign 3</h1>
+
+<p>
+    honestly this is one of the better written specs, but you may beg to differ
+</p>
+
+<h2>ok how do i install node?</h2>
+
+<p>
+    oh yeah, you may not even have node js installed, so lemme give you some instructions
+</p>
+
+<h3>linux/macos</h3>
+
+<p>
+    <a href="https://github.com/nvm-sh/nvm">nvm</a> is a pretty darn tool thing that allows
+    you to install node without any fuss
+    <br/>
+    just follow the <a href="https://github.com/nvm-sh/nvm">instructions here</a> and you should have it installed
+</p>
+
+<p>
+    after that, run this command here:
+    ```bash
+    nvm install node
+    ```
+    and you should have a cool fresh version of node on your computer!
+</p>
+
+<h3>windows</h3>
+
+<p>
+    god windows sucks for development<br/>
+    but regardless, you can just download it <a href="https://nodejs.org/en/download">here</a> and then
+    run it like any other windows installer
+</p>
+
+<h2>literally just follow a tutorial</h2>
+
+<p>
+    what the title said.<br/>
+    build the tic tac toe app as described in <a href="https://react.dev/learn/tutorial-tic-tac-toe">this link</a>
+</p>
+
+<p>
+    the awful thing about this assignment is that you have to keep a log of everything you do in a file
+    named `tic-tac-toe.txt`, like what you wrote, what happened, etc.
+</p>
+
+<p>
+    to give you an idea of what this file might look like, here's the start of mine that got full credit:
+</p>
+<details>
+    <summary>ks notes</summary>
+    <p>
+        INITIAL SETUP
+    </p>
+    <p>
+        used <a href="https://github.com/facebook/create-react-app">create-react-app</a>
+        to initialize the directory and install react
+    </p>
+    <p>
+        following the directions, created `index.js`, `App.js`, and `styles.css` with
+        the template source code initially given
+    </p>
+    <P>
+        the initial code just rendered a single X, so i duplicated it a lot of times
+        to render an actual tic-tac-toe board
+    </P>
+    <p>
+        i then did some refactoring by renaming the current component to `Board`
+        and moving the `button`s back to their own component with a prop for their value
+        ```js
+        function Square({ value }) {
+            return &lt;button className=&quot;square&quot;&gt;{value}&lt;/button&gt;;
+        }
+        ```
+    </p>
+</details>
+<p>
+    you don't have to write it exactly as i did, or even do what i did in those notes!<br/>
+    the excerpt is just to give you a bit of an idea for what it <i>might</i> look like
+</p>
+
+<h2>ok this one actually takes work</h2>
+
+<p>
+    now eggert asks you to make some stupid alternate version of tic tac toe called "chorus lapilli"<br/>
+    it's like that game, except for these two things:
+</p>
+<ul>
+    <li>
+        after your first 3 moves, instead of adding further pieces you have to instead move one of your existing pieces
+        to an adjacent empty square<br/>
+        the move can be up, down, left, right, or diagonal
+    </li>
+    <li>
+        if it's your turn <b>AND</b> you have three pieces on the board <b>AND</b> one of your pieces is in
+        the center square, your move must either win or vacate the center square
+    </li>
+</ul>
+
+<p>
+    if you want an example of an app that got full credit, i actually managed to deploy
+    my work for this assignment to <a href="https://cs35l.vercel.app/">this silly little url</a>
+</p>
+
+<p>
+    the time travel feature is optional, but i found implementing it to be a pretty fun exercise
+</p>
+
+<p>
+    unfortunately, you do have to do that stupid lab notebook thing in `chorus-lapilli.txt`<br/>
+    but you don't have to restart from scratch!
+    i believe you can just say something like "starting off from that tic tac toe project i built..." and that'll work
+</p>
+
+<p>
+    another thing is, at least for my quarter the notes were worth like 10% of this assignment's grade<br/>
+    so don't stress if you can't write them in time haha
+</p>
+
+<h3>some guidelines the TAs gave</h3>
+
+<ol>
+    <li>`npm start` should start your app (yeah obviously)</li>
+    <li>the game should prevent invalid moves</li>
+    <li>some text should be shown on the screen when a winning move is made</li>
+    <li>
+        no popups, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/alert">`alert`</a>, new tabs, etc.
+    </li>
+</ol>
+
+<h2>unit tests which they retconned for winter i'm still mad</h2>
+
+<p>
+    take a gander at
+    <a href="https://web.cs.ucla.edu/classes/winter24/cs35L/assign/test_chorus_lapilli.py">this testing script</a><br/>
+    it does need <a href="https://selenium-python.readthedocs.io/">selenium</a>,
+    which you can install with this command here:
+    ```bash
+    pip install selenium  # wow, that was easy
+    ```
+</p>
+
+<p>
+    but uh yeah, add 3 new tests to the section labelled "ADD YOUR TESTS HERE"
+</p>
+
+<p>
+    be sure to prefix all your tests with `test_`!
+    for example, one of my testing functions goes something like this
+    ```py
+    def test_redundant_click(self):
+        """Check that clicking a tile twice doesn't change its value."""
+        pass  # testing code goes down here
+    ```
+</p>
+
+<p>
+    since the seasnet servers don't have browsers, this is one of those rare things that you can't do on seasnet
+</p>
+<p>
+    instead, put the file they gave in the root of your `chorus_lapilli` project or whatever you called it
+    and execute it (`python3` or `./`, either is fine) to test your project!
+</p>
+
+<h2>what to turn in</h2>
+
+<p>
+    alright so first you have to make sure all the files in the project are present<br/>
+    i did a `tree` command at the root of my project and got this stuff (excluding `.node_modules`):
+    ```
+    .
+    ├── chorus-lapilli.txt
+    ├── package.json
+    ├── package-lock.json
+    ├── public
+    │   ├── favicon.ico
+    │   ├── index.html
+    │   ├── logo192.png
+    │   ├── logo512.png
+    │   ├── manifest.json
+    │   └── robots.txt
+    ├── src
+    │   ├── App.js
+    │   ├── index.js
+    │   └── styles.css
+    ├── test_chorus_lapilli.py
+    └── tic-tac-toe.txt
+    ```
+</p>
+<p>
+    please don't worry if your file structure doesn't match this exactly!
+    just make sure of the following:
+</p>
+<ul>
+    <li>that `npm start` can start your project successfully (check on the seasnet servers!)</li>
+    <li>
+        you have these files named exactly at the root of the project:
+        <ul>
+            <li>`tic-tac-toe.txt`</li>
+            <li>`chorus-lapilli.txt`</li>
+            <li>`test_chorus_lapilli.py`- why this one uses underscores, i have no idea</li>
+        </ul>
+    </li>
+</ul>
+
+<p>
+    then, run this command in the project directory
+    ```bash
+    npm pack
+    ```
+    it should generate a neatly packaged `.tgz` file- just rename that lil thing `chorus-lapilli.tgz` and you're gtg!
+</p>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+</body>
+</html>
