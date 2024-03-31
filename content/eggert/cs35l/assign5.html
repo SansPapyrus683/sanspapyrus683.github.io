@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <meta charset="UTF-8">
+    <title>cs35l assignment 5</title>
+</head>
+<style>
+  li + li {
+    margin-top: 10px;
+  }
+</style>
+<body>
+
+<a href="../index.html">back to eggert home</a><br/>
+<a href="/index.html">back to home</a>
+
+<h1>assign 5</h1>
+
+<p>
+    out of all the assignments, this one is probably done the best<br/>
+    that's not a high bar to clear though tbh
+</p>
+
+<h2>tips?</h2>
+
+<p>
+    since it's already so clear, i'll just give some implementation tips
+</p>
+
+<ul>
+    <li>
+        a cool toposort impl for a problem can be found
+        <a href="https://usaco.guide/gold/toposort?lang=py#dfs">here</a>
+    </li>
+    <li>
+        i also found
+        <a href="https://www.geeksforgeeks.org/python-program-for-topological-sorting/">an alternate impl</a>
+        by gfg if you like that site more
+    </li>
+    <li>
+        holy crap i just found
+        <a href="https://docs.python.org/3/library/graphlib.html">this mega based standard library</a><br/>
+        ig you have to read a bit of documentation to figure it out but once you have that down
+        you don't have to touch any icky algorithms
+    </li>
+    <li>
+        make sure to only output commits reachable from the branch heads!<br/>
+        i spent ages malding over why my code was failing one of the tcs only to realize it was this
+    </li>
+    <li>
+        besides the libraries they already gave, i found `pathlib` and `collections` to be quite helpful<br/>
+        you might not have use for these libraries, though, and that's ok!
+    </li>
+</ul>
+
+<h2>what to turn in</h2>
+
+<p>
+    `topo_order_commits.py`, which should contain a function `topo_order_commits` that runs
+    everything as well as comments explaining your approach to the problem<br/>
+    don't be like me and have the script run only when directly executed<br/>
+    basically the file you turn in should be exactly the one that passes the pytest suite they gave
+</p>
+
+<p>
+    `topo-test.tr.gz`, gen'd by running this in the test suite:
+    ```bash
+    strace -f -o topo-test.tr pytest
+    gzip -9 topo-test.tr
+    ```
+</p>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+</body>
+</html>
