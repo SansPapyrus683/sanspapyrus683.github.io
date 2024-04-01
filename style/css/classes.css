@@ -40,3 +40,9 @@ span.big {
     font-size: small;
     color: #84fff2;
 }
+
+h1, h2, h3 {
+    .inline {
+        font-size: medium;
+    }
+}

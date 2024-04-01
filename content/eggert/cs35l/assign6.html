@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+    <link rel="stylesheet" href="/lib/prism/prism.css">
+
+    <meta charset="UTF-8">
+    <title>cs35l assignment 6</title>
+</head>
+<style>
+  li + li {
+    margin-top: 10px;
+  }
+</style>
+<body>
+
+<a href="../index.html">back to eggert home</a><br/>
+<a href="/index.html">back to home</a>
+
+<h1>assign 6</h1>
+
+<p>
+    take this
+    <a href="https://web.cs.ucla.edu/classes/winter24/cs35L/assign/randall-git.tgz">tarball</a>
+    (MAY BE DIFF FOR YOUR QUARTER), download and extract it, you know the deal<br/>
+    everything you work on will be in this repo so that's cool
+</p>
+<p>
+    the spec says to not put your repo on github but honestly a private repo is fine,
+    it's not like anyone's gonna notice anyways (since your repo is literally private)
+</p>
+
+<p>
+    now you'll notice that it just consists of a `.git` directory.
+    that's expected!
+    just do this to actually get the working tree up and running:
+    ```bash
+    git reset --hard
+    ```
+</p>
+
+<p>
+    to compile the program, just run a quick
+    ```bash
+    make
+    ```
+    and you should see a magical executable `randall` file popup!
+</p>
+
+<h2>notes...</h2>
+
+<p>
+    before i get into the assignment, unfortunately you have to do
+    THAT STUPID LAB NOTEBOOK, EVEN THOUGH THE TAS PROBABLY SPEND LIKE 30 SECONDS JUST GLOSSING OVER IT<br/>
+    yeah put that in a file `notes.txt`
+</p>
+<p>
+    ah what the hell, i'll put another part from my notes in here
+</p>
+<details>
+    <summary>`notes.txt` excerpt</summary>
+    <p>
+        cloned the repository for the template code n stuff
+    </p>
+
+    <p>
+        tried some debug `printfs`
+        turns out at the end past `fclose(stdout)` nothing gets printed for obvious reasons
+    </p>
+
+    <p>
+        for some godforsaken reason make uses the `/bin/sh` and not bash
+        had to set `SHELL = /bin/bash` for things to work
+    </p>
+
+    <p>
+        <b>MOVING FILES</b>
+    </p>
+
+    <p>
+        moved all functions to their relevant places, added header guards and such
+        had to modify the makefile to compile `*.c` instead of just `$@.c`
+    </p>
+
+    <p>
+        in `options.h`, put the option parsing into a function called `parse_nbytes`
+    </p>
+
+    <p>
+        everything in the code still worked as expected
+    </p>
+</details>
+
+<h2>refactoring</h2>
+
+<p>
+    split the code in `randall.c` up into a couple of blocks:
+</p>
+<ul>
+    <li>`options.c`/`options.h` has functions for option parsing and whatever</li>
+    <li>`output.c`/`output.h` should contain the code that outputs stuff</li>
+    <li>
+        `rand64-hw.c`/`rand64-hw.h` contains code that does the hardware-based rng
+        (the rng that's implemented by default i think?)
+    </li>
+    <li>
+        `rand64-sw.c`/`rand64-sw.h` contains the code for sw-based rng,
+        which currently just reads from `/dev/random`
+    </li>
+    <li>and finally, `randall.c` should contain the code that glues everything together</li>
+</ul>
+
+<h2>new features</h2>
+
+<p>new features are implemented by way of 2 new options you pass</p>
+
+<p>
+    if you're wondering how the hell you implement parsing options, check out
+    <a href="https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html">`getopt`</a>
+</p>
+
+<h3>`-i` options</h3>
+
+<p>
+    this option should take 3 classes of values
+</p>
+
+<ol>
+    <li>`rdrand` is the default option, and it should call the rng that was already impl'd in what was given</li>
+    <li>`lrand48_r` should instead generate rng w/ `lrand48_r`</li>
+    <li>
+        `/F`, where `/F` is the path to some random file.
+        in this case, you should just read byte by byte from the file haha<br/>
+        don't worry about handling reading past the end, the TAs didn't test for that
+        (at least in my quarter)
+    </li>
+</ol>
+
+<p>
+    now i searched the entire goddamn internet and found NO tutorial on how to use this
+    stupid goddamned `lrand48_r` function,
+    so here's the code example that i made with some help from gpt
+    ```c
+    // put this in a file-wide declaration or smth idk
+    static struct drand48_data rand_data;
+
+    // when you initialize it
+    srand48_r(time(NULL), &rand_data);
+
+    // when you call it
+    long int tmp1, tmp2;
+    mrand48_r(&rand_data, &tmp1);
+    mrand48_r(&rand_data, &tmp2);
+    /* mrand48 only gives 32-bit ints, so we combine them for 1 64-bit one */
+    unsigned long long x = (((unsigned long long) tmp1) << 32) + (unsigned long long)tmp2;
+    ```
+    haha you might be thinking "hey, why are you using `mrand48_r`?"<br/>
+    to that i'll just let the goat benson liu explain:
+</p>
+<details>
+    <summary>awesome explanation</summary>
+    <p>
+        In the specifications for Assignment 6,
+        it asks you to implement an option for using `lrand48_r` and using that specific function.
+        However, this function is a bit confusing to use.
+        A detailed explanation is included below.
+        For this assignment, while still implementing the `lrand48_r` option
+        we recommend using the `mrand48` function instead which has been okayed.
+        You are still allowed to use the original function
+        but check the explanation below for why this is a bit confusing and be careful.
+        A quick hint for all students is to note that `mrand48` returns 32 bits of random data whereas the data type of
+        the `rand64` function is `unsigned long long` which has 64 bits of random data so you will need to call
+        the function twice to full create 64 bits of random data.
+        You will need to use some bit manipulation to try and complete this part of the assignment.
+    </p>
+
+    <p>
+        [he says eggert may ask about either one but none appeared on my final haha]
+    </p>
+
+    <p>
+        So be prepared and read the explanation below. 😃
+    </p>
+    <p>
+        Explanation: `lrand48_r`, if you read the provided documentation, actually only returns 31 bits of random data
+        (i.e. the return value range is only from 0 to \(2^{31}\) if you check the documentation despite the
+        return data type being `long int`).
+        This is extremely confusing to use because in order to pad out the full 64 bits of random data,
+        you potentially need to call `lrand48_r` three times in order to have enough random bits.
+        `mrand48` is more intuitive.
+        This returns 32 bits of random data which you can call twice to get 64 bits of random data.
+    </p>
+   <p>
+       A bit of a hint of the bit manipulation.
+       Because you have two 32 bit numbers, you need a way to shift one of those numbers to
+       the upper 32 bits of an unsigned long long and OR that with another 32-bit number that is used as the lower bits.
+   </p>
+
+    <p>
+        A specific reference to the documentation about this is included
+        <a href="https://www.gnu.org/software/libc/manual/html_node/SVID-Random.html#index-lrand48">here</a>.
+    </p>
+</details>
+
+<h3>`-o` options</h3>
+
+<p>
+    alright now you also have this option, which takes just 2 classes of values
+</p>
+
+<ol>
+    <li>`stdio`, which is the default (but slow as heck) `putchar` behavior- passed in by default</li>
+    <li>
+        `N`, where `N` is some positive integer<br/>
+        in that case, output blocks `N` bytes at a time using the `write` syscall
+    </li>
+</ol>
+
+<p>
+    like with `lrand48_r`, <b>NO</b> guide was given on how the hell you do that `N` option,
+    so i'll give a quick general example on how you might do it
+    ```c
+    char* buf = malloc(sizeof(char) * N);
+    // pretend i filled buf up with some tasty random bytes
+
+    /*
+     * 1 is the file descriptor (stdout)
+     * buf represents the characters we have to write out
+     * N is how many we actually wanna write out
+     * the function returns the number of bytes successfully written
+     */
+    int written = write(1, buf, N);
+
+    free(buf);  // o yea make sure to do this to prevent any stupid memory leaks
+    ```
+</p>
+
+<h2>testing</h2>
+
+<p>
+    now go to that `Makefile` thing you see in your project directory<br/>
+    add a new target `check` that goes something like this:
+    ```makefile
+    check: clean randall
+    	# insert awesome testing script here
+    	@echo "test passed";
+    ```
+    once again, we weren't taught jack about how the hell you actually write these tests, so
+    i'll include a pretty simple one here:
+    ```makefile
+    @cmd="./randall 10"; \
+    output=$$(eval $${cmd} | wc -c); \
+    diff <(echo $${output}) <(echo "10") >/dev/null || \
+        (echo "$${cmd} should output 10 bytes, got $${output} instead" && exit 1);
+    @echo "test 1 passed";
+    ```
+</p>
+
+<p>
+    eggert wants you to test a couple more, i have 6 in my makefile
+</p>
+
+<p>
+    something i suggest doing if you're like me and hate giant blocks of code is to split
+    up the tests into separate targets like `test1`, `test2`, etc. and then do this:
+    ```makefile
+    check: clean randall test1 test2 test3  # ...
+    ```
+</p>
+
+<p>
+    on an unrelated note, it's also cool to check for memory leaks<br/>
+    you can do this by installing `valgrind` and doing this:
+    ```bash
+    valgrind ./randall [args]
+    ```
+    if you're on linux you can just like `dnf install` or `apt install` it,
+    for macos and windows you're on your own haha<br/>
+    worst case seasnet exists
+</p>
+
+<h2>timing stuff?</h2>
+
+<p>
+    alright when you're done with this stupid randall script,
+    experiment with what options make it go zoom zoom<br/>
+    this command here should be a sorta baseline, but dw if your impl is slower than it:
+    ```bash
+    time dd if=/dev/urandom ibs=8192 obs=8192 count=16384 >/dev/null
+    ```
+</p>
+<p>
+    i guess he also wants you to report the results of these 3 `time` commands in `notes.txt` as well:
+    ```bash
+    time ./randall 133562368 >/dev/null
+    time ./randall 133562368 | cat >/dev/null
+    time ./randall 133562368 >rand.data
+    ```
+</p>
+<p>
+    these should be (at least for me they were) hella slow, so try messing around
+    with various options (i found the `-o N` option resulted in the greatest speed increases for me)
+</p>
+
+<h2>what to turn in</h2>
+
+<p>
+    ok first make sure all the lines in your project are valid at least according to eggert with this command:
+    ```bash
+    # this should output nothing
+    expand Makefile notes.txt *.c *.h |
+      awk '/\r/ || 100 < length'
+    ```
+</p>
+
+<p>
+    now also go to the variable `assignment-files`
+    and add all the new files you added, so it might go smth like:
+    ```makefile
+    assignment-files = COPYING Makefile randall.c \
+      notes.txt options.h options.c output.h output.c \
+      rand64-hw.h rand64-hw.c rand64-sw.h rand64-sw.c
+    ```
+    this makes sure that makefile actually zips all your files when you run the makefile targets
+</p>
+
+<p>
+    alright so what makefile targets am i talking about?
+    these two:
+    ```bash
+    make submission-tarball repository-tarball
+    ```
+    now you should see two new files: `randall-submission.tgz` and `randall-git.tgz`<br/>
+    turn those in and you're chilling
+</p>
+
+<script src="/lib/prism/prism.js"></script>
+<script src="/content/inline_code.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
