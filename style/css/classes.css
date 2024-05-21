@@ -1,3 +1,8 @@
+img.quarter-img {
+    width: 25%;
+    height: 25%;
+}
+
 /* sauce: https://teamtreehouse.com/community/how-to-display-image-at-half-the-size */
 img.half-img {
     width: 50%;
@@ -45,4 +50,8 @@ h1, h2, h3 {
     .inline {
         font-size: medium;
     }
+}
+
+.vert-space > * {
+    margin: 1rem
 }

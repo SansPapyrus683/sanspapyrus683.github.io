@@ -87,7 +87,7 @@ blockquote {
     margin: 0;
     padding-left: 1.4rem;
     position: relative;
-    font-style: italic;
+    /*font-style: italic;*/
 }
 
 blockquote::before { /* this actually adds the rectangle on the left */
