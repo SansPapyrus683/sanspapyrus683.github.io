@@ -9,6 +9,11 @@ img.half-img {
     height: 50%;
 }
 
+img.third-img {
+    width: 33%;
+    height: 33%;
+}
+
 .center {
     display: block;
     margin-left: auto;
@@ -32,6 +37,10 @@ span.small {
 
 span.big {
     font-size: larger;
+}
+
+span.strike {
+    text-decoration: line-through;
 }
 
 /* woah, classes! */
