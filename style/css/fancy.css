@@ -62,9 +62,8 @@ h1 {
 }
 
 h2, h3 {
-    line-height: 1.2;
-    margin-top: 2em;
-    margin-bottom: 0.5em;
+    margin-top: 0.2em;
+    margin-bottom: 0.3em;
 }
 
 h1 + ol, h2 + ol, h3 + ol,
