@@ -1,66 +1,65 @@
 img.quarter-img {
-    width: 25%;
-    height: 25%;
+  width: 25%;
+  height: 25%;
 }
 
 /* sauce: https://teamtreehouse.com/community/how-to-display-image-at-half-the-size */
 img.half-img {
-    width: 50%;
-    height: 50%;
+  width: 50%;
+  height: 50%;
 }
 
 img.third-img {
-    width: 33%;
-    height: 33%;
+  width: 33%;
+  height: 33%;
 }
 
 .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 table.centered-border {
-    margin: 0 auto;
-    border: 1px solid #84fff2;
-    border-collapse: collapse;
+  margin: 0 auto;
+  border: 1px solid #84fff2;
+  border-collapse: collapse;
 }
-    
+
 td.border {
-    border: 1px solid #84fff2;
+  border: 1px solid #84fff2;
 }
 
 span.small {
-    font-size: small;
+  font-size: small;
 }
 
 span.big {
-    font-size: larger;
+  font-size: larger;
 }
 
 span.strike {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 /* woah, classes! */
 .inline {
-    background-color: #51938f;
-    padding: 4px;
-    border-radius: 4px;
-    font-family: "Skyhook Mono", monospace;
-    /* idk if this is good or not, who cares */
-    font-weight: bold;
-    font-size: small;
-    color: #84fff2;
+  background-color: #51938f;
+  padding: 4px;
+  border-radius: 4px;
+  font-family: "Skyhook Mono", monospace;
+  /* idk if this is good or not, who cares */
+  font-weight: bold;
+  font-size: small;
+  color: #84fff2;
 }
 
 h1, h2, h3 {
-    .inline {
-        font-size: medium;
-    }
+  .inline {
+    font-size: medium;
+  }
 }
 
 .vert-space > * {
-    margin: 1rem
+  margin: 1rem
 }
