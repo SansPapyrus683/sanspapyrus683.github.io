@@ -62,8 +62,7 @@ h1 {
 }
 
 h2, h3 {
-    margin-top: 0.2em;
-    margin-bottom: 0.3em;
+    margin-bottom: 0.2em;
 }
 
 h1 + ol, h2 + ol, h3 + ol,
