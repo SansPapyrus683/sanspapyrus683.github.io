@@ -61,6 +61,10 @@ h1 {
     margin-bottom: 0.1em;
 }
 
+h1 + h2, h2 + h3 {
+  margin-top: 0;
+}
+
 h2, h3 {
     margin-bottom: 0.2em;
 }
