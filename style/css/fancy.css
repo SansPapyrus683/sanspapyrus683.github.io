@@ -37,10 +37,10 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-top: 2em;
-    max-width: 60em;
+    max-width: 50em;
     line-height: 1.6;
 
-    padding: 0 10px;  /* what does this even do */
+    padding: 0 10px 20% 10px;  /* what does this even do */
 
     font-family: "Comic Neue", cursive;
     font-variant-ligatures: common-ligatures;
