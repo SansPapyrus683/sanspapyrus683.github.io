@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+
+    <title>friedberg</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<h1>friedberg inversion theorem</h1>
+
+<p>
+    thought it would be necessary to actually write a proof for this,
+    since it's not on stack exchange and the only proof i could find
+    was written by the dude himself
+    <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/BFECDB6FB6FB2AAA39F125E4F5251413/S0022481200060011a.pdf/a-criterion-for-completeness-of-degrees-of-unsolvability.pdf">here</a>
+</p>
+
+<p>
+    but just to make sure we're on the same page here, i'm going to prove the following:
+</p>
+<blockquote>
+    Let $A \subseteq \mathbb{N}$ and $A \ge_T K$ where $K$ is the standard halting problem.<br/>
+    Then, there exists some other $B \subseteq \mathbb{N}$ s.t. $A \equiv_T B'$,
+    where $B'$ denotes the Turing jump of $B$, so all relations that can be
+    decided by the halting problem relativied to $B$.
+</blockquote>
+<p>
+    hope i haven't used too many nonstandard things here, from what i've seen
+    there's been like a bajillion ways to format this stuff unlike with analysis
+</p>
+<p>
+    just in case people are still confused, all notation i use comes from
+    <a href="https://drive.google.com/file/d/1H7JUthobA-ruDKMJasjxEeOK0KFDcGKI/view">these notes</a>
+</p>
+
+<p>
+    the idea is to start with $A$ (and $K$ by extension) and try to
+    build a characteristic function that both:
+</p>
+<ol>
+    <li>can have its jump decided by $A$</li>
+    <li>can decide $A$ itself</li>
+</ol>
+<p>
+    which seems pretty hard, and... well, yeah, it highkey is.
+</p>
+
+<p>
+    but using the finite extension method, we can construct
+    $\sigma_0 \sqsubset \sigma_1 \sqsubset \sigma_2 \sqsubset \cdots$
+    and make their limit $\text{Char}_B$<br/>
+    (our base case is just $\sigma_0$ being the empty sequence)
+</p>
+
+<h2>even stages</h2>
+
+<p>
+    at even stages, we're trying to construct $\sigma_{s+1}$ where $s=2e$.
+</p>
+
+<p>
+    to do this, we ask whether there exists a $\sigma \sqsupset \sigma_s$ s.t. $\varphi_e^\sigma(e)\downarrow$,
+    where $\varphi_e$ denotes the $e$-th program in some enumeration of all recursive programs<br/>
+    (notice that this question can be solved by the halting problem, which we get with $A \ge_T K$)
+</p>
+
+<p>
+    if there is, we take the first such $\sigma$ and set that as our $\sigma_{s+1}$.
+    given this extension, we know that using $A$, gives us $\varphi_e^B(e)\downarrow$ for this specific $e$
+</p>
+
+<p>
+    if not, we do nothing and let $\sigma_{s+1}=\sigma_s$.
+    no matter how we extend/complete $B$ in the future, $\varphi_e^B(e)\uparrow$
+</p>
+
+<p>
+    now by this construction, we've forced $A \ge_T B'$,
+    the halting problem relativied to $B$.
+    a procedure could literally just repeat this construction and check
+    the result for the question that was asked when $s=2e$.
+</p>
+
+<h2>odd stages</h2>
+
+<p>
+    ok so before i do this notice that since we're using $A$,
+    we can enumerate its elements in increasing order like $a_0 < a_1 < a_2 < \cdots$
+</p>
+
+<p>
+    so if we're trying to construct $\sigma_{s+1}$ where $s=2e+1$, ok lol
+    this is gonna be really stupid:
+</p>
+\[\sigma_{s+1}=\sigma_s^\frown (0, \underbrace{1, 1, \cdots, 1}_{a_e\text{ ones}}, 0)\]
+<p>
+    (the weird curve on top means sequence conatentation btw)
+</p>
+
+<p>
+    now this allows $B' \ge_T A$, since now using $B'$ we can enumerate
+    the elements of $A$ in increasing order and by extension decide $A$
+</p>
+
+<p>
+    why is this?
+    well, notice that since we have $B'$, we also have $K$!
+    thus, we can simulate the construction in even stages just like we did using $A$
+</p>
+
+<p>
+    then, after each even stage, we look at how many $1$s are jammed between the $0$s,
+    which i'm like 90% sure is a computable procedure.
+    this will give us the elements of $A$ in increasing order.
+</p>
+
+<p>
+    can i say $\square$ now?
+    i'm just gonna say it.
+    a crappy proof is better than no proof, ig.
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<script>
+window.MathJax = {
+    tex: {
+        inlineMath: {'[+]': [['$', '$']]}
+    }
+};
+</script>
+
+</body>
+</html>
