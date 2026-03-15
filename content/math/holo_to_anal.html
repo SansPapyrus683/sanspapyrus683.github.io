@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+
+    <title>holo &#8594; analytic</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<h1>all holomorphic functions are analytic</h1>
+
+<p>
+    what it says on the tin tbh
+</p>
+
+<p>
+    if we have an $f$ holomorphic on $\Omega$, then for all $z_0 \in \Omega$
+    we can find some power series expansion centered on it with a nonzero
+    radius of convergence:
+</p>
+\[f(z)=\sum_{n=0}^\infty a_n(z-z_0)^n\]
+<p>
+    (above formula only true in some ball around $z_0$ i spose)
+</p>
+
+<p>
+    this proof does need the cauchy integral theorem though, just so you know
+</p>
+
+<p>
+    it starts like most, by fixing a $z_0 \in \Omega$ and a $0 < R$ s.t. $B_R(z) \subseteq \Omega$
+</p>
+
+<p>
+    where the cauchy integral theorem comes in is that $\forall z \in B_R(z_0)$ we can write
+</p>
+\[f(z)=\frac{1}{2\pi i}\int_{|\zeta-z_0|=R} \frac{f(\zeta)}{\zeta-z}d\zeta\]
+<p>
+    the kicker is that since $z$ is closer to $z_0$ than $\zeta$ for all $\zeta$,
+    we can do some geometric series crap to write
+</p>
+\[\begin{align*}
+    \frac{1}{\zeta-z}
+    &= \frac{1}{(\zeta-z_0)-(z-z_0)} \\
+    &= \sum_{n=0}^\infty \frac{(z-z_0)^n}{(\zeta-z_0)^{n+1}}
+\end{align*}\]
+<p>
+    you can verify the second equality by using the geo series formula, trust
+</p>
+
+<p>
+    then we plug this back in to that integral expression for $f(z)$ earlier: 
+</p>
+\[\begin{align*}
+    f(z)
+    &= \frac{1}{2\pi i}\int_{|\zeta-z_0|=R} \frac{f(\zeta)}{\zeta-z}d\zeta \\
+    &= \frac{1}{2\pi i}\int_{|\zeta-z_0|=R} f(\zeta) \cdot \sum_{n=0}^\infty \frac{(z-z_0)^n}{(\zeta-z_0)^{n+1}} d\zeta \\
+    &= \frac{1}{2\pi i}\sum_{n=0}^\infty \int_{|\zeta-z_0|=R} f(\zeta) \cdot \frac{(z-z_0)^n}{(\zeta-z_0)^{n+1}} d\zeta \\
+    &= \frac{1}{2\pi i}\sum_{n=0}^\infty (z-z_0)^n \int_{|\zeta-z_0|=R} \frac{f(\zeta)}{(\zeta-z_0)^{n+1}} d\zeta
+\end{align*}\]
+<p>
+    the fact that you can swap the integral and the infinite sum is actually nontrivial here.
+    my prof explained it with some stuff from real analysis, and i'm not sure if
+    there's any other way to justify it
+</p>
+
+<p>
+    the idea is that the terms <b>as a function of $\zeta$</b> (the variable of integration)
+    converge <i>uniformly</i> in the summation, so the integral of the result is equivalent to the
+    sum of all the tiny little integrals as well
+</p>
+
+<p>
+    now yeah the order of the terms is kinda wonky but this is certainly
+    a power series expansion around $z_0$! $\square$
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="./mathjax.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+
+    <title>derivative formula</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<h1>that weird integral for the n-th derivative</h1>
+
+<p>
+    yeah this page is just gonna derive the formula
+</p>
+\[f^{(n)}(z)=\frac{n!}{2\pi i}\int_{\partial D} \frac{f(\zeta)}{(\zeta-z)^{n+1}} d\zeta\]
+<p>
+    where $f$ is holomorphic on some domain $\Omega$ and $D$ is some disc whose closure
+    is completely in $\Omega$ too so we can integrate on the boundary
+</p>
+
+<p>
+    proof is by induction, base case $n=0$ is true due to the cauchy integral
+</p>
+
+<p>
+    but assuming truth for $n$, we now try to prove truth for $n+1$
+    using the straight definition of the derivative:
+</p>
+\[\begin{align*}
+f^{(n+1)}(z)
+&= \lim_{h \to 0} \frac{f^{(n)}(z+h)-f^{(n)}(z)}{h} \\
+&= \lim_{h \to 0} \frac{1}{h}\left(\frac{n!}{2\pi i}\int_{\partial D} \frac{f(\zeta)}{(\zeta-z-h)^{n+1}} d\zeta
+    - \frac{n!}{2\pi i}\int_{\partial D} \frac{f(\zeta)}{(\zeta-z)^{n+1}} d\zeta\right) \\
+&= \lim_{h \to 0} \frac{n!}{2 \pi i h}
+    \int_{\partial D} f(\zeta)\left(\frac{1}{(\zeta-z-h)^{n+1}} - \frac{1}{(\zeta-z)^{n+1}}\right) d\zeta \\
+&= \lim_{h \to 0} \frac{n!}{2 \pi i}
+    \int_{\partial D} f(\zeta)\left(\frac{1}{h}\left(\frac{1}{(\zeta-z-h)^{n+1}} - \frac{1}{(\zeta-z)^{n+1}}\right)\right) d\zeta
+\end{align*}\]
+
+<h2>"tiny" detour</h2>
+
+<p>
+    we're getting somewhat close- now i'm gonna prove this little thing:
+</p>
+\[\lim_{h \to 0} \frac{1}{h}\left(\frac{1}{(\zeta-z-h)^{n+1}} - \frac{1}{(\zeta-z)^{n+1}}\right)
+    =\frac{n+1}{(\zeta-z)^{n+2}}\]
+<p>
+    lemme first work on the expression without the limit here.
+    there's some bashing here:
+</p>
+\[\begin{align*}
+        & \frac{1}{h}\left(\frac{1}{(\zeta-z-h)^{n+1}} - \frac{1}{(\zeta-z)^{n+1}}\right) \\
+    ={} & \frac{1}{h}
+            \cdot \left(\frac{1}{\zeta-z-h} - \frac{1}{\zeta-z}\right)
+            \cdot \sum_{k=0}^n \frac{1}{(\zeta-z)^{n-k}} \cdot \frac{1}{(\zeta-z-h)^k} \\
+    ={} & \frac{1}{h}
+            \cdot \frac{h}{(\zeta-z-h)(\zeta-z)}
+            \cdot \sum_{k=0}^n \frac{1}{(\zeta-z)^{n-k}} \cdot \frac{1}{(\zeta-z-h)^k} \\
+    ={} & \frac{1}{(\zeta-z-h)(\zeta-z)} \cdot \sum_{k=0}^n \frac{1}{(\zeta-z)^{n-k}} \cdot \frac{1}{(\zeta-z-h)^k} \\
+\end{align*}\]
+<p>
+    but it turns out alright.
+    midway i've used this factorization:
+</p>
+\[a^n-b^n = (a-b)\left(a^{n-1}+a^{n-2}b+\cdots+ab^{n-2}+b^{n-1}\right)\]
+<p>
+    with $\frac{1}{(\zeta-z-h)^{n+1}}$ as $a$ and $\frac{1}{(\zeta-z)^{n+1}}$ as $b$
+</p>
+
+<p>
+    after this we can basically just straight plug in $h$ since it doesn't
+    appear in the denominator by itself anymore:
+</p>
+\[\begin{align*}
+        & \lim_{h \to 0} \frac{1}{(\zeta-z-h)(\zeta-z)} \cdot \sum_{k=0}^n \frac{1}{(\zeta-z)^{n-k}} \cdot \frac{1}{(\zeta-z-h)^k} \\
+    ={} & \frac{1}{(\zeta-z-0)(\zeta-z)} \cdot \sum_{k=0}^n \frac{1}{(\zeta-z)^{n-k}} \cdot \frac{1}{(\zeta-z-0)^k} \\
+    ={} & \frac{1}{(\zeta-z)^2} \cdot \sum_{k=0}^n \frac{1}{(\zeta-z)^n} \\
+    ={} & \frac{n+1}{(\zeta-z)^{n+2}}
+\end{align*}\]
+
+<h2>actual limit now</h2>
+
+<p>
+    with that out of the way, i think we can finally continue our previous evaluation:
+</p>
+\[\begin{align*}
+f^{(n+1)}(z)
+&= \lim_{h \to 0} \frac{n!}{2 \pi i}
+    \int_{\partial D} f(\zeta)\left(\frac{1}{h}\left(\frac{1}{(\zeta-z-h)^{n+1}} - \frac{1}{(\zeta-z)^{n+1}}\right)\right) d\zeta \\
+&= \frac{n!}{2 \pi i}\int_{\partial D} f(\zeta) \cdot \frac{n+1}{(\zeta-z)^{n+2}} d\zeta \\
+&= \frac{(n+1)!}{2 \pi i}\int_{\partial D} \frac{f(\zeta)}{(\zeta-z)^{n+2}} d\zeta\quad\square
+\end{align*}\]
+<p>
+    not sure if a uniform convergence argument is needed here since
+    i <i>think</i> we're doing some limit swapping, but i'm not really sure
+    how to apply it since it's not really a discrete kinda limit here
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="./mathjax.js"></script>
+
+</body>
+</html>
