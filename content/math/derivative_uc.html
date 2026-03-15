@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+
+    <title>derivative UC</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<h1>uniform convergence of derivatives</h1>
+
+<p>
+    if we have a series of functions $f_1, f_2, \cdots$
+    that uniformly converge to an $f$ on a domain $\Omega$,
+    then all of their derivatives also do the same to $f'$ on any compact subset $K \subseteq \Omega$
+</p>
+
+<p>
+    this one is gonna use a good amount of stuff:
+</p>
+<ol>
+    <li>morera's theorem, i.e. integrating to 0 on any triangle implies that a function is holomorphic</li>
+    <li>and that $f$ is actually holomorphic at all, which follows from using the above on $f_i$</li>
+</ol>
+
+<p>
+    so we only have to prove uniform convergence on a compact subset, so
+    i guess a natural thing to do would be to finitely cover $K$:
+</p>
+\[K=\bigcup_{i=1}^n B_{r_i}(z_i)\]
+<p>
+    all $z_i$s here are in $K$, and all $r_i$s are chosen s.t. $B_{3r_i}(z_i) \subseteq \Omega$.
+    you'll see why we make this the case later on
+</p>
+
+<h2>convergence on balls</h2>
+
+<p>
+    now i'll show that the uniform convergence happens in each individual ball,
+    so let's fix an $i$ and consider what happens to the $n$-th derivatives on $B_{r_i}(z_i)$:
+</p>
+\[\begin{align*}
+f^{(n)}(z)-f^{(n)}_k(z)
+&= \frac{n!}{2\pi i}\int_{|\zeta-z_i|=2r_i} \frac{f(\zeta)}{(\zeta-z)^{n+1}} \,d\zeta
+    - \frac{n!}{2\pi i}\int_{|\zeta-z_i|=2r_i} \frac{f_k(\zeta)}{(\zeta-z)^{n+1}} \,d\zeta \\
+&= \frac{n!}{2\pi i}\int_{|\zeta-z_i|=2r_i} \frac{f(\zeta)-f_k(\zeta)}{(\zeta-z)^{n+1}} \,d\zeta \\
+&\to 0\text{ as }k \to \infty
+\end{align*}\]
+<p>
+    notice that we're not integrating around the border of the ball itself,
+    but a ball that's double the radius.
+    this is necessary for the uniform convergence for all $z \in B_{r_i}(z_i)$.
+</p>
+
+<p>
+    if we just integrated around the border of $B_{r_i}(z_i)$ itself, then
+    we could pick $z$ really really close to the border, and then
+    have $\frac{1}{(\zeta-z)^{n+1}}$ get really big and cancel out whatever shrinking $f(\zeta)-f_k(\zeta)$ was doing
+</p>
+
+<p>
+    OTOH, with our funny bounds, the denominator becomes bounded:
+</p>
+\[\frac{1}{(\zeta-z)^{n+1}} \le \frac{1}{r_i^{n+1}}\ \forall z \in B_{r_i}(z_i), |\zeta-z_i|=2r_i\]
+<p>
+    our funny choice of $r_i$ earlier on ensures $\overline{B_{2r_i}(z_i)} \subseteq \Omega$
+</p>
+
+<h2>and convergence overall</h2>
+
+<p>
+    ok that was the hardest part
+</p>
+
+<p>
+    now that we know $f^{(n)}_k$ uniformly converges to $f^{(n)}$ on each $B_{r_i}(z_i)$,
+    it's basically a given that the same thing happens on $K$
+</p>
+
+<p>
+    for any $\epsilon$, each $B_{r_i}(z_i)$ gives us a number $N$ that's needed for
+</p>
+\[\sup_{z \in B_{r_i}(z_i)} \left|f^{(n)}_k(z)-f^{(n)}(z)\right| < \epsilon\ \forall k \ge N\]
+<p>
+    and since there's only finitely many of them, we can take the maximum
+    of all of them and make that our actual $N$ for an error of less than $\epsilon$ on all of $K$! $\square$
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="./mathjax.js"></script>
+
+</body>
+</html>
