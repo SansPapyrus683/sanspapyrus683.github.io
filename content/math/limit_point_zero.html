@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+
+    <title>limit point to zero</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<h1>limit point implies uniformly zero</h1>
+
+<p>
+    something pretty cool in complex is that if you have these two things
+    for a domain $\Omega$ and a holomorphic function $f$:
+</p>
+<ol>
+    <li>a sequence of distinct points in $\Omega$ $a_1, a_2, \cdots$ s.t. $\lim_{n \to \infty} a_n = a$</li>
+    <li>$f(a_i)=0$ for all $i \in \N$</li>
+</ol>
+<p>
+    then this literally means $f$ is 100% zero everywhere in $\Omega$ (and i guess $\C$ by extension)
+</p>
+
+<h2>zero in disc</h2>
+
+<p>
+    how the proof first goes is that you show that $f$ is always zero
+    on some tiny disc around $a$
+</p>
+
+<p>
+    this part is proven by contradiction, so say
+</p>
+\[f(z)=\sum_{n=N}^\infty a_n(z-a)^n\]
+<p>
+    where $a_N \ne 0$.
+</p>
+
+<p>
+    actually given this we can factor out the lowest power and write
+</p>
+\[f(z)=(z-a)^N g(z)\]
+<p>
+    where $g(a) \ne 0$ and by continuity there should be some
+    radius around $a$ where $g(z) \ne 0$ as well
+</p>
+
+<p>
+    thing is, since we have a convergent sequence of zeros
+    for any $R > 0$ $\exists z \in B_R(a): z \ne a \land f(z)=0$.
+</p>
+
+<p>
+    in our rewritten form, this gives $(z-a)^N g(z)=0$.
+    the first coefficient can't be 0, since $z \ne a$, so $g(z)=0$.
+    this contradicts our earlier statement that $g(z)$ had some tiny
+    area around $a$ where it was always nonzero.
+</p>
+
+<p>
+    so yeah, $f$ has to be constantly 0 in some ball
+</p>
+
+<h2>zero EVERYWHERE!</h2>
+
+<p>
+    now we extend the places where $f$ is zero to literally everywhere
+</p>
+
+<p>
+    it suffices to show that the set here:
+</p>
+\[A=\{z \in \Omega \mid \exists r: f(z')=0\ \forall z' \in B_r(z)\}\]
+<p>
+    is both closed and open.
+    this is because $\Omega$ is a domain and therefore connected, and the only
+    subsets of it that are both closed and open inside it are the null set and $\Omega$ itself.
+</p>
+
+<p>
+    this set is defo nonempty since $a \in A$, so we only have to show clopenness
+</p>
+
+<h3>open</h3>
+
+<p>
+    for openness, for any $z_0 \in A$ we can take its radius $r$ and say
+    that any $z \in B_{r/3}(z_0)$ is also in $A$, since they're locally
+    zero in a radius of $\frac{r}{3}$ as well.
+</p>
+
+<p>
+    these choices of points and radii work since $z \in B_{r/3}(z_0) \implies B_{r/3}(z) \subseteq B_r(z_0)$.
+    if we're zero everywhere in that larger ball, then surely we're zero
+    everywhere in the smaller ball too, right?
+</p>
+
+<h3>closed</h3>
+
+<p>
+    i'll show the following implication for a point $z$.
+    all it's really saying is that $\overline{A} \subseteq A$, so $A$ is closed.
+</p>
+\[\forall r > 0\ B_r(z) \cap A \ne \varnothing \implies z \in A\]
+<p>
+    this actually follows pretty directly from continuity, since the
+    premise implies a sequence of points converging to $z$ that all have a value of $0$.
+    by continuity of $f$, $f(z)=0$ as well and so $z \in A$
+</p>
+
+<p>
+    but yeah, that's clopenness and the whole thing proved i think $\square$
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="./mathjax.js"></script>
+
+</body>
+</html>
