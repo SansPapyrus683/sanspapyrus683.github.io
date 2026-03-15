@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+
+    <title>max mod</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<h1>weird bound equivalence thingy</h1>
+
+<p>
+    this theorem actually has two parts to it.
+    for a domain $\Omega$ and any $f$ holomorphic on it,
+</p>
+<ol>
+    <li>$|f(z_0)| \le \sup_{|\zeta-z_0|=R} |f(\zeta)|$ where $R$ is some radius that doesn't take you out of $\Omega$</li>
+    <li>if this inequality is met with equiality at any $z_0$ and $R$ then $f$ has to be constant</li>
+</ol>
+
+<h2>the easy part</h2>
+
+<p>
+    by the cauchy integral theorem
+</p>
+\[\begin{align*}
+|f(z_0)|
+&= \left|\frac{1}{2\pi i} \int_{|\zeta-z|=R} \frac{f(\zeta)}{\zeta-z_0}d\zeta\right| \\
+&= \left|\frac{1}{2\pi i} \int_{0}^{2\pi} \frac{f\left(z_0+Re^{i\theta}\right)}{(z_0+Re^{i\theta})-z_0} \cdot Rie^{i\theta} d\theta\right| \\
+&= \left|\frac{1}{2\pi} \int_{0}^{2\pi} f\left(z_0+Re^{i\theta}\right) d\theta\right| \\
+&\le \frac{1}{2\pi} \int_{0}^{2\pi} \left|f\left(z_0+Re^{i\theta}\right)\right| d\theta \\
+&\le \frac{1}{2\pi} \int_{0}^{2\pi} \sup_{0 \le \theta \le 2\pi} \left|f\left(z_0+Re^{i\theta}\right)\right| d\theta \\
+&= \frac{1}{2\pi} \left(2\pi \cdot \sup_{0 \le \theta \le 2\pi} \left|f\left(z_0+Re^{i\theta}\right)\right|\right) \\
+&= \sup_{|\zeta-z_0|=R} |f(\zeta)|
+\end{align*}\]
+<p>
+    that bound on the integral comes from real analysis and also just plain calculus
+</p>
+
+<h2>the hard part</h2>
+
+<p>
+    ok last time i tried to prove this it went straight to hell,
+    let's see if it's as bad as i remember
+</p>
+
+<p>
+    we have $|f(z_0)|=\sup_{|\zeta-z_0|=R} |f(\zeta)|$,
+    so both of those inequalities that i put in that previous chain of expressions
+    are actually equalities
+</p>
+
+<p>
+    in particular, this one here:
+</p>
+\[\frac{1}{2\pi} \int_{0}^{2\pi} \left|f\left(z_0+Re^{i\theta}\right)\right| d\theta
+=\frac{1}{2\pi} \int_{0}^{2\pi} \sup_{0 \le \theta \le 2\pi} \left|f\left(z_0+Re^{i\theta}\right)\right| d\theta\]
+<p>
+    by more real analysis this means that across all $\theta$,
+    $|f(z_0)|=\left|f\left(z_0+Re^{i\theta}\right)\right|$
+</p>
+<p>
+    notice that this only gives us constant-ness wrt the magnitude though, not the actual number
+</p>
+
+<p>
+    for that, we have to pull out this deus ex machina:
+</p>
+\[g(z)=f(z) \cdot \overline{f(z_0)}\]
+<p>
+    and then use the cauchy integral theorem to evaluate it at $z_0$:
+</p>
+\[g(z_0)=\frac{1}{2\pi}\int_{0}^{2\pi} g\left(z_0+Re^{i\theta}\right)d\theta\]
+<p>
+    if this equality is true, surely it's still true if we take real parts on both sides:
+</p>
+\[\Re(g(z_0))=\frac{1}{2\pi}\int_{0}^{2\pi} \Re\left(g\left(z_0+Re^{i\theta}\right)\right)d\theta\]
+<p>
+    now we also have this inequality here:
+</p>
+\[\Re\left(g\left(z_0+Re^{i\theta}\right)\right) = \Re\left(f\left(z_0+Re^{i\theta}\right)\overline{f(z_0)}\right) \le \Re(g(z_0))\]
+<p>
+    where that last bound is because $|f(z_0)|=\left|f\left(z_0+Re^{i\theta}\right)\right|$ as derived earlier.
+    with a fixed magnitude, the largest real part you can get when multiplying
+    with $\overline{f(z_0)}$ only happens when you do it with $f(z_0)$
+</p>
+
+<p>
+    now notice that this inequality actually has to be met with equality,
+    since if it were strict at any point then
+</p>
+\[\begin{align*}
+\frac{1}{2\pi}\int_{0}^{2\pi} \Re\left(g\left(z_0+Re^{i\theta}\right)\right)d\theta
+&< \frac{1}{2\pi}\int_{0}^{2\pi} \Re(g(z_0)) d\theta \\
+&= \Re(g(z_0))
+\end{align*}\]
+<p>
+    which would contradict our earlier equality.
+</p>
+
+<p>
+    so now we have $\Re\left(f\left(z_0+Re^{i\theta}\right)\overline{f(z_0)}\right) = \Re(g(z_0))$.
+    combined with the fact that
+</p>
+\[\Re(g(z_0))=\Re(f(z_0)\overline{f(z_0)})=f(z_0)\overline{f(z_0)}\]
+<p>
+    and the constant-ness of the magnitude, this forces $f\left(z_0+Re^{i\theta}\right)=f(z_0)$ for all $\theta$
+</p>
+
+<p>
+    this pretty much proves it!
+    all that's needed is to use that a convergent sequence with constant values implies universal constant-ness,
+    which was proved <a href="./limit_point_zero.html">back here</a> $\square$
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="./mathjax.js"></script>
+
+</body>
+</html>
