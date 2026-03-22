@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+
+    <title>arg principle</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<p>
+    the two theorems after the argument principle basically come straight
+    for it, so ig i'll just show those on the same page
+</p>
+
+<h1>argument principle</h1>
+
+<p>
+    consider an $f$ meromorphic on some domain $\Omega \supseteq \overline{\mathbb{D}}$,
+    where $\mathbb{D}$ is the unit disc.
+</p>
+
+<p>
+    assuming that there's no pole or zero on the boundary of the disc,
+</p>
+\[\frac{1}{2\pi i}\int_{|z|=1} \frac{f'(z)}{f(z)}\,dz=Z-P\]
+<p>
+    where $Z$ and $P$ are the number of zeros and on the disc respectively,
+    <b>counted with multiplicities</b>
+</p>
+
+<p>
+    the proof first enumerates all the zeros and poles of $f$
+    like $z_1, z_2, \cdots, z_Z$ and $p_1, p_2, \cdots, p_P$,
+    with those of order greater than $1$ appearing multiple times
+</p>
+
+<p>
+    given this, we can write
+</p>
+\[f(z)=\frac{\prod_{j=1}^Z (z-z_j)}{\prod_{k=1}^P (z-p_k)} g(z)\]
+<p>
+    where $g$ has no pole or zero in $\overline{\mathbb{D}}$
+</p>
+
+<p>
+    then, using the fact that $\frac{(fg)'}{fg}=\frac{f'}{f}+\frac{g'}{g}$ (proved by calc bashing),
+</p>
+\[\frac{f'(z)}{f(z)}=\sum_{j=1}^Z \frac{1}{z-z_j} - \sum_{k=1}^P \frac{1}{z-p_k} + \frac{g'(z)}{g(z)}\]
+<p>
+    we can use cauchy's integral theorem (i think)?
+    to see that of the $\frac{1}{z-C}$s integrates to exactly $1$,
+    and since $g$ is nonzero $g'/g$ is holomorphic on $\overline{\mathbb{D}}$
+    and integrates to $0$.
+</p>
+
+<p>
+    putting all this together should prove that the integral is $Z-P$.
+</p>
+
+<h1>open mapping theorem</h1>
+
+<p>
+    yeah apparently this means non-constant holomorphic functions are open mappings,
+    or in other words they map open sets to open sets
+</p>
+
+<p>
+    so if we have an $a$ and a radius $r$ s.t. $B_r(a) \subseteq \Omega$,
+    we need to show that $f(a)$ has its own ball too in $f(\Omega)$, it's image
+</p>
+
+<p>
+    first take some $r_1 < r$ s.t. $|z-a|=r_1 \implies f(r_1) \ne f(a)$.
+    we can do this because if we couldn't, that would imply
+    a convergent sequence of distinct points that all map to $f(a)$, making $f$ constant
+</p>
+
+<p>
+    now this ring around $a$ is compact since it's closed and bounded,
+    and so its image has a positive distance from $a$, and $\inf_{|z-a|=r_1} |f(z)-f(a)|=\epsilon > 0$
+</p>
+
+<p>
+    i propose that taking $r_2=\frac{\epsilon}{2}$ should work.
+    or just anything that's strictly less than $\epsilon$, tbh,
+    i'm just not sure about making it equal to $\epsilon$ exactly.
+</p>
+
+<p>
+    but yeah, first notice that we can use the argument principle to say that
+</p>
+\[\int_{|z-a|=r_1} \frac{f'(z)}{f(z)-f(a)}\,dz \ge 1\]
+<p>
+    where we're really integrating to find the zeros of $g(z)=f(z)-f(a)$.
+    this one is guaranteed to have a solution (at $a$) and there's no poles
+    inside the circle, so the result should be at least $1$.
+</p>
+
+<p>
+    another thing to take note is that this integral is continuous with regards
+    to what we put inside for $f(a)$, as long as it doesn't make $f(z)-f(a)$
+    zero on the ring
+</p>
+
+<p>
+    now for any $t \in B_{r_2}(f(a))$, $|f(z)-t| > 0$ when $|z-a|=r_1$
+    by how we chose $r_2$, so we can again integrate and use continuity to see that
+</p>
+\[\int_{|z-a|=r_1} \frac{f'(z)}{f(z)-t}\,dz \ge 1\]
+<p>
+    so yeah, $f(z)-t$ has a zero in $B_r(a)$, which means $t$ has a nonempty preimage in $\Omega$
+    and that $f$ itself maps open sets to open sets
+</p>
+
+<h1>rouche's theorem</h1>
+
+<p>
+    $f$ and $g$ are holomorphic functions on some $\Omega \supseteq \overline{\mathbb{D}}$
+</p>
+
+<p>
+    the theorem is that if $|z|=1 \implies |f(z)| > |g(z)|$, then $f$ and $f+g$ have the same number of zeros in $\mathbb{D}$
+</p>
+
+<p>
+    proof is basically just using the argument principle, no real tricks here
+</p>
+
+<p>
+    if $|f(z)| > |g(z)|$ on the $|z|=1$, then $|(f+g)(z)|$ shouldn't have any zeros
+    and the argument principle applies
+</p>
+
+<p>
+    actually no i lied, there's a bit more work- consider the function $N: [0, 1] \to \C$, defined by
+</p>
+\[N(t)=\int_{|z|=1}\frac{(f+tg)'(z)}{(f+tg)(z)}\,dz\]
+<p>
+    by the arg principle $N(0)$ is $f$'s number of zeros
+    $N(1)$ is $f+g$'s number of zeros
+</p>
+
+<p>
+    notice that the principle forces $N(t) \in \Z$!
+    since it's also continuous with respect to $t$ (more real analysis bashing, true by looking at it :OMEGALUL:)
+    this forces $N(0)=N(1)$
+</p>
+
+<p>
+    if $N(0) \ne N(1)$ by the intermediate value theorem $N$ would have to take
+    on some fractional value somewhere in between $0$ and $1$, which isn't possible
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="./mathjax.js"></script>
+
+</body>
+</html>

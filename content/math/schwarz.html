@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/css/fancy.css">
+    <link rel="stylesheet" href="/style/css/classes.css">
+
+    <title>schwarz</title>
+</head>
+
+<body>
+
+<p><a href="/index.html">back to home</a></p>
+
+<h1>schwarz's lemma</h1>
+
+<h2>standard(?) form</h2>
+
+<p>
+    the lemma has two parts, but both start from the premise that
+    $f$ is a holomorphic function that goes from $\mathbb{D}=\{z: |z| < 1\}$ to itself
+    with $f(0)=0$:
+</p>
+<ol>
+    <li>$|f(z)| \le |z|$ and $|f'(0)| \le 1$</li>
+    <li>if $|f(z)|=|z|$ at any $z \ne 0$ or if $|f'(0)|=1$, then $f(z)=\lambda z$ with $|\lambda|=1$</li>
+</ol>
+
+<p>
+    the proof does make heavy use of the <a href="./max_mod.html">maximum modulus principle</a>
+</p>
+<p>
+    it says that a non-constant $f$ can't attain a maximum on any domain $\Omega$,
+    and if $\exists z_0: |f(z_0)| \ge |f(z)|\ \forall z \in \Omega$, then $f$ is constant.
+</p>
+
+<h3>first part</h3>
+
+<p>
+    $f$ has a zero at $0$, so we can write $f(z)=zg(z)$ where $g$ is also some holomorphic function
+</p>
+
+<p>
+    notice that if we fix an $R \in (0, 1)$, $|z|=R \implies |g(z)| = \left|\frac{f(z)}{z}\right| \le \frac{1}{R}$.
+</p>
+
+<p>
+    this value of $\frac{1}{R}$ has to be the largest $f$ can achieve for $|z| < R$
+    as well, since all holomorphic functions have to achieve their maximum on the boundary of a compact set.
+</p>
+
+<p>
+    if we let $R \to 1$, then we get $|g(z)| \le 1$ for ALL $z$ in $\mathbb{D}$.
+</p>
+
+<p>
+    that's basically the first part done, since
+</p>
+\[|f(z)| = |z| \cdot |g(z)| \le |z|\]
+<p>
+    also since $f'(0)=g(0)$ by power/taylor series stuff, $|f'(0)|$ is bounded above by $1$ too.
+</p>
+
+<h3>second part</h3>
+
+<p>
+    ok so if $|f(z)|=|z|$ for any $z \ne 0$ then $|g(z)|=1$
+</p>
+
+<p>
+    same thing applies if $|f'(0)|=1$, since again $f'(0)=g(0)$
+</p>
+
+<p>
+    i guess the point is that we have a point inside the disc where $g(z)=1$,
+    even though we already bounded it by $1$
+</p>
+
+<p>
+    $g$ must therefore be constant, and its uniform value is what we take $\lambda$ to be
+</p>
+
+<h2>my prof calls this one the local form</h2>
+
+<p>
+    this one also deals with $f: \mathbb{D} \to \mathbb{D}$, and it gives a straightforward bound:
+</p>
+\[|f'(z)| \le \frac{1-|f(z)|^2}{1-|z|^2}\]
+<p>
+    also equality at any point implies that $f$ is a mobius transformation, i.e. it's of the form
+</p>
+\[f(z)=e^{i\theta}\frac{\alpha-z}{1-\overline{\alpha}z}\quad \theta \in \R, |\alpha| < 1\]
+
+<h3>main part</h3>
+
+<p>
+    proof is highkey jank- fix any $z_0 \in \mathbb{D}$ and consider these functions:
+</p>
+\[\begin{align*}
+S(z)=\frac{z+z_0}{1+\overline{z_0}z} &&
+T(z)=\frac{z-f(z_0)}{1-\overline{f(z_0)}z} && 
+F=T \circ f \circ S
+\end{align*}\]
+<p>
+    through bashing you'll see that $F(0)=0$, so we can apply the previous version of schwarz's lemma
+    to say that $|F'(0)| \le 1$
+</p>
+
+<p>
+    but by the chain rule we can also see that
+</p>
+\[\begin{align*}
+|F'(0)|
+&= |T'(f(S(0))) \cdot f'(S(0)) \cdot S'(0)| \\
+&= |T'(f(z_0)) \cdot f'(z_0) \cdot S'(0)| \\
+&\le 1
+\end{align*}\]
+<p>
+    through even more bashing you can obtain the derivatives
+</p>
+\[\begin{align*}
+S'(z)=\frac{1-|z_0|^2}{(1-\overline{z_0}z)^2} &&
+T'(z)=\frac{1-|f(z_0)|^2}{(1-\overline{f(z_0)}z)^2}
+\end{align*}\]
+<p>
+    and so
+</p>
+\[\begin{align*}
+|f'(z_0)|
+&\le \frac{1}{|T'(f(z_0))| \cdot |S'(0)|} \\
+&= \frac{(1-\overline{f(z_0)}f(z_0))^2}{1-|f(z_0)|^2} \cdot \frac{(1-\overline{z_0} \cdot 0)^2}{1-|z_0|^2} \\
+&= \frac{1-|f(z_0)|^2}{1-|z_0|^2}
+\end{align*}\]
+<p>
+    the choice of $z_0$ was arbitrary, so this is true for all $z_0 \in \mathbb{D}$
+</p>
+
+<h3>that one equality part</h3>
+
+<p>
+    if equality's hit at any point, then for some $z_0$ our construction
+    gets $|F'(0)|=1$ and we can say that $F(z)=\lambda z$ with $\lambda=1$
+</p>
+
+<p>
+    by EVEN MORE bashing it can be seen that $T$ and $S$ are invertible,
+    so we can write $f$ like so:
+</p>
+\[f=T^{-1} \circ F \circ S^{-1}\]
+<p>
+    when you compose all these formula together $f$ does indeed
+    take the form of a mobius transform
+</p>
+
+<p>
+    (i mean cmon get like wolfram alpha to do it or smth idk)
+</p>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="./mathjax.js"></script>
+
+</body>
+</html>
