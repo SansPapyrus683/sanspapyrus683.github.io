@@ -1,3 +1,7 @@
+:root {
+  --sans-color: #84fff2;
+}
+
 img.quarter-img {
   max-width: 25%;
   max-height: 25%;
@@ -34,12 +38,12 @@ img.three-quarters-img {
 
 table.centered-border {
   margin: 0 auto;
-  border: 1px solid #84fff2;
+  border: 1px solid var(--sans-color);
   border-collapse: collapse;
 }
 
 td.border {
-  border: 1px solid #84fff2;
+  border: 1px solid var(--sans-color);
 }
 
 span.small {
@@ -55,6 +59,10 @@ span.strike {
 }
 
 /* woah, classes! */
+.highlighted {
+  color: var(--sans-color);
+}
+
 .inline {
   background-color: #51938f;
   padding: 4px;
@@ -63,7 +71,7 @@ span.strike {
   /* idk if this is good or not, who cares */
   font-weight: bold;
   font-size: small;
-  color: #84fff2;
+  color: var(--sans-color);
 }
 
 h1, h2, h3 {
